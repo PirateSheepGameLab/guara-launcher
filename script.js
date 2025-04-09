@@ -1,49 +1,87 @@
-// Função para carregar os jogos do JSON
-async function loadGames() {
+// Função para carregar as seções do JSON
+async function loadSections() {
     try {
-        const response = await fetch('games.json');
-        const games = await response.json();
-        displayGames(games);
-        displayFeaturedGame(games[0]); // Exibe o primeiro jogo como destaque
+        const [sectionsResponse, gamesResponse] = await Promise.all([
+            fetch('home-sections.json'),
+            fetch('games.json')
+        ]);
+
+        if (!sectionsResponse.ok || !gamesResponse.ok) {
+            throw new Error('Erro ao carregar os dados');
+        }
+
+        const sections = await sectionsResponse.json();
+        const games = await gamesResponse.json();
+
+        // Cria um mapa de jogos para acesso rápido
+        const gamesMap = new Map(games.map(game => [game.id, game]));
+
+        // Renderiza cada seção
+        sections.sections.forEach(section => {
+            renderSection(section, gamesMap);
+        });
+
+        // Atualiza o Quick Launch com os primeiros 4 jogos
+        updateQuickLaunch(games.slice(0, 4));
     } catch (error) {
-        console.error('Erro ao carregar os jogos:', error);
+        console.error('Erro ao carregar as seções:', error);
+        showError('Erro ao carregar as seções. Por favor, tente novamente mais tarde.');
     }
 }
 
-// Função para exibir os jogos na grid
-function displayGames(games) {
-    const gamesGrid = document.querySelector('.games-grid');
-    gamesGrid.innerHTML = ''; // Limpa o conteúdo atual
+// Função para renderizar uma seção
+function renderSection(section, gamesMap) {
+    const mainContent = document.querySelector('.main-content');
+    if (!mainContent) return;
 
-    games.forEach(game => {
-        const genres = game.genre.split(', ');
-        const card = document.createElement('div');
-        card.className = 'game-card';
-        card.innerHTML = `
-            <img src="${game.cover}" alt="${game.title}">
-            <div class="game-card-info">
-                <h3>${game.title}</h3>
-                <p>${game.description}</p>
-                <div class="tags">
-                    ${genres.map(genre => `<span>${genre}</span>`).join('')}
-                </div>
-            </div>
-        `;
+    const sectionElement = document.createElement('section');
+    sectionElement.className = section.id;
+    sectionElement.innerHTML = `<h2>${section.title}</h2>`;
 
-        // Adicionar evento de clique para navegação
-        card.addEventListener('click', () => {
-            window.location.href = `game-details.html?id=${game.id}`;
+    // Obtém os jogos da seção baseado nos IDs
+    const sectionGames = section.gameIds
+        .map(id => gamesMap.get(id))
+        .filter(game => game !== undefined);
+
+    if (sectionGames.length === 0) return;
+
+    // Determina o tipo de renderização baseado no ID da seção
+    if (section.id === 'featured') {
+        renderFeaturedSection(sectionElement, sectionGames[0]);
+    } else {
+        const grid = document.createElement('div');
+        grid.className = 'games-grid';
+        
+        // Adiciona botões de navegação
+        const prevButton = document.createElement('button');
+        prevButton.className = 'section-nav prev';
+        prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevButton.onclick = () => scrollSection(grid, -300);
+        
+        const nextButton = document.createElement('button');
+        nextButton.className = 'section-nav next';
+        nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextButton.onclick = () => scrollSection(grid, 300);
+
+        sectionGames.forEach(game => {
+            const card = createGameCard(game);
+            grid.appendChild(card);
         });
 
-        gamesGrid.appendChild(card);
-    });
+        sectionElement.appendChild(prevButton);
+        sectionElement.appendChild(grid);
+        sectionElement.appendChild(nextButton);
+    }
+
+    mainContent.appendChild(sectionElement);
 }
 
-// Função para exibir o jogo em destaque
-function displayFeaturedGame(game) {
-    const featuredSection = document.querySelector('.featured-game');
-    if (featuredSection && game) {
-        featuredSection.innerHTML = `
+// Função para renderizar seção de destaque
+function renderFeaturedSection(container, game) {
+    if (!game) return;
+
+    container.innerHTML += `
+        <div class="featured-game">
             <img src="${game.background}" alt="${game.title}">
             <div class="game-info">
                 <h3>${game.title}</h3>
@@ -52,67 +90,176 @@ function displayFeaturedGame(game) {
                     ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
                 </div>
             </div>
-        `;
+        </div>
+    `;
 
-        // Adicionar evento de clique para navegação
-        featuredSection.addEventListener('click', () => {
-            window.location.href = `game-details.html?id=${game.id}`;
-        });
+    const featuredGame = container.querySelector('.featured-game');
+    featuredGame.addEventListener('click', () => {
+        window.location.href = `game-details.html?id=${game.id}`;
+    });
+}
+
+// Função para rolar a seção
+function scrollSection(element, amount) {
+    element.scrollBy({
+        left: amount,
+        behavior: 'smooth'
+    });
+}
+
+// Função para renderizar seção em grid
+function renderGridSection(container, games) {
+    const grid = document.createElement('div');
+    grid.className = 'games-grid';
+
+    games.forEach(game => {
+        const card = createGameCard(game);
+        grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+}
+
+// Função para renderizar seção ranqueada
+function renderRankedSection(container, games) {
+    const rankedList = document.createElement('div');
+    rankedList.className = 'top-games';
+
+    games.forEach((game, index) => {
+        const rankedGame = createRankedGame(game, index + 1);
+        rankedList.appendChild(rankedGame);
+    });
+
+    container.appendChild(rankedList);
+}
+
+// Função para criar card de jogo
+function createGameCard(game) {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.innerHTML = `
+        <img src="${game.cover}" alt="${game.title}">
+        <div class="game-card-info">
+            <h3>${game.title}</h3>
+            <p>${game.description}</p>
+            <div class="tags">
+                ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
+            </div>
+        </div>
+    `;
+
+    card.addEventListener('click', () => {
+        window.location.href = `game-details.html?id=${game.id}`;
+    });
+
+    return card;
+}
+
+// Função para criar jogo ranqueado
+function createRankedGame(game, rank) {
+    const rankedGame = document.createElement('div');
+    rankedGame.className = 'game-rank';
+    rankedGame.innerHTML = `
+        <span class="rank">${rank}</span>
+        <img src="${game.cover}" alt="${game.title}">
+        <div class="game-info">
+            <h3>${game.title}</h3>
+            <div class="tags">
+                ${game.genre.split(', ').slice(0, 2).map(genre => `<span>${genre}</span>`).join('')}
+            </div>
+        </div>
+    `;
+
+    rankedGame.addEventListener('click', () => {
+        window.location.href = `game-details.html?id=${game.id}`;
+    });
+
+    return rankedGame;
+}
+
+// Função para atualizar Quick Launch
+function updateQuickLaunch(games) {
+    const quickLaunchList = document.querySelector('.quick-launch ul');
+    if (!quickLaunchList) return;
+
+    quickLaunchList.innerHTML = '';
+    games.forEach(game => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <img src="${game.cover}" alt="${game.title}">
+            ${game.title}
+        `;
+        quickLaunchList.appendChild(li);
+    });
+}
+
+// Função para mostrar erro
+function showError(message) {
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        mainContent.appendChild(errorDiv);
     }
 }
 
-// Carregar os jogos quando a página carregar
-document.addEventListener('DOMContentLoaded', loadGames);
+// Carregar as seções quando a página carregar
+document.addEventListener('DOMContentLoaded', loadSections);
 
-// Funcionalidade de drag and drop para Quick Launch
-document.addEventListener('DOMContentLoaded', () => {
-    const quickLaunchList = document.querySelector('.quick-launch ul');
-    if (quickLaunchList) {
-        const items = quickLaunchList.querySelectorAll('li');
-        
-        items.forEach(item => {
-            item.setAttribute('draggable', true);
-            
-            item.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text/plain', item.innerHTML);
-                item.classList.add('dragging');
-            });
-            
-            item.addEventListener('dragend', () => {
-                item.classList.remove('dragging');
-            });
-        });
-        
-        quickLaunchList.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            const draggingItem = document.querySelector('.dragging');
-            const siblings = [...quickLaunchList.querySelectorAll('li:not(.dragging)')];
-            const nextSibling = siblings.find(sibling => {
-                const box = sibling.getBoundingClientRect();
-                return e.clientY <= box.top + box.height / 2;
-            });
-            
-            if (nextSibling) {
-                quickLaunchList.insertBefore(draggingItem, nextSibling);
-            } else {
-                quickLaunchList.appendChild(draggingItem);
-            }
-        });
-        
-        // Salvar ordem após soltar
-        quickLaunchList.addEventListener('drop', (e) => {
-            e.preventDefault();
-            saveQuickLaunchOrder();
-        });
-    }
-});
+// Funcionalidade de busca
+const searchInput = document.querySelector('.search input');
+if (searchInput) {
+    searchInput.addEventListener('input', async (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        try {
+            const [sectionsResponse, gamesResponse] = await Promise.all([
+                fetch('home-sections.json'),
+                fetch('games.json')
+            ]);
 
-// Função para salvar a ordem do Quick Launch
-function saveQuickLaunchOrder() {
-    const quickLaunchList = document.querySelector('.quick-launch ul');
-    const items = [...quickLaunchList.querySelectorAll('li')];
-    const order = items.map(item => item.innerHTML);
-    localStorage.setItem('quickLaunchOrder', JSON.stringify(order));
+            const sections = await sectionsResponse.json();
+            const games = await gamesResponse.json();
+            const gamesMap = new Map(games.map(game => [game.id, game]));
+
+            // Limpa o conteúdo atual
+            const mainContent = document.querySelector('.main-content');
+            mainContent.innerHTML = '';
+
+            // Filtra os jogos que correspondem ao termo de busca
+            const filteredGamesMap = new Map(
+                Array.from(gamesMap.entries()).filter(([_, game]) => 
+                    game.title.toLowerCase().includes(searchTerm) ||
+                    game.description.toLowerCase().includes(searchTerm) ||
+                    game.genre.toLowerCase().includes(searchTerm)
+                )
+            );
+
+            // Renderiza as seções com os jogos filtrados
+            sections.sections.forEach(section => {
+                const sectionElement = document.createElement('section');
+                sectionElement.className = section.id;
+                sectionElement.innerHTML = `<h2>${section.title}</h2>`;
+
+                const sectionGames = section.gameIds
+                    .map(id => filteredGamesMap.get(id))
+                    .filter(game => game !== undefined);
+
+                if (sectionGames.length > 0) {
+                    if (section.id === 'featured') {
+                        renderFeaturedSection(sectionElement, sectionGames[0]);
+                    } else if (section.id === 'top-games') {
+                        renderRankedSection(sectionElement, sectionGames);
+                    } else {
+                        renderGridSection(sectionElement, sectionGames);
+                    }
+                    mainContent.appendChild(sectionElement);
+                }
+            });
+        } catch (error) {
+            console.error('Erro ao filtrar jogos:', error);
+        }
+    });
 }
 
 // Função para carregar a ordem salva do Quick Launch
@@ -139,49 +286,9 @@ document.addEventListener('DOMContentLoaded', loadQuickLaunchOrder);
 
 // DOM Elements
 const gamesGrid = document.querySelector('.games-grid');
-const searchInput = document.querySelector('.search input');
 const genreCheckboxes = document.querySelectorAll('.genre-list input');
 const tags = document.querySelectorAll('.tag');
 const topGamesContainer = document.querySelector('.top-games');
-
-// Create game card element
-function createGameCard(game) {
-    const card = document.createElement('div');
-    card.className = 'game-card';
-    card.innerHTML = `
-        <img src="${game.image}" alt="${game.title}">
-        <div class="game-card-info">
-            <h3>${game.title}</h3>
-            <p>${game.description}</p>
-            <div class="tags">
-                ${game.tags.map(tag => `<span>${tag}</span>`).join('')}
-            </div>
-            <div class="rating">
-                ${'★'.repeat(Math.floor(game.rating))}${game.rating % 1 >= 0.5 ? '½' : ''}
-                ${'☆'.repeat(5 - Math.ceil(game.rating))}
-            </div>
-        </div>
-    `;
-    
-    return card;
-}
-
-// Create ranked game element
-function createRankedGame(game, rank) {
-    const rankedGame = document.createElement('div');
-    rankedGame.className = 'game-rank';
-    rankedGame.innerHTML = `
-        <span class="rank">${rank}</span>
-        <img src="${game.image}" alt="${game.title}">
-        <div class="game-info">
-            <h3>${game.title}</h3>
-            <div class="tags">
-                ${game.tags.slice(0, 2).map(tag => `<span>${tag}</span>`).join('')}
-            </div>
-        </div>
-    `;
-    return rankedGame;
-}
 
 // Populate games grid
 function populateGames(gamesArray = games) {
@@ -199,17 +306,6 @@ function populateTopGames() {
         topGamesContainer.appendChild(createRankedGame(game, index + 1));
     });
 }
-
-// Search functionality
-searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredGames = games.filter(game => 
-        game.title.toLowerCase().includes(searchTerm) ||
-        game.description.toLowerCase().includes(searchTerm) ||
-        game.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-    );
-    populateGames(filteredGames);
-});
 
 // Genre filter functionality
 genreCheckboxes.forEach(checkbox => {
