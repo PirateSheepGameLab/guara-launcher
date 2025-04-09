@@ -2,8 +2,36 @@
     "sections": [
       {
         "id": "featured",
-        "title": "Em Destaque",
-        "gameIds": ["super-brock-lee", "hades", "dead-cells"]
+        "items": [
+          {
+            "type": "advertisement",
+            "title": "Nova Temporada",
+            "description": "Confira os novos jogos da temporada!",
+            "image": "https://placehold.co/1920x1080/1a2942/ffffff?text=Nova+Temporada",
+            "cta": {
+              "text": "Ver Mais",
+              "link": "#"
+            }
+          },
+          {
+            "type": "game",
+            "id": "super-brock-lee",
+            "title": "Super Brock Lee",
+            "description": "Um jogo de luta épico com o lendário Brock Lee!",
+            "background": "https://placehold.co/1920x1080/1a2942/ffffff?text=Super+Brock+Lee",
+            "genre": "Ação, Luta"
+          },
+          {
+            "type": "advertisement",
+            "title": "Promoção Especial",
+            "description": "Descontos imperdíveis em jogos selecionados!",
+            "image": "https://placehold.co/1920x1080/1a2942/ffffff?text=Promoção+Especial",
+            "cta": {
+              "text": "Ver Ofertas",
+              "link": "#"
+            }
+          }
+        ]
       },
       {
         "id": "new-releases",

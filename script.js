@@ -33,19 +33,18 @@ function renderSection(section, gamesMap) {
 
     const sectionElement = document.createElement('section');
     sectionElement.className = section.id;
-    sectionElement.innerHTML = `<h2>${section.title}</h2>`;
-
-    // Obtém os jogos da seção baseado nos IDs
-    const sectionGames = section.gameIds
-        .map(id => gamesMap.get(id))
-        .filter(game => game !== undefined);
-
-    if (sectionGames.length === 0) return;
-
-    // Determina o tipo de renderização baseado no ID da seção
+    
     if (section.id === 'featured') {
-        renderFeaturedSection(sectionElement, sectionGames[0]);
+        renderFeaturedSection(sectionElement, section.items, gamesMap);
     } else {
+        sectionElement.innerHTML = `<h2>${section.title}</h2>`;
+        // Obtém os jogos da seção baseado nos IDs
+        const sectionGames = section.gameIds
+            .map(id => gamesMap.get(id))
+            .filter(game => game !== undefined);
+
+        if (sectionGames.length === 0) return;
+
         const grid = document.createElement('div');
         grid.className = 'games-grid';
         
@@ -74,25 +73,127 @@ function renderSection(section, gamesMap) {
 }
 
 // Função para renderizar seção de destaque
-function renderFeaturedSection(container, game) {
-    if (!game) return;
+function renderFeaturedSection(container, items, gamesMap) {
+    if (!items || items.length === 0) return;
 
-    container.innerHTML += `
-        <div class="featured-game">
-            <img src="${game.background}" alt="${game.title}">
-            <div class="game-info">
-                <h3>${game.title}</h3>
-                <p>${game.description}</p>
-                <div class="tags">
-                    ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
+    const carousel = document.createElement('div');
+    carousel.className = 'featured-carousel';
+    
+    // Container para os itens
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'featured-items';
+    
+    // Adiciona os itens
+    items.forEach((item, index) => {
+        let itemContent = '';
+        
+        if (item.type === 'advertisement') {
+            itemContent = `
+                <div class="featured-item ${index === 0 ? 'active' : ''}" data-index="${index}">
+                    <div class="featured-game featured-ad">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="game-info">
+                            <h3>${item.title}</h3>
+                            <p>${item.description}</p>
+                            <a href="${item.cta.link}" class="cta-button">${item.cta.text}</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    `;
+            `;
+        } else if (item.type === 'game') {
+            const game = gamesMap.get(item.id);
+            if (!game) return; // Skip if game not found
+            
+            itemContent = `
+                <div class="featured-item ${index === 0 ? 'active' : ''}" data-index="${index}">
+                    <div class="featured-game" data-game-id="${game.id}">
+                        <img src="${game.background}" alt="${game.title}">
+                        <div class="game-info">
+                            <h3>${game.title}</h3>
+                            <p>${game.description}</p>
+                            <div class="tags">
+                                ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (itemContent) {
+            itemsContainer.innerHTML += itemContent;
+        }
+    });
 
-    const featuredGame = container.querySelector('.featured-game');
-    featuredGame.addEventListener('click', () => {
-        window.location.href = `game-details.html?id=${game.id}`;
+    // Adiciona indicadores de página
+    const indicators = document.createElement('div');
+    indicators.className = 'carousel-indicators';
+    items.forEach((_, index) => {
+        const indicator = document.createElement('button');
+        indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+        indicator.setAttribute('data-index', index);
+        indicators.appendChild(indicator);
+    });
+
+    carousel.appendChild(itemsContainer);
+    carousel.appendChild(indicators);
+    container.appendChild(carousel);
+
+    // Adiciona funcionalidade do carrossel
+    let currentIndex = 0;
+    const itemsList = itemsContainer.querySelectorAll('.featured-item');
+    const indicatorButtons = indicators.querySelectorAll('.indicator');
+
+    function updateCarousel() {
+        itemsList.forEach((item, index) => {
+            item.classList.toggle('active', index === currentIndex);
+        });
+        indicatorButtons.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % items.length;
+        updateCarousel();
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updateCarousel();
+    }
+
+    // Adiciona event listeners para os indicadores
+    indicatorButtons.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentIndex = index;
+            updateCarousel();
+        });
+    });
+
+    // Auto-advance every 5 seconds
+    let autoAdvance = setInterval(nextSlide, 5000);
+
+    // Pause auto-advance on hover
+    carousel.addEventListener('mouseenter', () => {
+        clearInterval(autoAdvance);
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+        autoAdvance = setInterval(nextSlide, 5000);
+    });
+
+    // Adiciona event listeners para cliques nos itens
+    itemsContainer.querySelectorAll('.featured-game').forEach(gameElement => {
+        gameElement.addEventListener('click', (e) => {
+            // Se o clique foi no botão CTA, não faz nada (o link já será seguido)
+            if (e.target.closest('.cta-button')) return;
+
+            const gameId = gameElement.getAttribute('data-game-id');
+            if (gameId) {
+                window.location.href = `game-details.html?id=${gameId}`;
+            }
+        });
     });
 }
 
@@ -228,7 +329,7 @@ if (searchInput) {
 
                 if (sectionGames.length > 0) {
                     if (section.id === 'featured') {
-                        renderFeaturedSection(sectionElement, sectionGames[0]);
+                        renderFeaturedSection(sectionElement, sectionGames, filteredGamesMap);
                     } else if (section.id === 'top-games') {
                         renderRankedSection(sectionElement, sectionGames);
                     } else {
