@@ -21,6 +21,9 @@
     margin-bottom: 40px;
     flex-wrap: wrap;
     gap: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .game-header h1 {
@@ -220,10 +223,10 @@
 }
 
 .achievements-section, .collectibles-section {
-    background: rgba(10, 20, 40, 0.6);
-    border-radius: 12px;
-    padding: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 
 .achievements-section h2, .collectibles-section h2 {
@@ -233,20 +236,16 @@
 }
 
 .progress-bar {
-    background: rgba(0, 0, 0, 0.3);
-    height: 12px;
-    border-radius: 6px;
-    margin: 15px 0 25px 0;
-    position: relative;
-    overflow: visible;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
 }
 
 .progress {
-    background: var(--accent-color);
-    height: 100%;
-    border-radius: 6px;
-    transition: width 0.5s ease-out;
-    width: 50%;
+    background: var(--primary-color);
+    height: 10px;
+    width: 50%; /* Example width */
 }
 
 #collectiblesProgress {
@@ -326,20 +325,16 @@
 /* Game Main Stats Section */
 .game-main-stats {
     display: flex;
-    justify-content: space-around;
-    background: rgba(10, 20, 40, 0.6); /* Similar background as other sections */
-    padding: 20px 30px;
-    border-radius: 12px;
-    margin-bottom: 40px; /* Space before next sections */
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
 .stat-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    color: var(--text-color);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
 }
 
 .stat-box .label {
@@ -350,4 +345,146 @@
 .stat-box .value {
     font-size: 1.3em;
     font-weight: bold;
+}
+
+.sidebar {
+    background-color: rgba(13, 20, 40, 0.7);
+    padding: 20px;
+    position: fixed;
+    width: var(--sidebar-width);
+    height: 100vh;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.profile-image img {
+    border-radius: 50%;
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.main-nav li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.quick-launch ul {
+    list-style: none;
+    padding: 0;
+}
+
+.quick-launch li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    color: var(--text-color);
+    opacity: 0.7;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+.social-links a:hover {
+    opacity: 1;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 5px 15px;
+}
+
+.search input {
+    background: transparent;
+    border: none;
+    padding: 8px 35px 8px 10px;
+    color: var(--text-color);
+    width: 200px;
+    font-size: 0.9em;
+}
+
+.search i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.user-controls {
+    display: flex;
+    gap: 15px;
+}
+
+.user-controls i {
+    font-size: 1.2em;
+    cursor: pointer;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.user-controls i:hover {
+    opacity: 1;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+}
+
+.sidebar-header .launcher-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+}
+
+.sidebar-header h2 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
 } 

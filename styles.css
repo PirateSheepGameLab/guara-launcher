@@ -20,13 +20,21 @@ body {
     color: var(--text-color);
     min-height: 100vh;
     background: radial-gradient(circle at center, #1a2942 0%, #0a1020 100%);
+    transition: none;
+}
+
+body.page-transition {
+    opacity: 0;
 }
 
 .container {
     display: grid;
-    grid-template-columns: var(--sidebar-width) 1fr var(--filter-sidebar-width);
+    grid-template-columns: var(--sidebar-width) 1fr;
     min-height: 100vh;
     position: relative;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 /* Sidebar Styles */
@@ -36,18 +44,12 @@ body {
     position: fixed;
     width: var(--sidebar-width);
     height: 100vh;
-    overflow-y: auto;
+    overflow: hidden;
     backdrop-filter: blur(10px);
-}
-
-.profile {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    flex-direction: column;
+    left: 0;
+    top: 0;
 }
 
 .sidebar-header {
@@ -70,6 +72,16 @@ body {
     font-weight: 600;
     color: var(--text-color);
     margin: 0;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
 }
 
 .profile-image {
@@ -99,10 +111,20 @@ body {
 
 .main-nav {
     margin: 20px 0;
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.main-nav::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .main-nav ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .main-nav li {
@@ -110,25 +132,47 @@ body {
     margin: 5px 0;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: transform 0.2s ease;
     display: flex;
     align-items: center;
     gap: 12px;
     color: var(--text-color);
     font-size: 0.95em;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.main-nav li a {
+    color: inherit;
+    text-decoration: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
 }
 
 .main-nav li i {
     font-size: 1.2em;
     width: 24px;
+    color: var(--text-secondary);
+    transition: color 0.3s;
 }
 
-.main-nav li:hover,
-.main-nav li.active {
-    background-color: rgba(60, 133, 245, 0.1);
+.main-nav li:hover {
+    transform: scale(1.05);
+}
+
+.main-nav li:hover i {
+    color: var(--accent-color);
 }
 
 .main-nav li.active {
+    background-color: rgba(60, 133, 245, 0.2);
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.main-nav li.active i {
     color: var(--accent-color);
 }
 
@@ -142,8 +186,9 @@ body {
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    padding: 20px 0;
     margin-bottom: 30px;
 }
 
@@ -202,13 +247,8 @@ header {
     position: relative;
     border-radius: 15px;
     overflow: hidden;
-    margin-bottom: 40px;
-    height: 300px;
+    height: 100%;
     cursor: pointer;
-}
-
-.featured-game.featured-ad {
-    height: 400px;
 }
 
 .featured-game img {
@@ -247,11 +287,11 @@ header {
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .cta-button:hover {
-    background: var(--accent-color-hover);
+    transform: scale(1.05);
 }
 
 /* Section Headers */
@@ -282,17 +322,16 @@ section h2 {
     background: #1a1a1a;
     border-radius: 4px;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
     cursor: pointer;
     flex: 0 0 auto;
     width: 300px;
     position: relative;
-    margin: 0; /* Removed margin */
+    margin: 0;
 }
 
 .game-card:hover {
     transform: scale(1.05);
-    z-index: 1;
 }
 
 .game-card img {
@@ -414,7 +453,8 @@ section:hover .section-nav {
 
 /* Sections */
 section {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
 }
 
 section h2 {
@@ -587,10 +627,11 @@ section h2 {
 
 /* Social Links */
 .social-links {
-    position: absolute;
-    bottom: 20px;
     display: flex;
+    justify-content: center;
     gap: 15px;
+    margin-top: auto;
+    padding: 20px 0;
 }
 
 .social-links a {
@@ -604,21 +645,21 @@ section h2 {
     opacity: 1;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
+/* Scrollbar personalizado para o menu */
+.main-nav::-webkit-scrollbar {
     width: 5px;
 }
 
-::-webkit-scrollbar-track {
+.main-nav::-webkit-scrollbar-track {
     background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.main-nav::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.main-nav::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
 }
 
@@ -716,12 +757,12 @@ section h2 {
     padding: 0.5rem;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease;
     flex: 0 0 auto;
 }
 
 .quick-launch li:hover {
-    background: rgba(255,255,255,0.1);
+    transform: scale(1.05);
 }
 
 .quick-launch li img {
@@ -781,58 +822,6 @@ section h2 {
 
 .indicator.active {
     background: white;
-}
-
-/* Featured Game Styles */
-.featured-game {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    height: 100%;
-    cursor: pointer;
-}
-
-.featured-game img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.game-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-}
-
-.game-info h3 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: var(--text-color);
-}
-
-.game-info p {
-    color: var(--text-secondary);
-    font-size: 0.9em;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-.cta-button {
-    display: inline-block;
-    background: var(--accent-color);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.cta-button:hover {
-    background: var(--accent-color-hover);
 }
 
 /* Estilos para a página de resultados de busca */
@@ -979,4 +968,20 @@ section h2 {
     padding: 4px 12px;
     border-radius: 15px;
     font-size: 0.8em;
+}
+
+/* Removendo todas as animações escalonadas */
+section:nth-child(1),
+section:nth-child(2),
+section:nth-child(3),
+section:nth-child(4) {
+    animation: none;
+}
+
+.game-card:nth-child(1),
+.game-card:nth-child(2),
+.game-card:nth-child(3),
+.game-card:nth-child(4),
+.game-card:nth-child(5) {
+    animation: none;
 } 

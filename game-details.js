@@ -135,4 +135,18 @@ function setupThumbnailScroll() {
 }
 
 // Carregar detalhes do jogo quando a página carregar
-document.addEventListener('DOMContentLoaded', loadGameDetails); 
+document.addEventListener('DOMContentLoaded', loadGameDetails);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = e.target.value.trim();
+                if (searchTerm) {
+                    window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
+                }
+            }
+        });
+    }
+}); 

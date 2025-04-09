@@ -12,58 +12,30 @@
     <div class="container game-details-container">
         <!-- Sidebar -->
         <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="images/guara-icon.png" alt="Guará Launcher" class="launcher-icon">
+                <h2>Guará Launcher</h2>
+            </div>
+
             <div class="profile">
                 <div class="profile-image">
                     <img src="https://via.placeholder.com/50" alt="Profile">
                 </div>
                 <div class="profile-info">
-                    <h3>Neves</h3>
-                    <div class="level">Conquista 10</div>
+                    <h3>Usuário</h3>
+                    <span class="level">Nível 42</span>
                 </div>
             </div>
 
             <nav class="main-nav">
                 <ul>
-                    <li> <!-- Add 'active' class if needed -->
-                        <img src="https://via.placeholder.com/24" alt="PSGL">
-                         <!-- Link back to home -->
-                        <a href="index.html" style="text-decoration: none; color: inherit;">PSGL Launcher</a>
-                    </li>
-                    <li>
-                        <i class="fas fa-gamepad"></i>
-                        <!-- Link back to home -->
-                        <a href="index.html" style="text-decoration: none; color: inherit;">Jogos</a>
-                    </li>
-                    <li>
-                        <i class="fas fa-book"></i>
-                        <!-- Link back to home -->
-                        <a href="index.html" style="text-decoration: none; color: inherit;">Biblioteca</a>
-                    </li>
+                    <li class="active"><i class="fas fa-home"></i> <a href="index.html">Início</a></li>
+                    <li><i class="fas fa-gamepad"></i> <a href="biblioteca.html">Biblioteca</a></li>
+                    <li><i class="fas fa-store"></i> <a href="loja.html">Loja</a></li>
+                    <li><i class="fas fa-trophy"></i> <a href="conquistas.html">Conquistas</a></li>
+                    <li><i class="fas fa-cog"></i> <a href="configuracoes.html">Configurações</a></li>
                 </ul>
             </nav>
-
-            <div class="quick-launch">
-                <h4>Inicialização Rápida</h4>
-                <ul>
-                    <!-- Items should be loaded dynamically or copied from index.html if static -->
-                    <li>
-                        <img src="https://via.placeholder.com/32" alt="HAMMERFORGE">
-                        HAMMERFORGE
-                    </li>
-                    <li>
-                        <img src="https://via.placeholder.com/32" alt="Super Brock lee">
-                        Super Brock lee
-                    </li>
-                    <li>
-                        <img src="https://via.placeholder.com/32" alt="Parking Puzzle">
-                        Parking Puzzle
-                    </li>
-                    <li>
-                        <img src="https://via.placeholder.com/32" alt="A História Mexilhão">
-                        A História Mexilhão ...
-                    </li>
-                </ul>
-            </div>
 
             <div class="social-links">
                 <a href="#"><i class="fab fa-discord"></i></a>
@@ -76,11 +48,24 @@
 
         <!-- Main Content -->
         <main class="game-details-content">
+            <header>
+                <div class="header-right">
+                    <div class="search">
+                        <input type="text" id="searchInput" placeholder="Pesquisar">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="user-controls">
+                        <i class="fas fa-bell"></i>
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                </div>
+            </header>
+
             <div class="game-header">
-                <h1 id="gameTitle"></h1>
+                <h1 id="gameTitle">HAMMERFORGE</h1>
                 <div class="game-meta">
-                    <span id="gameGenre" class="game-genre"></span>
-                    <p id="gameDescription" class="game-description"></p>
+                    <span id="gameGenre" class="game-genre">Aventura, Sci-Fi</span>
+                    <p id="gameDescription" class="game-description">Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
                 </div>
                 <div class="game-actions">
                     <button class="btn-play">Jogar</button>
@@ -92,8 +77,7 @@
             <div class="game-media">
                 <div class="media-gallery">
                     <div class="main-media">
-                        <img id="mainImage" src="" alt="">
-                        <!-- or <video id="mainVideo" src="" controls></video> -->
+                        <img id="mainImage" src="https://via.placeholder.com/800x400" alt="">
                     </div>
                     <button class="thumbnail-arrow left"><i class="fas fa-chevron-left"></i></button>
                     <div class="media-thumbnails" id="mediaThumbnails">

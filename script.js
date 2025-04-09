@@ -380,8 +380,16 @@ tags.forEach(tag => {
 // Navigation functionality
 const navItems = document.querySelectorAll('.main-nav li');
 navItems.forEach(item => {
-    item.addEventListener('click', () => {
+    item.addEventListener('click', (e) => {
+        // Prevenir o comportamento padrão apenas se o clique não foi em um link
+        if (!e.target.closest('a')) {
+            e.preventDefault();
+        }
+        
+        // Remover a classe active de todos os itens
         navItems.forEach(nav => nav.classList.remove('active'));
+        
+        // Adicionar a classe active ao item clicado
         item.classList.add('active');
     });
 }); 
