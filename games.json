@@ -17,5 +17,83 @@
             "https://www.w3schools.com/html/mov_bbb.mp4"
         ],
         "url": "https://pub-02bd365eb9c44a3bb9fb547ca76d658d.r2.dev/parking-puzzle.zip"
+    },
+    {
+        "id": "hades",
+        "title": "Hades",
+        "genre": "Action, Roguelike",
+        "description": "Em 'Hades', você joga como Zagreus, o príncipe do submundo, em uma tentativa de escapar do domínio de seu pai. O jogo combina ação intensa com uma narrativa rica e personagens profundos.",
+        "cover": "https://tse3.mm.bing.net/th?id=OIP.WU2r89-5DHGzixXEzyoKygHaEK&pid=Api",
+        "background": "https://tse3.mm.bing.net/th?id=OIP.WU2r89-5DHGzixXEzyoKygHaEK&pid=Api",
+        "images": [
+            "https://tse3.mm.bing.net/th?id=OIP.WU2r89-5DHGzixXEzyoKygHaEK&pid=Api"
+        ],
+        "videos": [],
+        "url": "https://store.steampowered.com/app/1145360/Hades/"
+    },
+    {
+        "id": "dead-cells",
+        "title": "Dead Cells",
+        "genre": "Action, Roguelike, Metroidvania",
+        "description": "Dead Cells é um jogo de ação em plataforma que combina elementos de roguelike e metroidvania, oferecendo combates desafiadores e exploração de mapas gerados proceduralmente.",
+        "cover": "https://tse1.mm.bing.net/th?id=OIP.mi72F_Mz3ul-2_fvpc_XjQHaHa&pid=Api",
+        "background": "https://tse1.mm.bing.net/th?id=OIP.mi72F_Mz3ul-2_fvpc_XjQHaHa&pid=Api",
+        "images": [
+            "https://tse1.mm.bing.net/th?id=OIP.mi72F_Mz3ul-2_fvpc_XjQHaHa&pid=Api"
+        ],
+        "videos": [],
+        "url": "https://store.steampowered.com/app/588650/Dead_Cells/"
+    },
+    {
+        "id": "binding-of-isaac-rebirth",
+        "title": "The Binding of Isaac: Rebirth",
+        "genre": "Action, Roguelike",
+        "description": "Explore masmorras geradas aleatoriamente neste shooter com elementos de RPG, enfrentando inimigos bizarros e coletando itens poderosos.",
+        "cover": "https://tse1.mm.bing.net/th?id=OIP.3OCUCM2kdbaxId1BfhWxRAHaHa&pid=Api",
+        "background": "https://tse1.mm.bing.net/th?id=OIP.3OCUCM2kdbaxId1BfhWxRAHaHa&pid=Api",
+        "images": [
+            "https://tse1.mm.bing.net/th?id=OIP.3OCUCM2kdbaxId1BfhWxRAHaHa&pid=Api"
+        ],
+        "videos": [],
+        "url": "https://store.steampowered.com/app/250900/The_Binding_of_Isaac_Rebirth/"
+    },
+    {
+        "id": "slay-the-spire",
+        "title": "Slay the Spire",
+        "genre": "Card Game, Roguelike",
+        "description": "Uma fusão de jogos de cartas e roguelike, onde você constrói um baralho único e enfrenta inimigos em combates estratégicos.",
+        "cover": "https://tse3.mm.bing.net/th?id=OIP.HhiJtiHGvP4gp5-Yz47YNwHaHa&pid=Api",
+        "background": "https://tse3.mm.bing.net/th?id=OIP.HhiJtiHGvP4gp5-Yz47YNwHaHa&pid=Api",
+        "images": [
+            "https://tse3.mm.bing.net/th?id=OIP.HhiJtiHGvP4gp5-Yz47YNwHaHa&pid=Api"
+        ],
+        "videos": [],
+        "url": "https://store.steampowered.com/app/646570/Slay_the_Spire/"
+    },
+    {
+        "id": "spelunky-2",
+        "title": "Spelunky 2",
+        "genre": "Action, Platformer, Roguelike",
+        "description": "Uma aventura de plataforma desafiadora onde você explora cavernas perigosas, enfrenta inimigos e coleta tesouros.",
+        "cover": "https://tse4.mm.bing.net/th?id=OIP.eIJ1_rGhT8To1oRSbg5oowHaEK&pid=Api",
+        "background": "https://tse4.mm.bing.net/th?id=OIP.eIJ1_rGhT8To1oRSbg5oowHaEK&pid=Api",
+        "images": [
+            "https://tse4.mm.bing.net/th?id=OIP.eIJ1_rGhT8To1oRSbg5oowHaEK&pid=Api"
+        ],
+        "videos": [],
+        "url": "https://store.steampowered.com/app/418530/Spelunky_2/"
+    },
+    {
+        "id": "risk-of-rain-2",
+        "title": "Risk of Rain 2",
+        "genre": "Action, Roguelike, Multiplayer",
+        "description": "Um shooter em terceira pessoa com elementos de roguelike, onde você enfrenta hordas de inimigos em planetas alienígenas, sozinho ou em cooperação.",
+        "cover": "https://tse3.mm.bing.net/th?id=OIP.tTXiq4rRpCkr2nIns8Aj1wHaDt&pid=Api",
+        "background": "https://tse3.mm.bing.net/th?id=OIP.tTXiq4rRpCkr2nIns8Aj1wHaDt&pid=Api",
+        "images": [
+            "https://tse3.mm.bing.net/th?id=OIP.tTXiq4rRpCkr2nIns8Aj1wHaDt&pid=Api"
+        ],
+        "videos": [],
+        "url": "https://store.steampowered.com/app/632360/Risk_of_Rain_2/"
     }
 ] 

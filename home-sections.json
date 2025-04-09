@@ -1,39 +1,83 @@
 {
     "sections": [
-        {
-            "id": "featured",
-            "title": "Em Destaque",
-            "gameIds": ["super-brock-lee"]
-        },
-        {
-            "id": "new-releases",
-            "title": "Lançamentos Recentes",
-            "gameIds": ["super-brock-lee", "hammerforge", "parking-puzzle", "a-historia-mexilhao"]
-        },
-        {
-            "id": "action-games",
-            "title": "Ação e Aventura",
-            "gameIds": ["super-brock-lee", "hammerforge", "parking-puzzle"]
-        },
-        {
-            "id": "puzzle-games",
-            "title": "Quebra-Cabeças",
-            "gameIds": ["parking-puzzle", "a-historia-mexilhao"]
-        },
-        {
-            "id": "popular-games",
-            "title": "Populares na Guará",
-            "gameIds": ["super-brock-lee", "hammerforge", "parking-puzzle", "a-historia-mexilhao"]
-        },
-        {
-            "id": "indie-games",
-            "title": "Jogos Indies",
-            "gameIds": ["super-brock-lee", "hammerforge", "parking-puzzle", "a-historia-mexilhao"]
-        },
-        {
-            "id": "prates-games",
-            "title": "Prates da a Bundinha",
-            "gameIds": ["super-brock-lee", "hammerforge", "parking-puzzle", "a-historia-mexilhao"]
-        }
+      {
+        "id": "featured",
+        "title": "Em Destaque",
+        "gameIds": ["super-brock-lee", "hades", "dead-cells"]
+      },
+      {
+        "id": "new-releases",
+        "title": "Lançamentos Recentes",
+        "gameIds": [
+          "super-brock-lee",
+          "hammerforge",
+          "parking-puzzle",
+          "a-historia-mexilhao",
+          "risk-of-rain-2",
+          "spelunky-2"
+        ]
+      },
+      {
+        "id": "action-games",
+        "title": "Ação e Aventura",
+        "gameIds": [
+          "super-brock-lee",
+          "hammerforge",
+          "parking-puzzle",
+          "hades",
+          "dead-cells",
+          "enter-the-gungeon",
+          "risk-of-rain-2"
+        ]
+      },
+      {
+        "id": "puzzle-games",
+        "title": "Quebra-Cabeças",
+        "gameIds": [
+          "parking-puzzle",
+          "a-historia-mexilhao",
+          "slay-the-spire"
+        ]
+      },
+      {
+        "id": "popular-games",
+        "title": "Populares na Guará",
+        "gameIds": [
+          "super-brock-lee",
+          "hammerforge",
+          "parking-puzzle",
+          "a-historia-mexilhao",
+          "hades",
+          "dead-cells",
+          "binding-of-isaac-rebirth"
+        ]
+      },
+      {
+        "id": "indie-games",
+        "title": "Jogos Indies",
+        "gameIds": [
+          "super-brock-lee",
+          "hammerforge",
+          "parking-puzzle",
+          "a-historia-mexilhao",
+          "enter-the-gungeon",
+          "slay-the-spire",
+          "binding-of-isaac-rebirth",
+          "dead-cells"
+        ]
+      },
+      {
+        "id": "prates-games",
+        "title": "Prates da a Bundinha",
+        "gameIds": [
+          "super-brock-lee",
+          "hammerforge",
+          "parking-puzzle",
+          "a-historia-mexilhao",
+          "hades",
+          "enter-the-gungeon"
+        ]
+      }
     ]
-} 
+  }
+  
