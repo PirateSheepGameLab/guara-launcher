@@ -7,10 +7,10 @@
             "type": "advertisement",
             "title": "Nova Temporada",
             "description": "Confira os novos jogos da temporada!",
-            "image": "https://placehold.co/1920x1080/1a2942/ffffff?text=Nova+Temporada",
+            "image": "https://cdn2.unrealengine.com/ballistic-test-grounds-update-1-1900x600-f4fb2d611f35.jpg",
             "cta": {
               "text": "Ver Mais",
-              "link": "#"
+              "link": "https://nevesls.itch.io/hammer-forge"
             }
           },
           {
@@ -25,10 +25,10 @@
             "type": "advertisement",
             "title": "Promoção Especial",
             "description": "Descontos imperdíveis em jogos selecionados!",
-            "image": "https://placehold.co/1920x1080/1a2942/ffffff?text=Promoção+Especial",
+            "image": "https://wallpaperaccess.com/full/1285235.jpg",
             "cta": {
               "text": "Ver Ofertas",
-              "link": "#"
+              "link": "https://nevesls.itch.io/hammer-forge"
             }
           }
         ]

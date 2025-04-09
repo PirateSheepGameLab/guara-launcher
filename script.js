@@ -192,6 +192,24 @@ function renderFeaturedSection(container, items, gamesMap) {
             const gameId = gameElement.getAttribute('data-game-id');
             if (gameId) {
                 window.location.href = `game-details.html?id=${gameId}`;
+            } else if (gameElement.classList.contains('featured-ad')) {
+                // Se for um anúncio, pega o link do CTA e abre em nova aba
+                const ctaLink = gameElement.querySelector('.cta-button')?.getAttribute('href');
+                if (ctaLink) {
+                    e.preventDefault(); // Previne o comportamento padrão
+                    window.open(ctaLink, '_blank', 'noopener,noreferrer');
+                }
+            }
+        });
+    });
+
+    // Adiciona event listener específico para o botão CTA dos anúncios
+    itemsContainer.querySelectorAll('.featured-ad .cta-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault(); // Previne o comportamento padrão
+            const link = button.getAttribute('href');
+            if (link) {
+                window.open(link, '_blank', 'noopener,noreferrer');
             }
         });
     });
