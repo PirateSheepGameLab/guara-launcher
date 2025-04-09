@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSGL Launcher - Detalhes do Jogo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="game-details.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container game-details-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile">
+                <div class="profile-image">
+                    <img src="https://via.placeholder.com/50" alt="Profile">
+                </div>
+                <div class="profile-info">
+                    <h3>Neves</h3>
+                    <div class="level">Conquista 10</div>
+                </div>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li> <!-- Add 'active' class if needed -->
+                        <img src="https://via.placeholder.com/24" alt="PSGL">
+                         <!-- Link back to home -->
+                        <a href="index.html" style="text-decoration: none; color: inherit;">PSGL Launcher</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-gamepad"></i>
+                        <!-- Link back to home -->
+                        <a href="index.html" style="text-decoration: none; color: inherit;">Jogos</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-book"></i>
+                        <!-- Link back to home -->
+                        <a href="index.html" style="text-decoration: none; color: inherit;">Biblioteca</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="quick-launch">
+                <h4>Inicialização Rápida</h4>
+                <ul>
+                    <!-- Items should be loaded dynamically or copied from index.html if static -->
+                    <li>
+                        <img src="https://via.placeholder.com/32" alt="HAMMERFORGE">
+                        HAMMERFORGE
+                    </li>
+                    <li>
+                        <img src="https://via.placeholder.com/32" alt="Super Brock lee">
+                        Super Brock lee
+                    </li>
+                    <li>
+                        <img src="https://via.placeholder.com/32" alt="Parking Puzzle">
+                        Parking Puzzle
+                    </li>
+                    <li>
+                        <img src="https://via.placeholder.com/32" alt="A História Mexilhão">
+                        A História Mexilhão ...
+                    </li>
+                </ul>
+            </div>
+
+            <div class="social-links">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="game-details-content">
+            <div class="game-header">
+                <h1 id="gameTitle"></h1>
+                <div class="game-actions">
+                    <button class="btn-play">Jogar</button>
+                    <button class="btn-settings"><i class="fas fa-cog"></i></button>
+                    <button class="btn-favorite"><i class="fas fa-heart"></i></button>
+                </div>
+            </div>
+
+            <div class="game-media">
+                <div class="media-gallery">
+                    <div class="main-media">
+                        <img id="mainImage" src="" alt="">
+                        <!-- or <video id="mainVideo" src="" controls></video> -->
+                    </div>
+                    <button class="thumbnail-arrow left"><i class="fas fa-chevron-left"></i></button>
+                    <div class="media-thumbnails" id="mediaThumbnails">
+                        <!-- Thumbnails will be populated by JavaScript -->
+                    </div>
+                    <button class="thumbnail-arrow right"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Game Main Stats -->
+            <section class="game-main-stats">
+                <div class="stat-box">
+                    <span class="label">Tempo de Jogo</span>
+                    <span class="value" id="statPlayTime">1h 45min</span>
+                </div>
+                <div class="stat-box">
+                    <span class="label">Última Sessão</span>
+                    <span class="value" id="statLastSession">12/03/2025</span>
+                </div>
+                <div class="stat-box">
+                    <span class="label">Conquistas</span>
+                    <span class="value" id="statAchievements">50/100</span>
+                </div>
+                <div class="stat-box">
+                    <span class="label">Nota</span>
+                    <span class="value" id="statRating">9.4</span>
+                </div>
+            </section>
+
+            <div class="game-info-sections">
+                <section class="achievements-section">
+                    <h2>Conquistas</h2>
+                    <div class="progress-bar">
+                        <div class="progress" id="achievementsProgress"></div>
+                        <span class="progress-text">50/100 (25%)</span>
+                    </div>
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <!-- Achievements will be populated by JavaScript -->
+                    </div>
+                    <button class="btn-view-all">Ver todas as conquistas</button>
+                </section>
+
+                <section class="collectibles-section">
+                    <h2>Colecionáveis</h2>
+                    <div class="progress-bar">
+                        <div class="progress" id="collectiblesProgress"></div>
+                        <span class="progress-text">30/100 (25%)</span>
+                    </div>
+                    <div class="collectibles-grid" id="collectiblesGrid">
+                        <!-- Collectibles will be populated by JavaScript -->
+                    </div>
+                    <button class="btn-view-all">Ver todos os colecionáveis</button>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="game-details.js"></script>
+</body>
+</html> 

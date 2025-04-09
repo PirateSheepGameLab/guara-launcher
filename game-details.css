@@ -1,0 +1,327 @@
+.game-details-container {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    min-height: 100vh;
+}
+
+.game-details-content {
+    padding: 40px 50px;
+    overflow-y: auto;
+    background: var(--background-gradient);
+    grid-column: 2 / 3;
+    margin-left: 0;
+    margin-right: 0;
+    width: auto;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.game-header h1 {
+    color: var(--text-color);
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.game-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-play {
+    background: white;
+    color: var(--primary-color);
+    border: none;
+    padding: 12px 35px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-play:hover {
+    background: #eee;
+}
+
+.btn-settings, .btn-favorite {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-settings:hover, .btn-favorite:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.game-media {
+    margin-bottom: 50px;
+}
+
+.media-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+}
+
+.main-media {
+    width: 100%;
+    height: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.main-media img, .main-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.media-thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px 45px 15px 45px;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin: 0 -45px;
+}
+
+.media-thumbnails::-webkit-scrollbar {
+    display: none;
+}
+
+.media-thumbnail {
+    width: 160px;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border 0.2s;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.media-thumbnail:hover {
+    transform: scale(1.03);
+}
+
+.media-thumbnail img, .media-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.media-thumbnail.active {
+    border: 2px solid white;
+}
+
+.media-thumbnail.video .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5em;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.media-thumbnail.video:hover .video-overlay {
+    opacity: 1;
+}
+
+.thumbnail-arrow {
+    position: absolute;
+    top: calc(500px + 55px);
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2em;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.3s, background 0.3s;
+}
+
+.thumbnail-arrow:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.thumbnail-arrow.left {
+    left: 5px;
+}
+
+.thumbnail-arrow.right {
+    right: 5px;
+}
+
+.game-info-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.achievements-section, .collectibles-section {
+    background: rgba(10, 20, 40, 0.6);
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.achievements-section h2, .collectibles-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    color: var(--text-color);
+}
+
+.progress-bar {
+    background: rgba(0, 0, 0, 0.3);
+    height: 12px;
+    border-radius: 6px;
+    margin: 15px 0 25px 0;
+    position: relative;
+    overflow: visible;
+}
+
+.progress {
+    background: var(--accent-color);
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease-out;
+    width: 50%;
+}
+
+#collectiblesProgress {
+    width: 25%;
+}
+
+.progress-text {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    transform: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85em;
+}
+
+.achievements-grid, .collectibles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.achievement-item, .collectible-item {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.achievement-item::before, .collectible-item::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.achievement-item img, .collectible-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.achievement-item.locked, .collectible-item.locked {
+    filter: grayscale(100%);
+    opacity: 0.4;
+}
+
+.btn-view-all {
+    width: auto;
+    padding: 8px 15px;
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    transition: color 0.3s;
+    font-size: 0.9em;
+    margin-top: 10px;
+    float: right;
+}
+
+.btn-view-all:hover {
+    color: var(--accent-color-hover);
+}
+
+.achievements-section::after, .collectibles-section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Game Main Stats Section */
+.game-main-stats {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(10, 20, 40, 0.6); /* Similar background as other sections */
+    padding: 20px 30px;
+    border-radius: 12px;
+    margin-bottom: 40px; /* Space before next sections */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-color);
+}
+
+.stat-box .label {
+    font-size: 0.9em;
+    opacity: 0.7;
+}
+
+.stat-box .value {
+    font-size: 1.3em;
+    font-weight: bold;
+} 

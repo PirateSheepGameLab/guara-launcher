@@ -1,0 +1,21 @@
+[
+    {
+        "id": 1,
+        "title": "Super Brock Lee",
+        "genre": "Action, RogueLike",
+        "description": "Um roguelike de um carismático brócolis com alterações corporais e gameplay inspirada em Binding of Isaac.",
+        "cover": "https://img.itch.zone/aW1nLzEyMzA4MDAzLnBuZw==/315x250%23c/5kjl3J.png",
+        "background": "https://img.itch.zone/aW1nLzEyMzA4MDAzLnBuZw==/315x250%23c/5kjl3J.png",
+        "images": [
+            "https://img.itch.zone/aW1hZ2UvMjA2ODQzOC8xMjMwODM1NC5wbmc=/250x600/q7U3%2F3.png",
+            "https://img.itch.zone/aW1hZ2UvMjA2ODQzOC8xMjMwODM1MC5wbmc=/250x600/iI744W.png",
+            "https://img.itch.zone/aW1hZ2UvMjA2ODQzOC8xMjMwODM1My5wbmc=/250x600/TekkMb.png",
+            "https://img.itch.zone/aW1hZ2UvMjA2ODQzOC8xMjMwODM1Mi5wbmc=/250x600/kXEb%2Bg.png"
+        ],
+        "videos": [
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4"
+        ],
+        "url": "https://pub-02bd365eb9c44a3bb9fb547ca76d658d.r2.dev/parking-puzzle.zip"
+    }
+] 
