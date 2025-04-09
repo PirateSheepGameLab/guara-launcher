@@ -8,7 +8,7 @@ async function loadGameDetails() {
         // Carregar dados do jogo
         const response = await fetch('games.json');
         const games = await response.json();
-        const game = games.find(g => g.id === parseInt(gameId));
+        const game = games.find(g => g.id === gameId);
 
         if (!game) {
             console.error('Jogo não encontrado');
@@ -19,6 +19,10 @@ async function loadGameDetails() {
         document.getElementById('gameTitle').textContent = game.title;
         document.getElementById('mainImage').src = game.background;
         document.getElementById('mainImage').alt = game.title;
+        
+        // Adicionar informações adicionais do jogo
+        document.getElementById('gameGenre').textContent = game.genre;
+        document.getElementById('gameDescription').textContent = game.description;
 
         // Preencher miniaturas de mídia
         const mediaThumbnails = document.getElementById('mediaThumbnails');
@@ -54,35 +58,40 @@ async function loadGameDetails() {
         };
 
         // Adicionar miniaturas de imagens
-        game.images.forEach((image, index) => {
-            const thumbnail = document.createElement('div');
-            thumbnail.className = 'media-thumbnail';
-            thumbnail.innerHTML = `<img src="${image}" alt="${game.title} - Imagem ${index + 1}">`;
-            thumbnail.addEventListener('click', () => handleThumbnailClick(thumbnail, image, 'image'));
-            mediaThumbnails.appendChild(thumbnail);
-            if (index === 0) { // Define a primeira imagem como ativa inicialmente
-                handleThumbnailClick(thumbnail, image, 'image');
-            }
-        });
+        if (game.images && game.images.length > 0) {
+            game.images.forEach((image, index) => {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = 'media-thumbnail';
+                thumbnail.innerHTML = `<img src="${image}" alt="${game.title} - Imagem ${index + 1}">`;
+                thumbnail.addEventListener('click', () => handleThumbnailClick(thumbnail, image, 'image'));
+                mediaThumbnails.appendChild(thumbnail);
+                if (index === 0) { // Define a primeira imagem como ativa inicialmente
+                    handleThumbnailClick(thumbnail, image, 'image');
+                }
+            });
+        }
 
         // Adicionar miniaturas de vídeos
-        game.videos.forEach((video) => {
-            const thumbnail = document.createElement('div');
-            thumbnail.className = 'media-thumbnail video';
-            // Usar a imagem de fundo do jogo como poster temporário
-            thumbnail.innerHTML = `
-                <img src="${game.background}" alt="Video Thumbnail">
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            `;
-            thumbnail.addEventListener('click', () => handleThumbnailClick(thumbnail, video, 'video'));
-            mediaThumbnails.appendChild(thumbnail);
-        });
+        if (game.videos && game.videos.length > 0) {
+            game.videos.forEach((video) => {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = 'media-thumbnail video';
+                thumbnail.innerHTML = `
+                    <img src="${game.background}" alt="Video Thumbnail">
+                    <div class="video-overlay"><i class="fas fa-play"></i></div>
+                `;
+                thumbnail.addEventListener('click', () => handleThumbnailClick(thumbnail, video, 'video'));
+                mediaThumbnails.appendChild(thumbnail);
+            });
+        }
 
         // Configurar botão de jogar
         const btnPlay = document.querySelector('.btn-play');
-        btnPlay.addEventListener('click', () => {
-            window.location.href = game.url;
-        });
+        if (btnPlay) {
+            btnPlay.addEventListener('click', () => {
+                window.location.href = game.url;
+            });
+        }
 
         // Funcionalidade das setas de rolagem das miniaturas
         setupThumbnailScroll();
