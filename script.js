@@ -310,54 +310,12 @@ document.addEventListener('DOMContentLoaded', loadSections);
 // Funcionalidade de busca
 const searchInput = document.querySelector('.search input');
 if (searchInput) {
-    searchInput.addEventListener('input', async (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        try {
-            const [sectionsResponse, gamesResponse] = await Promise.all([
-                fetch('home-sections.json'),
-                fetch('games.json')
-            ]);
-
-            const sections = await sectionsResponse.json();
-            const games = await gamesResponse.json();
-            const gamesMap = new Map(games.map(game => [game.id, game]));
-
-            // Limpa o conteúdo atual
-            const mainContent = document.querySelector('.main-content');
-            mainContent.innerHTML = '';
-
-            // Filtra os jogos que correspondem ao termo de busca
-            const filteredGamesMap = new Map(
-                Array.from(gamesMap.entries()).filter(([_, game]) => 
-                    game.title.toLowerCase().includes(searchTerm) ||
-                    game.description.toLowerCase().includes(searchTerm) ||
-                    game.genre.toLowerCase().includes(searchTerm)
-                )
-            );
-
-            // Renderiza as seções com os jogos filtrados
-            sections.sections.forEach(section => {
-                const sectionElement = document.createElement('section');
-                sectionElement.className = section.id;
-                sectionElement.innerHTML = `<h2>${section.title}</h2>`;
-
-                const sectionGames = section.gameIds
-                    .map(id => filteredGamesMap.get(id))
-                    .filter(game => game !== undefined);
-
-                if (sectionGames.length > 0) {
-                    if (section.id === 'featured') {
-                        renderFeaturedSection(sectionElement, sectionGames, filteredGamesMap);
-                    } else if (section.id === 'top-games') {
-                        renderRankedSection(sectionElement, sectionGames);
-                    } else {
-                        renderGridSection(sectionElement, sectionGames);
-                    }
-                    mainContent.appendChild(sectionElement);
-                }
-            });
-        } catch (error) {
-            console.error('Erro ao filtrar jogos:', error);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const searchTerm = e.target.value.trim();
+            if (searchTerm) {
+                window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
+            }
         }
     });
 }

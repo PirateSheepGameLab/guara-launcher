@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSGL Launcher - Resultados da Busca</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile">
+                <div class="profile-image">
+                    <img src="https://via.placeholder.com/50" alt="Profile">
+                </div>
+                <div class="profile-info">
+                    <h3>Neves</h3>
+                    <div class="level">Conquista 10</div>
+                </div>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li>
+                        <img src="https://via.placeholder.com/24" alt="PSGL">
+                        <a href="index.html" style="text-decoration: none; color: inherit;">PSGL Launcher</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-gamepad"></i>
+                        <a href="index.html" style="text-decoration: none; color: inherit;">Jogos</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-book"></i>
+                        <a href="index.html" style="text-decoration: none; color: inherit;">Biblioteca</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="quick-launch">
+                <h4>Inicialização Rápida</h4>
+                <ul id="quickLaunchList">
+                    <!-- Será preenchido dinamicamente -->
+                </ul>
+            </div>
+
+            <div class="social-links">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="search-header">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar jogos...">
+                </div>
+                <h1 id="searchResultsTitle">Resultados da busca</h1>
+            </div>
+
+            <div class="search-filters">
+                <div class="filter-section">
+                    <h3>Gêneros</h3>
+                    <div class="genre-list" id="genreFilters">
+                        <!-- Será preenchido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-results" id="searchResults">
+                <!-- Os resultados serão exibidos aqui -->
+            </div>
+        </main>
+    </div>
+    <script src="search-results.js"></script>
+</body>
+</html> 
