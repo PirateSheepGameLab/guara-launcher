@@ -20,9 +20,6 @@ async function loadSections() {
         sections.sections.forEach(section => {
             renderSection(section, gamesMap);
         });
-
-        // Atualiza o Quick Launch com os primeiros 4 jogos
-        updateQuickLaunch(games.slice(0, 4));
     } catch (error) {
         console.error('Erro ao carregar as seções:', error);
         showError('Erro ao carregar as seções. Por favor, tente novamente mais tarde.');
@@ -177,22 +174,6 @@ function createRankedGame(game, rank) {
     return rankedGame;
 }
 
-// Função para atualizar Quick Launch
-function updateQuickLaunch(games) {
-    const quickLaunchList = document.querySelector('.quick-launch ul');
-    if (!quickLaunchList) return;
-
-    quickLaunchList.innerHTML = '';
-    games.forEach(game => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <img src="${game.cover}" alt="${game.title}">
-            ${game.title}
-        `;
-        quickLaunchList.appendChild(li);
-    });
-}
-
 // Função para mostrar erro
 function showError(message) {
     const mainContent = document.querySelector('.main-content');
@@ -261,28 +242,6 @@ if (searchInput) {
         }
     });
 }
-
-// Função para carregar a ordem salva do Quick Launch
-function loadQuickLaunchOrder() {
-    const savedOrder = localStorage.getItem('quickLaunchOrder');
-    if (savedOrder) {
-        const quickLaunchList = document.querySelector('.quick-launch ul');
-        const order = JSON.parse(savedOrder);
-        const fragment = document.createDocumentFragment();
-        
-        order.forEach(itemHTML => {
-            const li = document.createElement('li');
-            li.innerHTML = itemHTML;
-            fragment.appendChild(li);
-        });
-        
-        quickLaunchList.innerHTML = '';
-        quickLaunchList.appendChild(fragment);
-    }
-}
-
-// Carregar a ordem salva quando a página carregar
-document.addEventListener('DOMContentLoaded', loadQuickLaunchOrder);
 
 // DOM Elements
 const gamesGrid = document.querySelector('.games-grid');

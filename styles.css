@@ -132,46 +132,6 @@ body {
     color: var(--accent-color);
 }
 
-.quick-launch {
-    margin-top: 30px;
-}
-
-.quick-launch h4 {
-    margin-bottom: 15px;
-    color: var(--text-secondary);
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding-left: 5px;
-}
-
-.quick-launch ul {
-    list-style: none;
-}
-
-.quick-launch li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 10px;
-    cursor: move;
-    transition: all 0.3s;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    color: var(--text-color);
-}
-
-.quick-launch li:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.quick-launch li img {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    object-fit: cover;
-}
-
 /* Main Content Styles */
 .main-content {
     padding: 20px 40px;
@@ -472,49 +432,6 @@ section h2 {
     font-size: 0.8rem;
 }
 
-/* Quick Launch */
-.quick-launch {
-    margin-top: 2rem;
-}
-
-.quick-launch h4 {
-    color: #fff;
-    margin-bottom: 1rem;
-    padding-left: 0.5rem;
-}
-
-.quick-launch ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 0.5rem;
-}
-
-.quick-launch li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    flex: 0 0 auto;
-}
-
-.quick-launch li:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-.quick-launch li img {
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
 /* Top 10 Monthly */
 .top-monthly {
     margin-bottom: 40px;
@@ -752,10 +669,24 @@ section h2 {
 }
 
 /* Quick Launch */
+.quick-launch {
+    margin-top: 2rem;
+}
+
+.quick-launch h4 {
+    color: #fff;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
 .quick-launch ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.5rem;
 }
 
 .quick-launch li {
@@ -766,10 +697,11 @@ section h2 {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    flex: 0 0 auto;
 }
 
 .quick-launch li:hover {
-    background: #2a2a2a;
+    background: rgba(255,255,255,0.1);
 }
 
 .quick-launch li img {
