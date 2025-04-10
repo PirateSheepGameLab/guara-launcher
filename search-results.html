@@ -11,39 +11,30 @@
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="images/guara-icon.png" alt="Guará Launcher" class="launcher-icon">
+                <h2>Guará Launcher</h2>
+            </div>
+
             <div class="profile">
                 <div class="profile-image">
                     <img src="https://via.placeholder.com/50" alt="Profile">
                 </div>
                 <div class="profile-info">
-                    <h3>Neves</h3>
-                    <div class="level">Conquista 10</div>
+                    <h3>Usuário</h3>
+                    <span class="level">Nível 42</span>
                 </div>
             </div>
 
             <nav class="main-nav">
                 <ul>
-                    <li>
-                        <img src="https://via.placeholder.com/24" alt="PSGL">
-                        <a href="index.html" style="text-decoration: none; color: inherit;">PSGL Launcher</a>
-                    </li>
-                    <li>
-                        <i class="fas fa-gamepad"></i>
-                        <a href="index.html" style="text-decoration: none; color: inherit;">Jogos</a>
-                    </li>
-                    <li>
-                        <i class="fas fa-book"></i>
-                        <a href="index.html" style="text-decoration: none; color: inherit;">Biblioteca</a>
-                    </li>
+                    <li><i class="fas fa-home"></i> <a href="index.html">Início</a></li>
+                    <li><i class="fas fa-gamepad"></i> <a href="biblioteca.html">Biblioteca</a></li>
+                    <li><i class="fas fa-store"></i> <a href="loja.html">Loja</a></li>
+                    <li><i class="fas fa-trophy"></i> <a href="conquistas.html">Conquistas</a></li>
+                    <li><i class="fas fa-cog"></i> <a href="configuracoes.html">Configurações</a></li>
                 </ul>
             </nav>
-
-            <div class="quick-launch">
-                <h4>Inicialização Rápida</h4>
-                <ul id="quickLaunchList">
-                    <!-- Será preenchido dinamicamente -->
-                </ul>
-            </div>
 
             <div class="social-links">
                 <a href="#"><i class="fab fa-discord"></i></a>
@@ -56,13 +47,20 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="search-header">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Buscar jogos...">
+            <header>
+                <div class="header-right">
+                    <div class="search">
+                        <input type="text" id="searchInput" placeholder="Pesquisar">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="user-controls">
+                        <i class="fas fa-bell"></i>
+                        <i class="fas fa-user-friends"></i>
+                    </div>
                 </div>
-                <h1 id="searchResultsTitle">Resultados da busca</h1>
-            </div>
+            </header>
+
+            <h1 id="searchResultsTitle">Resultados da busca</h1>
 
             <div class="search-filters">
                 <div class="filter-section">

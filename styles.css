@@ -212,6 +212,7 @@ header {
     color: var(--text-color);
     width: 200px;
     font-size: 0.9em;
+    outline: none;
 }
 
 .search input::placeholder {
