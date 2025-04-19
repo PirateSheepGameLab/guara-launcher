@@ -16,57 +16,71 @@
 }
 
 .game-header {
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
-    background: rgba(0, 0, 0, 0.7);
+    justify-content: flex-start; /* Alinha o conteúdo no topo */
+    align-items: center;
+    text-align: center;
     padding: 25px;
     border-radius: 10px;
     margin-bottom: 0;
-    height: 100%;
+    min-height: 400px;
+    position: relative;
 }
 
-.game-header h1 {
+.game-header p {
     color: white;
-    font-size: 2.8em;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.game-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    text-align: left; /* Alinha o título à esquerda */
     width: 100%;
 }
 
 .game-genre {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 5px 15px;
-    border-radius: 15px;
-    color: white;
-    font-size: 1em;
+    color: rgba(255, 255, 0, 0); /* Define a cor do gênero como amarelo */
+    font-size: 1.1em;
     display: inline-block;
+    margin: 0;
+    text-align: left;
+    padding: 0;
+    background: none;
+    position: relative;
+    top: 0;
+}
+
+/* Ajusta o layout da seção de estatísticas dentro da game-meta */
+.game-meta {
+    display: flex;
+    flex-direction: column; /* Exibe os itens em uma coluna */
+    align-items: flex-start; /* Garante que os itens fiquem alinhados à esquerda */
+    gap: 10px; /* Espaçamento entre os itens */
+    margin-top: 20px; /* Espaçamento superior */
+    text-align: left; /* Alinha os textos à esquerda */
+    background-color: rgb(0, 0, 0);
 }
 
 .game-description {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.7;
-    margin: 0;
+    margin: -1px;
     font-size: 1.2em;
-    max-width: 100%;
+    max-width: 100%; /* Remove limite de largura */
+    text-align: justify; /* Justifica o texto */
+    text-align-last: left; /* Garante alinhamento à esquerda na última linha */
+    padding: 0;
+    display: block; /* Remove o flex para evitar centralização */
 }
 
 .game-actions {
     display: flex;
     gap: 20px;
     align-items: center;
-    margin-top: 25px;
-    justify-content: flex-start;
+    margin-top: auto;
+    justify-content: center;
+    width: 100%;
+    padding-top: 20px;
 }
 
 .btn-play {
@@ -79,6 +93,7 @@
     font-size: 1.1em;
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
+    min-width: 150px;
 }
 
 .btn-play:hover {
@@ -106,7 +121,7 @@
 
 .game-media {
     margin-bottom: 30px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(196, 0, 0, 0.3);
     padding: 20px;
     border-radius: 10px;
     display: flex;
@@ -150,12 +165,15 @@
 }
 
 .game-info-sidebar {
+    grid-column: 1;
+    grid-row: 1 / span 1;
     flex: 1;
-    max-width: 500px;
+    max-width: 100vw;
     display: flex;
     flex-direction: column;
     gap: 15px;
     order: 1;
+    border-radius: 12px;
 }
 
 .main-media {
@@ -339,49 +357,68 @@
     }
 }
 
+.game-info-btns {
+    display: flex;
+    gap: 100px;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.5); /* ou seu blueviolet */
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-top: -15px;
+    margin-bottom: 15px;
+} 
+  
+.left-content {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* ajuste o espaçamento entre os itens da esquerda */
+}
+  
+.right-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}  
+
 .game-info-sections {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
 }
 
-.game-main-stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px 20px;
-    border-radius: 20px;
-    margin-bottom: 30px;
-}
-
 .stat-box {
-    text-align: center;
+    display: flex;
+    flex-direction: column; /* Exibe o rótulo e o valor em uma coluna */
+    align-items: flex-start; /* Alinha os itens à esquerda */
+    padding: 5px 0;
+    text-align: left; /* Alinha o texto à esquerda */
     color: white;
-    margin: 0 10px;
 }
 
 .stat-box .label {
-    font-size: 0.8em;
-    opacity: 0.8;
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2px; /* Espaçamento entre o rótulo e o valor */
 }
 
 .stat-box .value {
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: bold;
+    color: white;
 }
 
-.achievements-section, .collectibles-section {
+.achievements-section, .collectibles-section, .requeriments-section {
     background: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
 }
 
-.achievements-section h2, .collectibles-section h2 {
+.achievements-section h2, .collectibles-section h2, .requeriments-section h2 {
     margin-bottom: 20px;
     font-size: 1.4em;
     color: white;
+    text-align: left; /* Alinha os títulos das seções à esquerda */
 }
 
 .progress-bar {
@@ -408,9 +445,16 @@
     transform: none;
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.85em;
+    text-align: left; /* Alinha o texto das barras de progresso à esquerda */
 }
 
-.achievements-grid, .collectibles-grid {
+.requeriments-grid
+{
+    margin: 0px 20px;
+    line-height: 1.75;
+}
+
+.achievements-grid, .collectibles-grid{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
     gap: 15px;
@@ -465,7 +509,7 @@
     color: var(--accent-color-hover);
 }
 
-.achievements-section::after, .collectibles-section::after {
+.achievements-section::after, .collectibles-section::after, .requeriments-section::after {
     content: "";
     display: table;
     clear: both;
@@ -611,4 +655,4 @@ header {
     font-weight: 600;
     color: var(--text-color);
     margin: 0;
-} 
+}

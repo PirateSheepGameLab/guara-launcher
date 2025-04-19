@@ -74,70 +74,82 @@
                         <button class="thumbnail-arrow right"><i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
-
-                <div class="game-info-sidebar">
-                    <div class="game-header">
-                        <h1 id="gameTitle">HAMMERFORGE</h1>
-                        <div class="game-meta">
-                            <span id="gameGenre" class="game-genre">Aventura, Sci-Fi</span>
-                            <p id="gameDescription" class="game-description">Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
-                        </div>
-                        <div class="game-actions">
-                            <button class="btn-play">Jogar</button>
-                            <button class="btn-settings"><i class="fas fa-cog"></i></button>
-                            <button class="btn-favorite"><i class="fas fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Game Main Stats -->
-            <section class="game-main-stats">
+            <div class="game-info-btns"> 
+                <div class="left-content">
+
+                <button class="btn-play">Jogar</button>
+                <button class="btn-favorite"><i class="fas fa-heart"></i></button>
+
                 <div class="stat-box">
                     <span class="label">Tempo de Jogo</span>
                     <span class="value" id="statPlayTime">1h 45min</span>
                 </div>
+
                 <div class="stat-box">
                     <span class="label">Última Sessão</span>
-                    <span class="value" id="statLastSession">12/03/2025</span>
+                    <span class="value" id="statLastSession">11/07/2001</span>
+                </div>  
                 </div>
-                <div class="stat-box">
-                    <span class="label">Conquistas</span>
-                    <span class="value" id="statAchievements">50/100</span>
-                </div>
-                <div class="stat-box">
-                    <span class="label">Nota</span>
-                    <span class="value" id="statRating">9.4</span>
-                </div>
-            </section>
+                
+                <div class="right-content">
+                    <button class="btn-settings"><i class="fas fa-cog"></i></button>
+                </div>      
+            </div>
+            
+            <h1 id="gameTitle">HAMMERFORGE</h1>
 
             <div class="game-info-sections">
-                <section class="achievements-section">
-                    <h2>Conquistas</h2>
-                    <div class="progress-bar">
-                        <div class="progress" id="achievementsProgress"></div>
-                        <span class="progress-text">50/100 (25%)</span>
-                    </div>
-                    <div class="achievements-grid" id="achievementsGrid">
-                        <!-- Achievements will be populated by JavaScript -->
-                    </div>
-                    <button class="btn-view-all">Ver todas as conquistas</button>
-                </section>
-
-                <section class="collectibles-section">
-                    <h2>Colecionáveis</h2>
-                    <div class="progress-bar">
-                        <div class="progress" id="collectiblesProgress"></div>
-                        <span class="progress-text">30/100 (25%)</span>
-                    </div>
-                    <div class="collectibles-grid" id="collectiblesGrid">
-                        <!-- Collectibles will be populated by JavaScript -->
-                    </div>
-                    <button class="btn-view-all">Ver todos os colecionáveis</button>
-                </section>
+                <!-- Descrição do jogo no lado esquerdo -->
+                <div class="game-info-sidebar">
+                    <header class="game-header">
+                        <span id="gameGenre" class="game-genre">Aventura, Sci-Fi</span>
+                        <p id="gameDescription" class="game-description">
+                            Lorem ipsum is simply dummy text of the printing and typesetting industry...
+                        </p>                       
+                    </header>
+                </div>
+                <!-- Conquistas e Colecionáveis no lado direito -->
+                <div class="game-extra-info">
+                    <section class="achievements-section">
+                        <h2>Conquistas</h2>
+                        <div class="progress-bar">
+                            <div class="progress" id="achievementsProgress"></div>
+                        </div>
+                        <div class="achievements-grid" id="achievementsGrid">
+                            <p>Carregando conquistas...</p> <!-- Mensagem de fallback -->
+                        </div>
+                        <button class="btn-view-all">Ver todas as conquistas</button>
+                    </section>
+                    <section class="collectibles-section">
+                        <h2>Colecionáveis</h2>
+                        <div class="progress-bar">
+                            <div class="progress" id="collectiblesProgress"></div>
+                        </div>
+                        <div class="collectibles-grid" id="collectiblesGrid">
+                            <p>Carregando colecionáveis...</p> <!-- Mensagem de fallback -->
+                        </div>
+                        <button class="btn-view-all">Ver todos os colecionáveis</button>
+                    </section>
+                    <section class="requeriments-section">
+                        <h2>Requisitos Mínimos</h2>                        
+                        <div class="requeriments-grid" id="requerimentsGrid">
+                            <ul>
+                              <li><strong>Requer:</strong> Processador e sistema operacional de 64 bits</li>
+                              <li><strong>Sistema Operacional:</strong> Windows 10/11 (versões 64-bit)</li>
+                              <li><strong>Processador:</strong> Intel Core i3</li>
+                              <li><strong>Memória:</strong> 8 GB de RAM</li>
+                              <li><strong>Placa de Vídeo:</strong> Nvidia GTX 1060 3GB, AMD RX 470 4GB, Intel UHD Graphics 630</li>
+                              <li><strong>Armazenamento:</strong> 15 GB de espaço disponível</li>
+                              <li><strong>Compatibilidade com Realidade Virtual:</strong> SteamVR</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
             </div>
         </main>
     </div>
-    <script src="game-details.js"></script>
+    <script src="game-details.js"></script>   
 </body>
-</html> 
+</html>
