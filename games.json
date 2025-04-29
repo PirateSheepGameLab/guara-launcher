@@ -56,20 +56,7 @@
         ],
         "videos": [],
         "url": "https://store.steampowered.com/app/250900/The_Binding_of_Isaac_Rebirth/"
-    },
-    {
-        "id": "slay-the-spire",
-        "title": "Slay the Spire",
-        "genre": "Card Game, Roguelike",
-        "description": "Uma fusão de jogos de cartas e roguelike, onde você constrói um baralho único e enfrenta inimigos em combates estratégicos.",
-        "cover": "https://tse3.mm.bing.net/th?id=OIP.HhiJtiHGvP4gp5-Yz47YNwHaHa&pid=Api",
-        "background": "https://tse3.mm.bing.net/th?id=OIP.HhiJtiHGvP4gp5-Yz47YNwHaHa&pid=Api",
-        "images": [
-            "https://tse3.mm.bing.net/th?id=OIP.HhiJtiHGvP4gp5-Yz47YNwHaHa&pid=Api"
-        ],
-        "videos": [],
-        "url": "https://store.steampowered.com/app/646570/Slay_the_Spire/"
-    },
+    },  
     {
         "id": "spelunky-2",
         "title": "Spelunky 2",
@@ -95,5 +82,5 @@
         ],
         "videos": [],
         "url": "https://store.steampowered.com/app/632360/Risk_of_Rain_2/"
-    }
+    }    
 ] 

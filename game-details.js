@@ -1,11 +1,37 @@
+// Função para definir a imagem de fundo
+function setBackgroundCoverImage() {
+    const mainImage = document.getElementById('mainImage');
+    if (mainImage && mainImage.src) {
+        document.documentElement.style.setProperty('--game-cover-image', `url('${mainImage.src}')`);
+    }
+}
+
+// Função para atualizar a imagem/vídeo principal
+function updateMainMedia(index, allMedia) {
+    const mediaContainer = document.querySelector('.main-media');
+    const media = allMedia[index];
+    
+    mediaContainer.innerHTML = '';
+    
+    if (media.endsWith('.mp4')) {
+        const video = document.createElement('video');
+        video.src = media;
+        video.controls = true;
+        mediaContainer.appendChild(video);
+    } else {
+        const img = document.createElement('img');
+        img.src = media;
+        img.alt = `${game.title} - Imagem ${index + 1}`;
+        mediaContainer.appendChild(img);
+    }
+}
+
 // Função para carregar os detalhes do jogo
 async function loadGameDetails() {
     try {
-        // Pegar o ID do jogo da URL
         const urlParams = new URLSearchParams(window.location.search);
         const gameId = urlParams.get('id');
-
-        // Carregar dados do jogo
+        
         const response = await fetch('games.json');
         const games = await response.json();
         const game = games.find(g => g.id === gameId);
@@ -15,74 +41,59 @@ async function loadGameDetails() {
             return;
         }
 
+        // Atualizar a imagem de fundo usando a imagem de capa do jogo
+        document.documentElement.style.setProperty('--game-cover-image', `url('${game.cover}')`);
+
         // Atualizar título e informações do jogo
         document.getElementById('gameTitle').textContent = game.title;
-        document.getElementById('mainImage').src = game.background;
+        document.getElementById('mainImage').src = game.images[0];
         document.getElementById('mainImage').alt = game.title;
-        
-        // Adicionar informações adicionais do jogo
         document.getElementById('gameGenre').textContent = game.genre;
         document.getElementById('gameDescription').textContent = game.description;
 
-        // Preencher miniaturas de mídia
-        const mediaThumbnails = document.getElementById('mediaThumbnails');
-        mediaThumbnails.innerHTML = '';
-        let activeThumbnail = null;
-
-        const updateMainMedia = (element, type) => {
-            const mainMediaContainer = document.querySelector('.main-media');
-            mainMediaContainer.innerHTML = ''; // Limpa o conteúdo
-            if (type === 'image') {
-                const img = document.createElement('img');
-                img.id = 'mainImage';
-                img.src = element;
-                img.alt = game.title;
-                mainMediaContainer.appendChild(img);
-            } else if (type === 'video') {
-                const videoEl = document.createElement('video');
-                videoEl.id = 'mainVideo';
-                videoEl.src = element;
-                videoEl.controls = true;
-                videoEl.autoplay = true;
-                mainMediaContainer.appendChild(videoEl);
-            }
-        };
-
-        const handleThumbnailClick = (thumbnail, element, type) => {
-            if (activeThumbnail) {
-                activeThumbnail.classList.remove('active');
-            }
-            thumbnail.classList.add('active');
-            activeThumbnail = thumbnail;
-            updateMainMedia(element, type);
-        };
-
-        // Adicionar miniaturas de imagens
-        if (game.images && game.images.length > 0) {
-            game.images.forEach((image, index) => {
-                const thumbnail = document.createElement('div');
-                thumbnail.className = 'media-thumbnail';
-                thumbnail.innerHTML = `<img src="${image}" alt="${game.title} - Imagem ${index + 1}">`;
-                thumbnail.addEventListener('click', () => handleThumbnailClick(thumbnail, image, 'image'));
-                mediaThumbnails.appendChild(thumbnail);
-                if (index === 0) { // Define a primeira imagem como ativa inicialmente
-                    handleThumbnailClick(thumbnail, image, 'image');
-                }
-            });
+        // Configurar o carrossel
+        let currentImageIndex = 0;
+        const allMedia = [...game.images];
+        if (game.videos) {
+            allMedia.push(...game.videos);
         }
 
-        // Adicionar miniaturas de vídeos
-        if (game.videos && game.videos.length > 0) {
-            game.videos.forEach((video) => {
-                const thumbnail = document.createElement('div');
-                thumbnail.className = 'media-thumbnail video';
-                thumbnail.innerHTML = `
-                    <img src="${game.background}" alt="Video Thumbnail">
-                    <div class="video-overlay"><i class="fas fa-play"></i></div>
-                `;
-                thumbnail.addEventListener('click', () => handleThumbnailClick(thumbnail, video, 'video'));
-                mediaThumbnails.appendChild(thumbnail);
-            });
+        function updateMainMedia(index) {
+            const mediaContainer = document.querySelector('.main-media');
+            const media = allMedia[index];
+            
+            mediaContainer.innerHTML = '';
+            
+            if (media && media.endsWith('.mp4')) {
+                const video = document.createElement('video');
+                video.src = media;
+                video.controls = true;
+                mediaContainer.appendChild(video);
+            } else if (media) {
+                const img = document.createElement('img');
+                img.src = media;
+                img.alt = `${game.title} - Imagem ${index + 1}`;
+                mediaContainer.appendChild(img);
+            }
+        }
+
+        // Configurar botões de navegação
+        const prevButton = document.querySelector('.carousel-arrow.prev');
+        const nextButton = document.querySelector('.carousel-arrow.next');
+
+        prevButton.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex - 1 + allMedia.length) % allMedia.length;
+            updateMainMedia(currentImageIndex);
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex + 1) % allMedia.length;
+            updateMainMedia(currentImageIndex);
+        });
+
+        // Mostrar a primeira imagem
+        if (allMedia.length > 0) {
+            updateMainMedia(0);
         }
 
         // Configurar botão de jogar
@@ -93,13 +104,13 @@ async function loadGameDetails() {
             });
         }
 
-        // Funcionalidade das setas de rolagem das miniaturas
-        setupThumbnailScroll();
-
     } catch (error) {
         console.error('Erro ao carregar detalhes do jogo:', error);
     }
 }
+
+// Chama a função inicialmente para garantir que o fundo seja definido
+setBackgroundCoverImage();
 
 // Função para configurar a rolagem das miniaturas
 function setupThumbnailScroll() {
@@ -137,6 +148,7 @@ function setupThumbnailScroll() {
 // Carregar detalhes do jogo quando a página carregar
 document.addEventListener('DOMContentLoaded', loadGameDetails);
 
+// Configurar barra de pesquisa
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
@@ -149,4 +161,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-}); 
+});
