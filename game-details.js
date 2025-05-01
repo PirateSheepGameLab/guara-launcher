@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (game) {
                 document.getElementById('gameTitle').textContent = game.title;
-                document.getElementById('gameGenre').textContent = game.genre;
                 document.getElementById('gameDescription').textContent = game.description;
                 document.documentElement.style.setProperty('--game-cover-image', `url('${game.background}')`);
                 
