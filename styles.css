@@ -331,6 +331,13 @@ section h2 {
     margin: 0;
 }
 
+/* Remove os ícones de play dos vídeos */
+.game-card video::after,
+.media-item.video::after,
+.carousel-container video::after {
+    display: none;
+}
+
 .game-card:hover {
     transform: scale(1.05);
 }
@@ -985,4 +992,4 @@ section:nth-child(4) {
 .game-card:nth-child(4),
 .game-card:nth-child(5) {
     animation: none;
-} 
+}
