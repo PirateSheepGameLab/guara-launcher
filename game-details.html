@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container game-details-container">
+    <div class="game-details-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -65,17 +65,9 @@
 
             <div class="game-media">
                 <div class="media-gallery">
-                    <div class="main-media">
-                        <img id="mainImage" src="https://via.placeholder.com/800x400" alt="">
-                    </div>
-                    <div class="carousel-arrows">
-                        <button class="carousel-arrow prev" aria-label="Imagem anterior">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="carousel-arrow next" aria-label="Próxima imagem">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
+                    <button class="carousel-arrow prev">❮</button>
+                    <div class="carousel-container"></div>
+                    <button class="carousel-arrow next">❯</button>
                 </div>
             </div>
 
@@ -103,6 +95,7 @@
             
             
 
+
             <div class="game-info-sections">
                 <!-- Descrição do jogo no lado esquerdo -->
                 <div class="game-info-sidebar">
@@ -111,6 +104,7 @@
                         <p id="gameDescription" class="game-description">
                             Lorem ipsum is simply dummy text of the printing and typesetting industry...
                         </p>                       
+
                     </header>
                 </div>
                 <!-- Conquistas e Colecionáveis no lado direito -->

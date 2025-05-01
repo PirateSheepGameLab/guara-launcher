@@ -6,159 +6,157 @@ function setBackgroundCoverImage() {
     }
 }
 
-// Função para atualizar a imagem/vídeo principal
-function updateMainMedia(index, allMedia) {
-    const mediaContainer = document.querySelector('.main-media');
-    const media = allMedia[index];
-    
-    mediaContainer.innerHTML = '';
-    
-    if (media.endsWith('.mp4')) {
-        const video = document.createElement('video');
-        video.src = media;
-        video.controls = true;
-        mediaContainer.appendChild(video);
-    } else {
-        const img = document.createElement('img');
-        img.src = media;
-        img.alt = `${game.title} - Imagem ${index + 1}`;
-        mediaContainer.appendChild(img);
-    }
-}
-
-// Função para carregar os detalhes do jogo
-async function loadGameDetails() {
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const gameId = urlParams.get('id');
-        
-        const response = await fetch('games.json');
-        const games = await response.json();
-        const game = games.find(g => g.id === gameId);
-
-        if (!game) {
-            console.error('Jogo não encontrado');
-            return;
-        }
-
-        // Atualizar a imagem de fundo usando a imagem de capa do jogo
-        document.documentElement.style.setProperty('--game-cover-image', `url('${game.cover}')`);
-
-        // Atualizar título e informações do jogo
-        document.getElementById('gameTitle').textContent = game.title;
-        document.getElementById('mainImage').src = game.images[0];
-        document.getElementById('mainImage').alt = game.title;
-        document.getElementById('gameGenre').textContent = game.genre;
-        document.getElementById('gameDescription').textContent = game.description;
-
-        // Configurar o carrossel
-        let currentImageIndex = 0;
-        const allMedia = [...game.images];
-        if (game.videos) {
-            allMedia.push(...game.videos);
-        }
-
-        function updateMainMedia(index) {
-            const mediaContainer = document.querySelector('.main-media');
-            const media = allMedia[index];
-            
-            mediaContainer.innerHTML = '';
-            
-            if (media && media.endsWith('.mp4')) {
-                const video = document.createElement('video');
-                video.src = media;
-                video.controls = true;
-                mediaContainer.appendChild(video);
-            } else if (media) {
-                const img = document.createElement('img');
-                img.src = media;
-                img.alt = `${game.title} - Imagem ${index + 1}`;
-                mediaContainer.appendChild(img);
-            }
-        }
-
-        // Configurar botões de navegação
-        const prevButton = document.querySelector('.carousel-arrow.prev');
-        const nextButton = document.querySelector('.carousel-arrow.next');
-
-        prevButton.addEventListener('click', () => {
-            currentImageIndex = (currentImageIndex - 1 + allMedia.length) % allMedia.length;
-            updateMainMedia(currentImageIndex);
-        });
-
-        nextButton.addEventListener('click', () => {
-            currentImageIndex = (currentImageIndex + 1) % allMedia.length;
-            updateMainMedia(currentImageIndex);
-        });
-
-        // Mostrar a primeira imagem
-        if (allMedia.length > 0) {
-            updateMainMedia(0);
-        }
-
-        // Configurar botão de jogar
-        const btnPlay = document.querySelector('.btn-play');
-        if (btnPlay) {
-            btnPlay.addEventListener('click', () => {
-                window.location.href = game.url;
-            });
-        }
-
-    } catch (error) {
-        console.error('Erro ao carregar detalhes do jogo:', error);
-    }
-}
-
 // Chama a função inicialmente para garantir que o fundo seja definido
 setBackgroundCoverImage();
 
-// Função para configurar a rolagem das miniaturas
-function setupThumbnailScroll() {
-    const thumbnailsContainer = document.getElementById('mediaThumbnails');
-    const scrollLeftButton = document.querySelector('.thumbnail-arrow.left');
-    const scrollRightButton = document.querySelector('.thumbnail-arrow.right');
-    const scrollAmount = 200; // Quantidade de pixels para rolar
-
-    scrollLeftButton.addEventListener('click', () => {
-        thumbnailsContainer.scrollBy({
-            left: -scrollAmount,
-            behavior: 'smooth'
-        });
-    });
-
-    scrollRightButton.addEventListener('click', () => {
-        thumbnailsContainer.scrollBy({
-            left: scrollAmount,
-            behavior: 'smooth'
-        });
-    });
-
-    // Opcional: Esconder setas se não houver scroll
-    const checkScroll = () => {
-        const maxScrollLeft = thumbnailsContainer.scrollWidth - thumbnailsContainer.clientWidth;
-        scrollLeftButton.style.display = thumbnailsContainer.scrollLeft > 0 ? 'flex' : 'none';
-        scrollRightButton.style.display = thumbnailsContainer.scrollLeft < maxScrollLeft - 5 ? 'flex' : 'none'; // -5 para margem de erro
-    };
-
-    thumbnailsContainer.addEventListener('scroll', checkScroll);
-    window.addEventListener('resize', checkScroll); // Verificar no resize também
-    checkScroll(); // Verificar inicialmente
-}
-
 // Carregar detalhes do jogo quando a página carregar
-document.addEventListener('DOMContentLoaded', loadGameDetails);
-
-// Configurar barra de pesquisa
 document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const searchTerm = e.target.value.trim();
-                if (searchTerm) {
-                    window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
-                }
+    let currentMediaIndex = 0;
+    let mediaItems = [];
+    let isTransitioning = false;
+
+    // Carregar dados do jogo
+    async function loadGameDetails() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = urlParams.get('id');
+            
+            const response = await fetch('games.json');
+            const games = await response.json();
+            const game = games.find(g => g.id === gameId);
+            
+            if (game) {
+                document.getElementById('gameTitle').textContent = game.title;
+                document.getElementById('gameGenre').textContent = game.genre;
+                document.getElementById('gameDescription').textContent = game.description;
+                document.documentElement.style.setProperty('--game-cover-image', `url('${game.background}')`);
+                
+                loadMediaFromGame(game);
             }
-        });
+        } catch (error) {
+            console.error('Error loading game details:', error);
+        }
     }
+
+    function loadMediaFromGame(game) {
+        mediaItems = [
+            ...(game.images || []).map(src => ({ type: 'image', src })),
+            ...(game.videos || []).map(src => ({ type: 'video', src }))
+        ];
+
+        if (mediaItems.length === 0) {
+            mediaItems.push({ type: 'image', src: game.cover });
+        }
+
+        const container = document.querySelector('.carousel-container');
+        container.innerHTML = '';
+
+        mediaItems.forEach((item, index) => {
+            const mediaElement = createMediaItem(item);
+            container.appendChild(mediaElement);
+        });
+
+        updateCarouselPosition(0);
+        createNavigationButtons();
+    }
+
+    function createMediaItem(item) {
+        const div = document.createElement('div');
+        div.className = `media-item ${item.type}`;
+
+        const mediaElement = item.type === 'video' 
+            ? createVideoElement(item.src) 
+            : createImageElement(item.src);
+        
+        div.appendChild(mediaElement);
+        return div;
+    }
+
+    function createVideoElement(src) {
+        const video = document.createElement('video');
+        video.src = src;
+        video.controls = true;
+        return video;
+    }
+
+    function createImageElement(src) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'Game media';
+        return img;
+    }
+
+    function updateCarouselPosition(index) {
+        if (isTransitioning) return;
+        
+        const container = document.querySelector('.carousel-container');
+        const items = container.querySelectorAll('.media-item');
+        const totalItems = items.length;
+        
+        // Garantir que o índice esteja dentro dos limites
+        if (index < 0) {
+            index = totalItems - 1;
+        } else if (index >= totalItems) {
+            index = 0;
+        }
+
+        const itemWidth = items[0].offsetWidth;
+        const gap = 20;
+        
+        isTransitioning = true;
+        container.style.transform = `translateX(-${(itemWidth + gap) * index}px)`;
+        
+        currentMediaIndex = index;
+        
+        // Remover a flag de transição após a animação
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 300);
+    }
+
+    function moveNext() {
+        if (!isTransitioning) {
+            updateCarouselPosition(currentMediaIndex + 1);
+        }
+    }
+
+    function movePrev() {
+        if (!isTransitioning) {
+            updateCarouselPosition(currentMediaIndex - 1);
+        }
+    }
+
+    function createNavigationButtons() {
+        const gallery = document.querySelector('.media-gallery');
+        
+        gallery.querySelectorAll('.carousel-arrow').forEach(btn => btn.remove());
+        
+        const prevButton = document.createElement('button');
+        const nextButton = document.createElement('button');
+        
+        prevButton.className = 'carousel-arrow prev';
+        nextButton.className = 'carousel-arrow next';
+        
+        prevButton.innerHTML = '❮';
+        nextButton.innerHTML = '❯';
+        
+        prevButton.addEventListener('click', movePrev);
+        nextButton.addEventListener('click', moveNext);
+        
+        gallery.appendChild(prevButton);
+        gallery.appendChild(nextButton);
+    }
+
+    function handleKeyNavigation(e) {
+        if (e.key === 'ArrowLeft') {
+            movePrev();
+        } else if (e.key === 'ArrowRight') {
+            moveNext();
+        }
+    }
+
+    document.addEventListener('keydown', handleKeyNavigation);
+
+    // Inicializar
+    loadGameDetails();
 });

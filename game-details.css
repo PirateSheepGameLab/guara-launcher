@@ -23,9 +23,9 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(10px) brightness(0.7); /* Aumentei o blur e escureci mais */
+    filter: blur(10px) brightness(0.4);
     z-index: -1;
-    transform: scale(1.1); /* Evita bordas brancas causadas pelo blur */
+    transform: scale(1.1);
 }
 
 .game-details-content {
@@ -152,83 +152,121 @@
 }
 
 .game-media {
-    margin-bottom: 30px;
+    margin: 30px 0;
     background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
     border-radius: 10px;
     position: relative;
+    padding: 20px;
+    overflow: hidden;
+    width: 100%; /* Ocupa toda a largura disponível */
 }
 
 .media-gallery {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
     position: relative;
-}
-
-.main-media {
     width: 100%;
-    height: 500px;
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: transparent;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    overflow: hidden;
 }
 
-.main-media img, .main-media video {
+.carousel-container {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.3s ease;
+    position: relative;
+    width: 1280px; /* Largura fixa para o container do carrossel */
+    max-width: 90%; /* Limita a largura em telas menores */
+}
+
+.media-item {
+    flex: 0 0 100%;
+    position: relative;
+    padding-top: 56.25%; /* Mantém a proporção 16:9 */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.media-item img,
+.media-item video {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    background-color: transparent;
+    object-fit: contain; /* Mantém a proporção da imagem sem cortar */
+    background: rgba(0, 0, 0, 0.2);
 }
 
-.carousel-arrows {
-    position: absolute;
-    top: 50%;
-    width: calc(100% + 80px); /* Aumenta a largura para as setas ficarem mais afastadas */
-    transform: translateY(-50%);
-    z-index: 10;
-    display: flex;
-    justify-content: space-between;
-    left: -40px; /* Move todo o container de setas para a esquerda */
-    pointer-events: none;
-}
-
+/* Botões de navegação */
 .carousel-arrow {
+    position: absolute;
+    top: 0;
     width: 50px;
-    height: 50px;
-    background: rgba(0, 0, 0, 0.7);
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
     border: none;
-    border-radius: 50%;
     color: white;
-    font-size: 1.5em;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s, opacity 0.3s;
-    pointer-events: auto;
-    opacity: 0.7;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.3s ease;
 }
 
 .carousel-arrow:hover {
-    background: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(to right, rgba(0,0,0,0.9), transparent);
+}
+
+.carousel-arrow.prev {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+}
+
+.carousel-arrow.next {
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+}
+
+.carousel-arrow.next:hover {
+    background: linear-gradient(to left, rgba(0,0,0,0.9), transparent);
+}
+
+.media-gallery:hover .carousel-arrow {
     opacity: 1;
 }
 
-.carousel-arrow:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
+/* Video overlay */
+.media-item.video::after {
+    content: "▶";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px;
+    border-radius: 50%;
+    font-size: 24px;
+    pointer-events: none;
 }
 
-/* Remove os estilos antigos das thumbnails que não serão mais usados */
-.media-thumbnails-container,
-.thumbnail-arrow,
-.media-thumbnails {
-    display: none;
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .media-item {
+        flex: 0 0 calc(50% - 10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .media-item {
+        flex: 0 0 100%;
+    }
+    
+    .carousel-container {
+        gap: 10px;
+    }
 }
 
 .game-info-sidebar {
@@ -241,162 +279,6 @@
     gap: 15px;
     order: 1;
     border-radius: 12px;
-}
-
-.media-thumbnail {
-    width: 160px;
-    min-width: 160px;
-    height: 90px;
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s, border 0.2s;
-    flex-shrink: 0;
-    border: 2px solid transparent;
-    position: relative;
-    box-sizing: border-box;
-}
-
-.media-thumbnail:hover {
-    transform: scale(1.03);
-}
-
-.media-thumbnail img, .media-thumbnail video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.media-thumbnail.active {
-    border: 2px solid white;
-}
-
-.media-thumbnail.video .video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5em;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.media-thumbnail.video:hover .video-overlay {
-    opacity: 1;
-}
-
-.thumbnail-arrow {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    font-size: 1.2em;
-    cursor: pointer;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.7;
-    transition: opacity 0.3s, background 0.3s;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.thumbnail-arrow:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.7);
-}
-
-.thumbnail-arrow.left {
-    left: -45px;
-}
-
-.thumbnail-arrow.right {
-    right: -45px;
-}
-
-@media screen and (max-width: 768px) {
-    .media-gallery {
-        padding: 0 20px;
-    }
-
-    .main-media {
-        height: 300px;
-    }
-
-    .media-thumbnail {
-        width: 120px;
-        min-width: 120px;
-        height: 67.5px;
-    }
-
-    .thumbnail-arrow.left {
-        left: -20px;
-    }
-
-    .thumbnail-arrow.right {
-        right: -20px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .media-gallery {
-        padding: 0 15px;
-    }
-
-    .main-media {
-        height: 200px;
-    }
-
-    .media-thumbnail {
-        width: 100px;
-        min-width: 100px;
-        height: 56.25px;
-    }
-
-    .thumbnail-arrow {
-        width: 30px;
-        height: 30px;
-    }
-
-    .thumbnail-arrow.left {
-        left: -15px;
-    }
-
-    .thumbnail-arrow.right {
-        right: -15px;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .game-media {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .game-info-sidebar {
-        max-width: 100%;
-    }
-
-    .media-gallery {
-        max-width: 100%;
-        padding: 0 15px;
-    }
-
-    .main-media {
-        height: 400px;
-    }
 }
 
 .game-info-btns {
