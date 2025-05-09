@@ -1,0 +1,130 @@
+.settings-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.settings-section {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.settings-section h2 {
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.folder-select {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.folder-select input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 10px;
+    color: var(--text-color);
+    font-size: 0.9em;
+}
+
+.btn-select-folder {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.btn-select-folder:hover {
+    background: #2b6cd4;
+}
+
+.btn-select-folder i {
+    font-size: 1.1em;
+}
+
+.folder-info {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Theme Selection Styles */
+.theme-options {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.theme-option {
+    cursor: pointer;
+    text-align: center;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.theme-option:hover {
+    opacity: 1;
+}
+
+.theme-option.active {
+    opacity: 1;
+}
+
+.theme-preview {
+    width: 120px;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.preview-bar {
+    height: 20px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.preview-button {
+    width: 40px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+/* Theme Colors */
+.theme-option[data-theme="dark"] .preview-bar {
+    background-color: #000000;
+}
+
+.theme-option[data-theme="dark"] .preview-button {
+    background-color: #333333;
+}
+
+.theme-option[data-theme="grey"] .preview-bar {
+    background-color: #333333;
+}
+
+.theme-option[data-theme="grey"] .preview-button {
+    background-color: #000000;
+}
+
+.theme-option[data-theme="fancy"] .preview-bar {
+    background-color: #1a73e8;
+}
+
+.theme-option[data-theme="fancy"] .preview-button {
+    background-color: #e91e63;
+}

@@ -5,22 +5,26 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Root variables */
 :root {
-    --primary-color: #0a1020;
-    --secondary-color: #0d1428;
+    --sidebar-color: #000000;
+    --button-color: #333333;
     --accent-color: #3c85f5;
     --text-color: #ffffff;
     --text-secondary: #8b949e;
     --sidebar-width: 250px;
     --filter-sidebar-width: 280px;
+    --overlay-background: rgba(0, 0, 0, 0.5);
+    --hover-overlay: rgba(255, 255, 255, 0.1);
 }
 
+/* Apply background with proper gradient */
 body {
     background-color: var(--primary-color);
     color: var(--text-color);
     min-height: 100vh;
-    background: radial-gradient(circle at center, #000000cc 0%, #000000 100%);
-    transition: none;
+    background: var(--background-gradient);
+    transition: background-color 0.3s ease;
 }
 
 body.page-transition {
@@ -39,13 +43,13 @@ body.page-transition {
 
 /* Sidebar Styles */
 .sidebar {
-    background-color: rgba(0, 0, 0, 0.103);
+    background-color: var(--sidebar-color);
+    backdrop-filter: blur(10px);
     padding: 20px;
     position: fixed;
     width: var(--sidebar-width);
     height: 100vh;
     overflow: hidden;
-    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     left: 0;
@@ -80,7 +84,7 @@ body.page-transition {
     gap: 15px;
     padding: 10px;
     margin-bottom: 20px;
-    background: rgba(19, 19, 19, 0.74);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 12px;
 }
 
@@ -138,7 +142,7 @@ body.page-transition {
     gap: 12px;
     color: var(--text-color);
     font-size: 0.95em;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--sidebar-color);
 }
 
 .main-nav li a {
@@ -159,7 +163,7 @@ body.page-transition {
 }
 
 .main-nav li:hover {
-    transform: scale(1.05);
+    background: var(--hover-overlay);
 }
 
 .main-nav li:hover i {
@@ -167,9 +171,8 @@ body.page-transition {
 }
 
 .main-nav li.active {
-    background-color: rgba(60, 133, 245, 0.2);
+    background-color: var(--button-color);
     color: var(--accent-color);
-    font-weight: 500;
 }
 
 .main-nav li.active i {
@@ -292,6 +295,7 @@ header {
 }
 
 .cta-button:hover {
+    background: var(--primary-color);
     transform: scale(1.05);
 }
 
@@ -320,7 +324,7 @@ section h2 {
 }
 
 .game-card {
-    background: #1a1a1a;
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
     overflow: hidden;
     transition: transform 0.2s ease;
@@ -340,6 +344,7 @@ section h2 {
 
 .game-card:hover {
     transform: scale(1.05);
+    background: var(--hover-overlay);
 }
 
 .game-card img {
@@ -929,8 +934,8 @@ section h2 {
 }
 
 .search-result-item:hover {
+    background: var(--hover-overlay);
     transform: translateX(5px);
-    background: rgba(10, 20, 40, 0.8);
 }
 
 .search-result-item img {

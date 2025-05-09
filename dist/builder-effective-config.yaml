@@ -1,0 +1,9 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.guara.launcher
+win:
+  target: nsis
+  icon: images/guara-icon.png
+files: []
+electronVersion: 35.0.3

@@ -98,8 +98,8 @@
 }
 
 .btn-play {
-    background: white;
-    color: var(--primary-color);
+    background: var(--button-color);
+    color: var(--text-color);
     border: none;
     padding: 12px 35px;
     border-radius: 25px;
@@ -115,12 +115,12 @@
 }
 
 .btn-settings, .btn-favorite {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--button-color);
     border: none;
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    color: white;
+    color: var(--text-color);
     font-size: 1.2em;
     cursor: pointer;
     transition: background 0.3s;
@@ -134,8 +134,8 @@
 }
 
 .game-media {
-    margin: 15px 0 30px 0;  /* Reduzindo a margem superior de 30px para 15px */
-    background: rgba(0, 0, 0, 0.5);
+    margin: 15px 0 30px 0;
+    background: var(--overlay-background);
     border-radius: 10px;
     position: relative;
     padding: 20px;
@@ -247,7 +247,7 @@
     display: flex;
     gap: 100px;
     justify-content: space-between;
-    background-color: rgba(0, 0, 0, 0.5); /* ou seu blueviolet */
+    background-color: var(--overlay-background);
     border-radius: 10px;
     padding: 10px 20px;
     margin-top: -15px;
@@ -272,7 +272,7 @@
     gap: 40px;
     position: relative;
     z-index: 2;
-    background-color: rgba(0, 0, 0, 0.5); /* Adiciona um overlay escuro para melhorar a legibilidade */
+    background-color: var(--overlay-background);
     border-radius: 10px;
     padding: 20px;
     align-items: start; /* Alinha os items ao topo do grid */
@@ -300,7 +300,7 @@
 }
 
 .achievements-section, .collectibles-section, .requeriments-section {
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--overlay-background);
     padding: 15px;
     border-radius: 10px;
     margin: 0; /* Remove qualquer margem */
@@ -408,7 +408,7 @@
 }
 
 .sidebar {
-    background-color: rgba(13, 20, 40, 0.7);
+    background-color: var(--sidebar-color);
     padding: 20px;
     position: fixed;
     width: var(--sidebar-width);
@@ -441,6 +441,11 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
+    background: var(--sidebar-color);
+}
+
+.main-nav li.active {
+    background-color: var(--button-color);
 }
 
 .quick-launch ul {
@@ -554,4 +559,72 @@ header {
     display: flex;
     flex-direction: column;
     gap: 10px; /* Ajustando o espaço entre as seções */
+}
+
+.error-message {
+    background-color: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 12px 20px;
+    margin: 0;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideDown 0.3s ease-out;
+}
+
+.error-icon {
+    margin-right: 10px;
+}
+
+.error-content {
+    flex-grow: 1;
+}
+
+.error-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.download-progress {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.download-progress .progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.download-progress .progress {
+    height: 100%;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.download-progress .progress-text {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    margin-top: 5px;
 }
