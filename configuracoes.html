@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurações</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="configuracoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -61,52 +60,9 @@
                 </div>
             </header>
 
-            <div class="settings-container">
-                <h1>Configurações</h1>
-                
-                <div class="settings-section">
-                    <h2>Pasta de Jogos</h2>
-                    <div class="folder-select">
-                        <input type="text" id="gamesPath" readonly placeholder="Selecione a pasta de instalação dos jogos">
-                        <button id="selectFolder" class="btn-select-folder">
-                            <i class="fas fa-folder-open"></i>
-                            Selecionar Pasta
-                        </button>
-                    </div>
-                    <p class="folder-info">Esta é a pasta onde seus jogos serão instalados</p>
-                </div>
-
-                <div class="settings-section">
-                    <h2>Tema do Launcher</h2>
-                    <div class="theme-options">
-                        <div class="theme-option" data-theme="dark">
-                            <div class="theme-preview">
-                                <div class="preview-bar"></div>
-                                <div class="preview-button"></div>
-                            </div>
-                            <span>Preto e Cinza</span>
-                        </div>
-                        <div class="theme-option" data-theme="grey">
-                            <div class="theme-preview">
-                                <div class="preview-bar"></div>
-                                <div class="preview-button"></div>
-                            </div>
-                            <span>Cinza e Preto</span>
-                        </div>
-                        <div class="theme-option" data-theme="fancy">
-                            <div class="theme-preview">
-                                <div class="preview-bar"></div>
-                                <div class="preview-button"></div>
-                            </div>
-                            <span>Azul e Rosa</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Content specific to Configurações -->
+            <h1>Configurações</h1>
         </main>
     </div>
-    <script src="./components/theme-manager.js"></script>
-    <script src="./components/sidebar.js"></script>
-    <script src="configuracoes.js"></script>
 </body>
-</html>
+</html> 
