@@ -6,12 +6,11 @@
     display: grid;
     grid-template-columns: var(--sidebar-width) 1fr;
     min-height: 100vh;
-    background: var(--background-gradient);
     position: relative;
     z-index: 1;
 }
 
-/* Corrigindo a imagem de fundo */
+/* Background image with blur effect */
 .game-details-container::before {
     content: '';
     position: fixed;
@@ -26,6 +25,18 @@
     filter: blur(10px) brightness(0.4);
     z-index: -1;
     transform: scale(1.1);
+}
+
+/* Add a dark overlay */
+.game-details-container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: -1;
 }
 
 .game-details-content {
@@ -134,106 +145,89 @@
 }
 
 .game-media {
-    margin: 15px 0 30px 0;
-    background: var(--overlay-background);
-    border-radius: 10px;
     position: relative;
-    padding: 20px;
-    overflow: hidden;
-    width: 100%; /* Ocupa toda a largura disponível */
+    margin-bottom: 2rem;
 }
 
 .media-gallery {
     position: relative;
     width: 100%;
-    display: flex;
-    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    height: 400px;
     overflow: hidden;
+    border-radius: 8px;
 }
 
 .carousel-container {
     display: flex;
-    gap: 20px;
-    transition: transform 0.3s ease;
-    position: relative;
-    width: 1280px; /* Largura fixa para o container do carrossel */
-    max-width: 90%; /* Limita a largura em telas menores */
-}
-
-.media-item {
-    flex: 0 0 100%;
-    position: relative;
-    padding-top: 56.25%; /* Mantém a proporção 16:9 */
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.media-item img,
-.media-item video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    transition: transform 0.5s ease;
     height: 100%;
-    object-fit: contain; /* Mantém a proporção da imagem sem cortar */
-    background: rgba(0, 0, 0, 0.2);
 }
 
-/* Botões de navegação */
 .carousel-arrow {
     position: absolute;
-    top: 0;
-    width: 50px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
     border: none;
-    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.2rem;
     z-index: 2;
-    opacity: 0;
-    transition: opacity 0.3s ease, background 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .carousel-arrow:hover {
-    background: linear-gradient(to right, rgba(0,0,0,0.9), transparent);
+    background: rgba(0, 0, 0, 0.9);
 }
 
 .carousel-arrow.prev {
-    left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+    left: 10px;
 }
 
 .carousel-arrow.next {
+    right: 10px;
+}
+
+.media-item {
+    flex: 0 0 100%;
+    height: 100%;
+    position: relative;
+}
+
+.media-item img,
+.media-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.media-item .media-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+    color: #ffffff;
 }
 
-.carousel-arrow.next:hover {
-    background: linear-gradient(to left, rgba(0,0,0,0.9), transparent);
+.media-item .media-caption h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.media-gallery:hover .carousel-arrow {
-    opacity: 1;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-    .media-item {
-        flex: 0 0 calc(50% - 10px);
-    }
-}
-
-@media (max-width: 768px) {
-    .media-item {
-        flex: 0 0 100%;
-    }
-    
-    .carousel-container {
-        gap: 10px;
-    }
+.media-item .media-caption p {
+    font-size: 1rem;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .game-info-sidebar {

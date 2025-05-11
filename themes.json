@@ -1,0 +1,46 @@
+{
+  "themes": [
+    {
+      "theme": "guara",
+      "colors": {
+        "background": "#FFFAF5",
+        "fontColor": "#2C1E1B",
+        "primaryButton": "#EF5B3C",
+        "primaryButtonText": "#FFFFFF",
+        "sidebarBackground": "#FBE9E4",
+        "sidebarText": "#2C1E1B",
+        "iconColor": "#EF5B3C",
+        "bannerTextColor": "#EF5B3C",
+        "borderColor": "#EADCD7"
+      }
+    },
+    {
+      "theme": "light",
+      "colors": {
+        "background": "#FFFFFF",
+        "fontColor": "#1F1F1F",
+        "primaryButton": "#007BFF",
+        "primaryButtonText": "#FFFFFF",
+        "sidebarBackground": "#F8F9FA",
+        "sidebarText": "#1F1F1F",
+        "iconColor": "#6C757D",
+        "bannerTextColor": "#FFFFFF",
+        "borderColor": "#DEE2E6"
+      }
+    },
+    {
+      "theme": "dark",
+      "colors": {
+        "background": "#121212",
+        "fontColor": "#F5F5F5",
+        "primaryButton": "#1F1F1F",
+        "primaryButtonText": "#FFFFFF",
+        "sidebarBackground": "#1E1E1E",
+        "sidebarText": "#F5F5F5",
+        "iconColor": "#BBBBBB",
+        "bannerTextColor": "#EF5B3C",
+        "borderColor": "#2C2C2C"
+      }
+    }
+  ]
+}

@@ -95,7 +95,10 @@ function renderFeaturedSection(container, items, gamesMap) {
                         <div class="game-info">
                             <h3>${item.title}</h3>
                             <p>${item.description}</p>
-                            <a href="${item.cta.link}" class="cta-button">${item.cta.text}</a>
+                            <a href="${item.cta.link}" class="banner-button">
+                                ${item.cta.text}
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -114,6 +117,10 @@ function renderFeaturedSection(container, items, gamesMap) {
                             <div class="tags">
                                 ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
                             </div>
+                            <a href="game-details.html?id=${game.id}" class="banner-button">
+                                Ver mais
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
