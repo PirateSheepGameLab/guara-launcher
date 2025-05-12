@@ -258,7 +258,7 @@ function renderSection(section, gamesMap) {
         if (sectionGames.length > 0) {
             // Adiciona botões de navegação
             const prevButton = document.createElement('button');
-            prevButton.className = 'section-nav prev';
+            prevButton.className = 'section-nav prev hidden';
             prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
             
             const nextButton = document.createElement('button');
@@ -287,24 +287,48 @@ function renderSection(section, gamesMap) {
                 grid.appendChild(card);
             });
 
+            // Função para atualizar a visibilidade dos botões de navegação
+            const updateNavigation = () => {
+                const hasScrollLeft = grid.scrollLeft > 0;
+                const hasScrollRight = grid.scrollLeft < (grid.scrollWidth - grid.clientWidth);
+
+                prevButton.classList.toggle('hidden', !hasScrollLeft);
+                nextButton.classList.toggle('hidden', !hasScrollRight);
+
+                grid.classList.toggle('has-more-left', hasScrollLeft);
+                grid.classList.toggle('has-more-right', hasScrollRight);
+            };
+
+            // Calcula o tamanho do scroll baseado no tamanho dos cards
+            const scrollAmount = 300 + 20; // largura do card + gap
+
             // Adiciona event listeners para navegação
             prevButton.addEventListener('click', () => {
                 grid.scrollBy({
-                    left: -300,
+                    left: -scrollAmount,
                     behavior: 'smooth'
                 });
             });
 
             nextButton.addEventListener('click', () => {
                 grid.scrollBy({
-                    left: 300,
+                    left: scrollAmount,
                     behavior: 'smooth'
                 });
             });
 
+            // Atualiza a navegação quando o scroll acontece
+            grid.addEventListener('scroll', updateNavigation);
+
+            // Atualiza a navegação quando o tamanho da janela muda
+            window.addEventListener('resize', updateNavigation);
+
             sectionElement.appendChild(prevButton);
             sectionElement.appendChild(grid);
             sectionElement.appendChild(nextButton);
+
+            // Inicializa o estado da navegação
+            requestAnimationFrame(updateNavigation);
         }
     }
 

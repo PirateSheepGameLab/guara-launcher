@@ -46,7 +46,7 @@
             "id": "recent",
             "title": "Jogados Recentemente",
             "type": "grid",
-            "gameIds": ["hades", "dead-cells", "binding-of-isaac-rebirth", "spelunky-2"]
+            "gameIds": ["hades", "hades", "hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","dead-cells", "binding-of-isaac-rebirth", "spelunky-2"]
         },
         {
             "id": "popular",
