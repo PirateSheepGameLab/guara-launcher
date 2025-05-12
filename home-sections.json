@@ -13,12 +13,33 @@
                     "type": "advertisement",
                     "title": "Novo Lançamento",
                     "description": "Confira nosso último lançamento!",
-                    "image": "assets/featured/new-release.jpg",
+                    "image": "https://videos.openai.com/vg-assets/assets%2Ftask_01jv1rn7r7ezbvhxny13e2fg77%2F1747037399_img_0.webp?st=2025-05-12T17%3A59%3A50Z&se=2025-05-18T18%3A59%3A50Z&sks=b&skt=2025-05-12T17%3A59%3A50Z&ske=2025-05-18T18%3A59%3A50Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=DQZVRRVjQ3MZrdv0INhuIhictgD8H41e4lbj0q7EwFU%3D&az=oaivgprodscus",
                     "cta": {
                         "text": "Saiba Mais",
-                        "link": "#"
+                        "link": "https://amacaco.com.br"
+                    }
+                },
+                {
+                    "type": "advertisement",
+                    "title": "Novo Lançamento",
+                    "description": "Confira nosso último lançamento!",
+                    "image": "https://videos.openai.com/vg-assets/assets%2Ftask_01jv2kp3r6ez0b25hb2c1exncv%2F1747065785_img_3.webp?st=2025-05-12T17%3A59%3A50Z&se=2025-05-18T18%3A59%3A50Z&sks=b&skt=2025-05-12T17%3A59%3A50Z&ske=2025-05-18T18%3A59%3A50Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=S9M%2Fc1hv1TY6PQ104hSK3%2BKh6DLkG3hvTqHXmCQ03aY%3D&az=oaivgprodscus",
+                    "cta": {
+                        "text": "Saiba Mais",
+                        "link": "https://amacaco.com.br"
+                    }
+                },
+                {
+                    "type": "advertisement",
+                    "title": "Novo Lançamento",
+                    "description": "Confira nosso último lançamento!",
+                    "image": "https://videos.openai.com/vg-assets/assets%2Ftask_01jv2m771qf5384gp40m9ty8b4%2F1747066339_img_1.webp?st=2025-05-12T18%3A56%3A09Z&se=2025-05-18T19%3A56%3A09Z&sks=b&skt=2025-05-12T18%3A56%3A09Z&ske=2025-05-18T19%3A56%3A09Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=TuS6J1zPSD4XXi8eOWRcxpvTVPz3Jzn6KmdLkcVMW3s%3D&az=oaivgprodscus",
+                    "cta": {
+                        "text": "Saiba Mais",
+                        "link": "https://amacaco.com.br"
                     }
                 }
+                
             ]
         },
         {
@@ -36,6 +57,12 @@
         {
             "id": "recommended",
             "title": "Recomendados para Você",
+            "type": "grid",
+            "gameIds": ["spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells"]
+        },
+        {
+            "id": "prateco",
+            "title": "caneco",
             "type": "grid",
             "gameIds": ["spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells"]
         }

@@ -128,14 +128,35 @@ function renderSection(section, gamesMap) {
                         <div class="game-info">
                             <h3>${item.title}</h3>
                             <p>${item.description}</p>
-                            <a href="${item.cta.link}" class="cta-button">${item.cta.text}</a>
+                            <a href="${item.cta.link}" class="cta-button" target="_blank" rel="noopener noreferrer">${item.cta.text}</a>
                         </div>
                     </div>
                 `;
+
+                // Adiciona event listener específico para o anúncio
+                const adElement = featuredItem.querySelector('.featured-ad');
+                const ctaButton = adElement.querySelector('.cta-button');
+                
+                adElement.addEventListener('click', (e) => {
+                    // Se o clique não foi no botão CTA, abre o link em nova aba
+                    if (!e.target.closest('.cta-button')) {
+                        e.preventDefault();
+                        window.open(item.cta.link, '_blank', 'noopener,noreferrer');
+                    }
+                });
             }
             
             itemsContainer.appendChild(featuredItem);
         });
+
+        // Adiciona botões de navegação
+        const prevButton = document.createElement('button');
+        prevButton.className = 'carousel-nav prev';
+        prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+
+        const nextButton = document.createElement('button');
+        nextButton.className = 'carousel-nav next';
+        nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
 
         // Adiciona indicadores
         const indicators = document.createElement('div');
@@ -144,42 +165,83 @@ function renderSection(section, gamesMap) {
             const indicator = document.createElement('button');
             indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
             indicator.setAttribute('data-index', index);
-            indicator.addEventListener('click', () => {
-                updateCarousel(index);
-            });
             indicators.appendChild(indicator);
         });
 
+        carousel.appendChild(prevButton);
+        carousel.appendChild(nextButton);
         carousel.appendChild(itemsContainer);
         carousel.appendChild(indicators);
         sectionElement.appendChild(carousel);
 
-        // Auto-rotate carousel
+        // Configuração do carrossel
         let currentIndex = 0;
-        const updateCarousel = (index) => {
-            currentIndex = index;
-            const items = itemsContainer.querySelectorAll('.featured-item');
-            const dots = indicators.querySelectorAll('.indicator');
-            
-            items.forEach((item, i) => {
-                item.classList.toggle('active', i === index);
+        let autoRotateInterval;
+        const items = itemsContainer.querySelectorAll('.featured-item');
+        const dots = indicators.querySelectorAll('.indicator');
+
+        const updateCarousel = (newIndex) => {
+            // Remove classes ativas
+            items.forEach(item => {
+                item.classList.remove('active', 'next', 'prev');
             });
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Adiciona classes ativas
+            currentIndex = newIndex;
+            items[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
+
+            // Adiciona classes para animação
+            const prevIndex = (currentIndex - 1 + items.length) % items.length;
+            const nextIndex = (currentIndex + 1) % items.length;
+            items[prevIndex].classList.add('prev');
+            items[nextIndex].classList.add('next');
         };
 
-        let autoRotate = setInterval(() => {
-            updateCarousel((currentIndex + 1) % section.items.length);
-        }, 5000);
-
-        carousel.addEventListener('mouseenter', () => clearInterval(autoRotate));
-        carousel.addEventListener('mouseleave', () => {
-            autoRotate = setInterval(() => {
-                updateCarousel((currentIndex + 1) % section.items.length);
+        const startAutoRotate = () => {
+            stopAutoRotate();
+            autoRotateInterval = setInterval(() => {
+                const nextIndex = (currentIndex + 1) % items.length;
+                updateCarousel(nextIndex);
             }, 5000);
+        };
+
+        const stopAutoRotate = () => {
+            if (autoRotateInterval) {
+                clearInterval(autoRotateInterval);
+            }
+        };
+
+        // Event Listeners
+        prevButton.addEventListener('click', () => {
+            const prevIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel(prevIndex);
+            stopAutoRotate();
+            startAutoRotate();
         });
 
+        nextButton.addEventListener('click', () => {
+            const nextIndex = (currentIndex + 1) % items.length;
+            updateCarousel(nextIndex);
+            stopAutoRotate();
+            startAutoRotate();
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                updateCarousel(index);
+                stopAutoRotate();
+                startAutoRotate();
+            });
+        });
+
+        carousel.addEventListener('mouseenter', stopAutoRotate);
+        carousel.addEventListener('mouseleave', startAutoRotate);
+
+        // Inicia o carrossel
+        updateCarousel(0);
+        startAutoRotate();
     } else if (section.type === 'grid') {
         // Adiciona o título da seção
         sectionElement.innerHTML = `<h2>${section.title}</h2>`;
