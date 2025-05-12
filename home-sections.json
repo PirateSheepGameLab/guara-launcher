@@ -1,109 +1,44 @@
 {
     "sections": [
-      {
-        "id": "featured",
-        "items": [
-          {
-            "type": "advertisement",
-            "title": "Nova Temporada",
-            "description": "Confira os novos jogos da temporada!",
-            "image": "https://cdn2.unrealengine.com/ballistic-test-grounds-update-1-1900x600-f4fb2d611f35.jpg",
-            "cta": {
-              "text": "Ver Mais",
-              "link": "https://nevesls.itch.io/hammer-forge"
-            }
-          },
-          {
-            "type": "game",
-            "id": "super-brock-lee",
-            "title": "Super Brock Lee",
-            "description": "Um jogo de luta épico com o lendário Brock Lee!",
-            "background": "https://placehold.co/1920x1080/1a2942/ffffff?text=Super+Brock+Lee",
-            "genre": "Action, RogueLike"
-          },
-          {
-            "type": "advertisement",
-            "title": "Promoção Especial",
-            "description": "Descontos imperdíveis em jogos selecionados!",
-            "image": "https://wallpaperaccess.com/full/1285235.jpg",
-            "cta": {
-              "text": "Ver Ofertas",
-              "link": "https://nevesls.itch.io/hammer-forge"
-            }
-          }
-        ]
-      },
-      {
-        "id": "new-releases",
-        "title": "Lançamentos Recentes",
-        "gameIds": [
-          "super-brock-lee",
-          "hammerforge",
-          "parking-puzzle",
-          "a-historia-mexilhao",
-          "risk-of-rain-2",
-          "spelunky-2"
-        ]
-      },
-      {
-        "id": "action-games",
-        "title": "Ação e Aventura",
-        "gameIds": [
-          "super-brock-lee",
-          "hammerforge",
-          "parking-puzzle",
-          "hades",
-          "dead-cells",
-          "enter-the-gungeon",
-          "risk-of-rain-2"
-        ]
-      },
-      {
-        "id": "puzzle-games",
-        "title": "Quebra-Cabeças",
-        "gameIds": [
-          "parking-puzzle",
-          "a-historia-mexilhao"
-        ]
-      },
-      {
-        "id": "popular-games",
-        "title": "Populares na Guará",
-        "gameIds": [
-          "super-brock-lee",
-          "hammerforge",
-          "parking-puzzle",
-          "a-historia-mexilhao",
-          "hades",
-          "dead-cells",
-          "binding-of-isaac-rebirth"
-        ]
-      },
-      {
-        "id": "indie-games",
-        "title": "Jogos Indies",
-        "gameIds": [
-          "super-brock-lee",
-          "hammerforge",
-          "parking-puzzle",
-          "a-historia-mexilhao",
-          "enter-the-gungeon",
-          "binding-of-isaac-rebirth",
-          "dead-cells"
-        ]
-      },
-      {
-        "id": "prates-games",
-        "title": "Prates da a Bundinha",
-        "gameIds": [
-          "super-brock-lee",
-          "hammerforge",
-          "parking-puzzle",
-          "a-historia-mexilhao",
-          "hades",
-          "enter-the-gungeon"
-        ]
-      }
+        {
+            "id": "featured",
+            "title": "Em Destaque",
+            "type": "featured",
+            "items": [
+                {
+                    "type": "game",
+                    "id": "super-brock-lee"
+                },
+                {
+                    "type": "advertisement",
+                    "title": "Novo Lançamento",
+                    "description": "Confira nosso último lançamento!",
+                    "image": "assets/featured/new-release.jpg",
+                    "cta": {
+                        "text": "Saiba Mais",
+                        "link": "#"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "recent",
+            "title": "Jogados Recentemente",
+            "type": "grid",
+            "gameIds": ["hades", "dead-cells", "binding-of-isaac-rebirth", "spelunky-2"]
+        },
+        {
+            "id": "popular",
+            "title": "Populares",
+            "type": "grid",
+            "gameIds": ["risk-of-rain-2", "hades", "dead-cells", "binding-of-isaac-rebirth"]
+        },
+        {
+            "id": "recommended",
+            "title": "Recomendados para Você",
+            "type": "grid",
+            "gameIds": ["spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells"]
+        }
     ]
-  }
+}
   

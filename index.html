@@ -9,8 +9,56 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar will be loaded here -->
-        <aside class="sidebar"></aside>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/launcher-icon.png" alt="Guará Launcher" class="launcher-icon">
+                <h2>Guará Launcher</h2>
+            </div>
+
+            <div class="profile">
+                <div class="profile-image">
+                    <img src="assets/profile.jpg" alt="Profile">
+                </div>
+                <div class="profile-info">
+                    <h3>Username</h3>
+                    <span class="level">Nível 42</span>
+                </div>
+            </div>
+
+            <nav class="main-nav">
+                <div class="nav-item active" data-section="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" data-section="biblioteca">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Biblioteca</span>
+                </div>
+                <div class="nav-item" data-section="loja">
+                    <i class="fas fa-store"></i>
+                    <span>Loja</span>
+                </div>
+                <div class="nav-item" data-section="comunidade">
+                    <i class="fas fa-users"></i>
+                    <span>Comunidade</span>
+                </div>
+                <div class="nav-item" data-section="downloads">
+                    <i class="fas fa-download"></i>
+                    <span>Downloads</span>
+                </div>
+                <div class="nav-item" data-section="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </div>
+            </nav>
+
+            <div class="social-links">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </aside>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -27,10 +75,104 @@
                 </div>
             </header>
 
-            <!-- Sections will be populated dynamically -->
+            <!-- Home Section -->
+            <div id="home" class="content-section active">
+                <!-- Content will be dynamically loaded from home-sections.json -->
+            </div>
+
+            <!-- Biblioteca Section -->
+            <div id="biblioteca" class="content-section">
+                <!-- Content moved to home section -->
+            </div>
+
+            <!-- Loja Section -->
+            <div id="loja" class="content-section">
+                <div class="featured-carousel">
+                    <div class="featured-items">
+                        <!-- Featured items will be here -->
+                    </div>
+                    <div class="carousel-indicators">
+                        <!-- Indicators will be here -->
+                    </div>
+                </div>
+
+                <section>
+                    <h2>New Releases</h2>
+                    <div class="games-grid">
+                        <!-- New games will be here -->
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Special Offers</h2>
+                    <div class="games-grid">
+                        <!-- Special offers will be here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Comunidade Section -->
+            <div id="comunidade" class="content-section">
+                <h2>Comunidade</h2>
+                <!-- Community content will be here -->
+            </div>
+
+            <!-- Downloads Section -->
+            <div id="downloads" class="content-section">
+                <h2>Downloads</h2>
+                <!-- Downloads content will be here -->
+            </div>
+
+            <!-- Configurações Section -->
+            <div id="configuracoes" class="content-section">
+                <h2>Configurações</h2>
+                <div class="settings-section">
+                    <h3>Geral</h3>
+                    <div class="settings-list">
+                        <li>
+                            <span>Iniciar com o Windows</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <span>Notificações</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </li>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Downloads</h3>
+                    <div class="folder-select">
+                        <input type="text" placeholder="Pasta de instalação dos jogos" readonly>
+                        <button class="btn-select-folder">
+                            <i class="fas fa-folder"></i>
+                            Selecionar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Details Section -->
+            <div id="game-details" class="content-section">
+                <div class="game-header">
+                    <button class="back-button">
+                        <i class="fas fa-arrow-left"></i>
+                        Voltar
+                    </button>
+                </div>
+                <div class="game-content">
+                    <!-- Content will be dynamically loaded -->
+                </div>
+            </div>
         </main>
     </div>
-    <script src="/components/sidebar.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html> 

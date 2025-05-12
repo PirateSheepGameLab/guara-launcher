@@ -16,96 +16,96 @@ async function loadSections() {
         // Cria um mapa de jogos para acesso rápido
         const gamesMap = new Map(games.map(game => [game.id, game]));
 
-        // Renderiza cada seção
+        // Limpa o conteúdo existente
+        const homeSection = document.querySelector('#home');
+        homeSection.innerHTML = ''; // Clear all content
+
+        // Renderiza cada seção do home-sections.json
         sections.sections.forEach(section => {
             renderSection(section, gamesMap);
         });
+
+        // Inicializa os carrosséis e outros componentes interativos
+        initializeInteractiveComponents();
     } catch (error) {
         console.error('Erro ao carregar as seções:', error);
         showError('Erro ao carregar as seções. Por favor, tente novamente mais tarde.');
     }
 }
 
+// Função para inicializar componentes interativos
+function initializeInteractiveComponents() {
+    // Inicializa os controles de scroll horizontal
+    const scrollContainers = document.querySelectorAll('.games-grid');
+    
+    scrollContainers.forEach(container => {
+        const prevBtn = container.querySelector('.section-nav.prev');
+        const nextBtn = container.querySelector('.section-nav.next');
+        
+        if (prevBtn && nextBtn) {
+            // Mostra/esconde botões baseado no scroll inicial
+            prevBtn.style.opacity = container.scrollLeft > 0 ? '1' : '0';
+            nextBtn.style.opacity = 
+                container.scrollLeft < (container.scrollWidth - container.clientWidth) 
+                ? '1' : '0';
+
+            // Event listeners para scroll
+            container.addEventListener('scroll', () => {
+                prevBtn.style.opacity = container.scrollLeft > 0 ? '1' : '0';
+                nextBtn.style.opacity = 
+                    container.scrollLeft < (container.scrollWidth - container.clientWidth) 
+                    ? '1' : '0';
+            });
+        }
+    });
+
+    // Inicializa animações de hover nos cards
+    const gameCards = document.querySelectorAll('.game-card');
+    gameCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const info = card.querySelector('.game-card-info');
+            if (info) {
+                info.style.transform = 'translateY(0)';
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            const info = card.querySelector('.game-card-info');
+            if (info) {
+                info.style.transform = 'translateY(100%)';
+            }
+        });
+    });
+}
+
 // Função para renderizar uma seção
 function renderSection(section, gamesMap) {
-    const mainContent = document.querySelector('.main-content');
-    if (!mainContent) return;
+    const homeSection = document.querySelector('#home');
+    if (!homeSection) return;
 
     const sectionElement = document.createElement('section');
     sectionElement.className = section.id;
     
-    if (section.id === 'featured') {
-        renderFeaturedSection(sectionElement, section.items, gamesMap);
-    } else {
-        sectionElement.innerHTML = `<h2>${section.title}</h2>`;
-        // Obtém os jogos da seção baseado nos IDs
-        const sectionGames = section.gameIds
-            .map(id => gamesMap.get(id))
-            .filter(game => game !== undefined);
-
-        if (sectionGames.length === 0) return;
-
-        const grid = document.createElement('div');
-        grid.className = 'games-grid';
+    if (section.type === 'featured') {
+        // Criar o carrossel
+        const carousel = document.createElement('div');
+        carousel.className = 'featured-carousel';
         
-        // Adiciona botões de navegação
-        const prevButton = document.createElement('button');
-        prevButton.className = 'section-nav prev';
-        prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
-        prevButton.onclick = () => scrollSection(grid, -300);
+        // Container para os itens
+        const itemsContainer = document.createElement('div');
+        itemsContainer.className = 'featured-items';
         
-        const nextButton = document.createElement('button');
-        nextButton.className = 'section-nav next';
-        nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
-        nextButton.onclick = () => scrollSection(grid, 300);
+        // Adiciona os itens
+        section.items.forEach((item, index) => {
+            const featuredItem = document.createElement('div');
+            featuredItem.className = `featured-item ${index === 0 ? 'active' : ''}`;
+            featuredItem.setAttribute('data-index', index);
 
-        sectionGames.forEach(game => {
-            const card = createGameCard(game);
-            grid.appendChild(card);
-        });
+            if (item.type === 'game') {
+                const game = gamesMap.get(item.id);
+                if (!game) return;
 
-        sectionElement.appendChild(prevButton);
-        sectionElement.appendChild(grid);
-        sectionElement.appendChild(nextButton);
-    }
-
-    mainContent.appendChild(sectionElement);
-}
-
-// Função para renderizar seção de destaque
-function renderFeaturedSection(container, items, gamesMap) {
-    if (!items || items.length === 0) return;
-
-    const carousel = document.createElement('div');
-    carousel.className = 'featured-carousel';
-    
-    // Container para os itens
-    const itemsContainer = document.createElement('div');
-    itemsContainer.className = 'featured-items';
-    
-    // Adiciona os itens
-    items.forEach((item, index) => {
-        let itemContent = '';
-        
-        if (item.type === 'advertisement') {
-            itemContent = `
-                <div class="featured-item ${index === 0 ? 'active' : ''}" data-index="${index}">
-                    <div class="featured-game featured-ad">
-                        <img src="${item.image}" alt="${item.title}">
-                        <div class="game-info">
-                            <h3>${item.title}</h3>
-                            <p>${item.description}</p>
-                            <a href="${item.cta.link}" class="cta-button">${item.cta.text}</a>
-                        </div>
-                    </div>
-                </div>
-            `;
-        } else if (item.type === 'game') {
-            const game = gamesMap.get(item.id);
-            if (!game) return; // Skip if game not found
-            
-            itemContent = `
-                <div class="featured-item ${index === 0 ? 'active' : ''}" data-index="${index}">
+                featuredItem.innerHTML = `
                     <div class="featured-game" data-game-id="${game.id}">
                         <img src="${game.background}" alt="${game.title}">
                         <div class="game-info">
@@ -116,103 +116,137 @@ function renderFeaturedSection(container, items, gamesMap) {
                             </div>
                         </div>
                     </div>
-                </div>
-            `;
-        }
-        
-        if (itemContent) {
-            itemsContainer.innerHTML += itemContent;
-        }
-    });
+                `;
 
-    // Adiciona indicadores de página
-    const indicators = document.createElement('div');
-    indicators.className = 'carousel-indicators';
-    items.forEach((_, index) => {
-        const indicator = document.createElement('button');
-        indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
-        indicator.setAttribute('data-index', index);
-        indicators.appendChild(indicator);
-    });
-
-    carousel.appendChild(itemsContainer);
-    carousel.appendChild(indicators);
-    container.appendChild(carousel);
-
-    // Adiciona funcionalidade do carrossel
-    let currentIndex = 0;
-    const itemsList = itemsContainer.querySelectorAll('.featured-item');
-    const indicatorButtons = indicators.querySelectorAll('.indicator');
-
-    function updateCarousel() {
-        itemsList.forEach((item, index) => {
-            item.classList.toggle('active', index === currentIndex);
+                featuredItem.querySelector('.featured-game').addEventListener('click', () => {
+                    showGameDetails(game.id, gamesMap);
+                });
+            } else if (item.type === 'advertisement') {
+                featuredItem.innerHTML = `
+                    <div class="featured-game featured-ad">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="game-info">
+                            <h3>${item.title}</h3>
+                            <p>${item.description}</p>
+                            <a href="${item.cta.link}" class="cta-button">${item.cta.text}</a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            itemsContainer.appendChild(featuredItem);
         });
-        indicatorButtons.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentIndex);
+
+        // Adiciona indicadores
+        const indicators = document.createElement('div');
+        indicators.className = 'carousel-indicators';
+        section.items.forEach((_, index) => {
+            const indicator = document.createElement('button');
+            indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+            indicator.setAttribute('data-index', index);
+            indicator.addEventListener('click', () => {
+                updateCarousel(index);
+            });
+            indicators.appendChild(indicator);
         });
-    }
 
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % items.length;
-        updateCarousel();
-    }
+        carousel.appendChild(itemsContainer);
+        carousel.appendChild(indicators);
+        sectionElement.appendChild(carousel);
 
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + items.length) % items.length;
-        updateCarousel();
-    }
-
-    // Adiciona event listeners para os indicadores
-    indicatorButtons.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
+        // Auto-rotate carousel
+        let currentIndex = 0;
+        const updateCarousel = (index) => {
             currentIndex = index;
-            updateCarousel();
+            const items = itemsContainer.querySelectorAll('.featured-item');
+            const dots = indicators.querySelectorAll('.indicator');
+            
+            items.forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        };
+
+        let autoRotate = setInterval(() => {
+            updateCarousel((currentIndex + 1) % section.items.length);
+        }, 5000);
+
+        carousel.addEventListener('mouseenter', () => clearInterval(autoRotate));
+        carousel.addEventListener('mouseleave', () => {
+            autoRotate = setInterval(() => {
+                updateCarousel((currentIndex + 1) % section.items.length);
+            }, 5000);
         });
-    });
 
-    // Auto-advance every 5 seconds
-    let autoAdvance = setInterval(nextSlide, 5000);
+    } else if (section.type === 'grid') {
+        // Adiciona o título da seção
+        sectionElement.innerHTML = `<h2>${section.title}</h2>`;
+        
+        // Cria o container da grid
+        const grid = document.createElement('div');
+        grid.className = 'games-grid';
 
-    // Pause auto-advance on hover
-    carousel.addEventListener('mouseenter', () => {
-        clearInterval(autoAdvance);
-    });
+        // Adiciona os jogos
+        const sectionGames = section.gameIds
+            .map(id => gamesMap.get(id))
+            .filter(game => game !== undefined);
 
-    carousel.addEventListener('mouseleave', () => {
-        autoAdvance = setInterval(nextSlide, 5000);
-    });
+        if (sectionGames.length > 0) {
+            // Adiciona botões de navegação
+            const prevButton = document.createElement('button');
+            prevButton.className = 'section-nav prev';
+            prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            
+            const nextButton = document.createElement('button');
+            nextButton.className = 'section-nav next';
+            nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
 
-    // Adiciona event listeners para cliques nos itens
-    itemsContainer.querySelectorAll('.featured-game').forEach(gameElement => {
-        gameElement.addEventListener('click', (e) => {
-            // Se o clique foi no botão CTA, não faz nada (o link já será seguido)
-            if (e.target.closest('.cta-button')) return;
+            // Adiciona os cards de jogos
+            sectionGames.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <img src="${game.cover}" alt="${game.title}">
+                    <div class="game-card-info">
+                        <h3>${game.title}</h3>
+                        <p>${game.description}</p>
+                        <div class="tags">
+                            ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
 
-            const gameId = gameElement.getAttribute('data-game-id');
-            if (gameId) {
-                window.location.href = `game-details.html?id=${gameId}`;
-            } else if (gameElement.classList.contains('featured-ad')) {
-                // Se for um anúncio, pega o link do CTA e abre em nova aba
-                const ctaLink = gameElement.querySelector('.cta-button')?.getAttribute('href');
-                if (ctaLink) {
-                    e.preventDefault(); // Previne o comportamento padrão
-                    window.open(ctaLink, '_blank', 'noopener,noreferrer');
-                }
-            }
-        });
-    });
+                card.addEventListener('click', () => {
+                    showGameDetails(game.id, gamesMap);
+                });
 
-    // Adiciona event listener específico para o botão CTA dos anúncios
-    itemsContainer.querySelectorAll('.featured-ad .cta-button').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault(); // Previne o comportamento padrão
-            const link = button.getAttribute('href');
-            if (link) {
-                window.open(link, '_blank', 'noopener,noreferrer');
-            }
-        });
-    });
+                grid.appendChild(card);
+            });
+
+            // Adiciona event listeners para navegação
+            prevButton.addEventListener('click', () => {
+                grid.scrollBy({
+                    left: -300,
+                    behavior: 'smooth'
+                });
+            });
+
+            nextButton.addEventListener('click', () => {
+                grid.scrollBy({
+                    left: 300,
+                    behavior: 'smooth'
+                });
+            });
+
+            sectionElement.appendChild(prevButton);
+            sectionElement.appendChild(grid);
+            sectionElement.appendChild(nextButton);
+        }
+    }
+
+    homeSection.appendChild(sectionElement);
 }
 
 // Função para rolar a seção
@@ -265,7 +299,7 @@ function createGameCard(game) {
     `;
 
     card.addEventListener('click', () => {
-        window.location.href = `game-details.html?id=${game.id}`;
+        showGameDetails(game.id, gamesMap);
     });
 
     return card;
@@ -287,7 +321,7 @@ function createRankedGame(game, rank) {
     `;
 
     rankedGame.addEventListener('click', () => {
-        window.location.href = `game-details.html?id=${game.id}`;
+        showGameDetails(game.id, gamesMap);
     });
 
     return rankedGame;
@@ -392,4 +426,259 @@ navItems.forEach(item => {
         // Adicionar a classe active ao item clicado
         item.classList.add('active');
     });
-}); 
+});
+
+// Event listener for navigation items
+document.addEventListener('DOMContentLoaded', function() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.content-section');
+
+    // Load home sections when the page loads
+    if (document.querySelector('#home.content-section.active')) {
+        loadSections();
+    }
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const targetSection = item.getAttribute('data-section');
+            
+            // Remove active class from all nav items and sections
+            navItems.forEach(nav => nav.classList.remove('active'));
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Add active class to clicked nav item and corresponding section
+            item.classList.add('active');
+            document.getElementById(targetSection).classList.add('active');
+
+            // Load home sections if home is clicked
+            if (targetSection === 'home') {
+                loadSections();
+            }
+        });
+    });
+});
+
+// Navegação entre seções
+document.addEventListener('DOMContentLoaded', () => {
+    // Controle de navegação do menu
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.content-section');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Remove active de todos os itens e seções
+            navItems.forEach(i => i.classList.remove('active'));
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Adiciona active ao item clicado e sua seção correspondente
+            item.classList.add('active');
+            const sectionId = item.getAttribute('data-section');
+            document.getElementById(sectionId).classList.add('active');
+        });
+    });
+
+    // Controle de scroll horizontal nas seções de jogos
+    const scrollContainers = document.querySelectorAll('.games-grid');
+    
+    scrollContainers.forEach(container => {
+        const prevBtn = container.querySelector('.section-nav.prev');
+        const nextBtn = container.querySelector('.section-nav.next');
+        
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                container.scrollBy({
+                    left: -300,
+                    behavior: 'smooth'
+                });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                container.scrollBy({
+                    left: 300,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Mostrar/esconder botões baseado no scroll
+            container.addEventListener('scroll', () => {
+                prevBtn.style.opacity = container.scrollLeft > 0 ? '1' : '0';
+                nextBtn.style.opacity = 
+                    container.scrollLeft < (container.scrollWidth - container.clientWidth) 
+                    ? '1' : '0';
+            });
+        }
+    });
+
+    // Controle da barra de pesquisa
+    const searchInput = document.querySelector('.search input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Implementar lógica de pesquisa aqui
+        });
+    }
+
+    // Toggle switches nas configurações
+    const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+    toggleSwitches.forEach(toggle => {
+        toggle.addEventListener('change', (e) => {
+            const setting = e.target.closest('li').querySelector('span').textContent;
+            console.log(`${setting} foi ${e.target.checked ? 'ativado' : 'desativado'}`);
+            // Implementar lógica de salvamento da configuração
+        });
+    });
+
+    // Seletor de pasta
+    const folderSelect = document.querySelector('.btn-select-folder');
+    if (folderSelect) {
+        folderSelect.addEventListener('click', () => {
+            // Aqui você implementaria a lógica de seleção de pasta
+            console.log('Seleção de pasta acionada');
+        });
+    }
+
+    // Animação de hover nos cards de jogos
+    const gameCards = document.querySelectorAll('.game-card');
+    gameCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const info = card.querySelector('.game-card-info');
+            if (info) {
+                info.style.transform = 'translateY(0)';
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            const info = card.querySelector('.game-card-info');
+            if (info) {
+                info.style.transform = 'translateY(100%)';
+            }
+        });
+    });
+});
+
+// Função para carregar conteúdo dinamicamente (exemplo)
+async function loadGames(section) {
+    try {
+        // Aqui você implementaria a lógica para carregar os jogos
+        // Por exemplo, fazendo uma requisição para sua API
+        const response = await fetch(`/api/games/${section}`);
+        const games = await response.json();
+        
+        // Renderizar os jogos na seção apropriada
+        const container = document.querySelector(`#${section} .games-grid`);
+        if (container) {
+            container.innerHTML = games.map(game => `
+                <div class="game-card">
+                    <img src="${game.image}" alt="${game.title}">
+                    <div class="game-card-info">
+                        <h3>${game.title}</h3>
+                        <p>${game.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('Erro ao carregar jogos:', error);
+    }
+}
+
+// Função para inicializar o carrossel de destaques
+function initFeaturedCarousel() {
+    const carousel = document.querySelector('.featured-carousel');
+    if (!carousel) return;
+
+    let currentSlide = 0;
+    const slides = carousel.querySelectorAll('.featured-item');
+    const indicators = carousel.querySelectorAll('.indicator');
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+    }
+
+    // Auto-play do carrossel
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }, 5000);
+
+    // Click nos indicadores
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+}
+
+// Função para mostrar os detalhes do jogo
+function showGameDetails(gameId, gamesMap) {
+    const game = gamesMap.get(gameId);
+    if (!game) return;
+
+    // Esconde todas as seções
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(section => section.classList.remove('active'));
+
+    // Mostra a seção de detalhes
+    const gameDetailsSection = document.getElementById('game-details');
+    const gameContent = gameDetailsSection.querySelector('.game-content');
+    
+    gameContent.innerHTML = `
+        <div class="game-banner">
+            <img src="${game.background}" alt="${game.title}">
+        </div>
+        <div class="game-info-container">
+            <div class="game-cover">
+                <img src="${game.cover}" alt="${game.title}">
+            </div>
+            <div class="game-details">
+                <h1 class="game-title">${game.title}</h1>
+                <div class="game-genre">
+                    ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
+                </div>
+                <p class="game-description">${game.description}</p>
+                <div class="game-actions">
+                    <button class="play-button">
+                        <i class="fas fa-play"></i>
+                        Jogar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="game-media">
+            <div class="media-tabs">
+                <div class="media-tab active">Screenshots</div>
+                ${game.videos.length > 0 ? '<div class="media-tab">Videos</div>' : ''}
+            </div>
+            <div class="media-grid">
+                ${game.images.map(image => `
+                    <div class="media-item">
+                        <img src="${image}" alt="Screenshot">
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+
+    // Adiciona event listener para o botão voltar
+    const backButton = gameDetailsSection.querySelector('.back-button');
+    backButton.addEventListener('click', () => {
+        gameDetailsSection.classList.remove('active');
+        document.getElementById('home').classList.add('active');
+    });
+
+    // Adiciona event listener para o botão jogar
+    const playButton = gameContent.querySelector('.play-button');
+    playButton.addEventListener('click', () => {
+        if (game.url) {
+            window.open(game.url, '_blank');
+        }
+    });
+
+    // Mostra a seção de detalhes
+    gameDetailsSection.classList.add('active');
+} 
