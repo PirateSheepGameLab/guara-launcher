@@ -7,16 +7,16 @@
 
 :root {
     --primary-color: #0a1020;
-    --secondary-color: #0d1428;
-    --accent-color: #3c85f5;
+    --secondary-color: #003ce0;
+    --accent-color: #F2780A;
     --text-color: #ffffff;
     --text-secondary: #8b949e;
     --sidebar-width: 250px;
     --filter-sidebar-width: 280px;
     --header-height: 60px;
-    --sidebar-color: #1a1a1a;
-    --header-color: #1a1a1a;
-    --main-background: #121212;
+    --sidebar-color: #0A0919;
+    --header-color: #0A0919;
+    --main-background: #0F0C23;
 }
 
 body {
@@ -56,8 +56,8 @@ body.page-transition {
 }
 
 .launcher-icon {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
 }
 
