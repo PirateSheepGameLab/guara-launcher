@@ -382,10 +382,8 @@ function createGameCard(game) {
                 ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
             </div>
         </div>
-    `;
-
-    card.addEventListener('click', () => {
-        showGameDetails(game.id, gamesMap);
+    `;    card.addEventListener('click', () => {
+        showGameDetails(game.id);
     });
 
     return card;
@@ -404,10 +402,8 @@ function createRankedGame(game, rank) {
                 ${game.genre.split(', ').slice(0, 2).map(genre => `<span>${genre}</span>`).join('')}
             </div>
         </div>
-    `;
-
-    rankedGame.addEventListener('click', () => {
-        showGameDetails(game.id, gamesMap);
+    `;    rankedGame.addEventListener('click', () => {
+        showGameDetails(game.id);
     });
 
     return rankedGame;
@@ -701,70 +697,186 @@ function initFeaturedCarousel() {
 }
 
 // Função para mostrar os detalhes do jogo
-function showGameDetails(gameId, gamesMap) {
-    const game = gamesMap.get(gameId);
-    if (!game) return;
+async function showGameDetails(gameId) {
+    try {
+        // Esconde todas as seções
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => section.classList.remove('active'));
 
-    // Esconde todas as seções
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => section.classList.remove('active'));
+        // Mostra a seção de detalhes
+        const gameDetailsSection = document.getElementById('game-details');
+        gameDetailsSection.classList.add('active');
 
-    // Mostra a seção de detalhes
-    const gameDetailsSection = document.getElementById('game-details');
-    const gameContent = gameDetailsSection.querySelector('.game-content');
-    
-    gameContent.innerHTML = `
-        <div class="game-banner">
-            <img src="${game.background}" alt="${game.title}">
-        </div>
-        <div class="game-info-container">
-            <div class="game-cover">
-                <img src="${game.cover}" alt="${game.title}">
-            </div>
-            <div class="game-details">
-                <h1 class="game-title">${game.title}</h1>
-                <div class="game-genre">
-                    ${game.genre.split(', ').map(genre => `<span>${genre}</span>`).join('')}
-                </div>
-                <p class="game-description">${game.description}</p>
-                <div class="game-actions">
-                    <button class="play-button">
-                        <i class="fas fa-play"></i>
-                        Jogar
-                    </button>
+        // Carrega os dados do jogo
+        const response = await fetch('games.json');
+        const games = await response.json();
+        const game = games.find(g => g.id === gameId);
+
+        if (!game) {
+            throw new Error('Jogo não encontrado');
+        }
+
+        // Atualiza o conteúdo
+        const gameContent = gameDetailsSection.querySelector('.game-content');
+        gameContent.innerHTML = `
+            <div class="game-media">
+                <div class="media-gallery">
+                    <button class="carousel-arrow prev">❮</button>
+                    <div class="carousel-container"></div>
+                    <button class="carousel-arrow next">❯</button>
                 </div>
             </div>
-        </div>
-        <div class="game-media">
-            <div class="media-tabs">
-                <div class="media-tab active">Screenshots</div>
-                ${game.videos.length > 0 ? '<div class="media-tab">Videos</div>' : ''}
-            </div>
-            <div class="media-grid">
-                ${game.images.map(image => `
-                    <div class="media-item">
-                        <img src="${image}" alt="Screenshot">
+
+            <div class="game-info-btns"> 
+                <div class="left-content">
+                    <button class="btn-play">Jogar</button>
+                    <button class="btn-favorite"><i class="fas fa-heart"></i></button>
+                    <div class="stat-box">
+                        <span class="label">Tempo de Jogo</span>
+                        <span class="value" id="statPlayTime">1h 45min</span>
                     </div>
-                `).join('')}
+                    <div class="stat-box">
+                        <span class="label">Última Sessão</span>
+                        <span class="value" id="statLastSession">${new Date(game.lastPlayed).toLocaleDateString()}</span>
+                    </div>  
+                </div>
+                <div class="right-content">
+                    <button class="btn-settings"><i class="fas fa-cog"></i></button>
+                </div>      
             </div>
-        </div>
-    `;
 
-    // Adiciona event listener para o botão voltar
-    const backButton = gameDetailsSection.querySelector('.back-button');
-    backButton.addEventListener('click', () => {
-        gameDetailsSection.classList.remove('active');
-        document.getElementById('home').classList.add('active');
-    });
+            <div class="game-info-sections">
+                <div class="game-info-sidebar">
+                    <div class="game-header">
+                        <h1 id="gameTitle">${game.title}</h1>
+                        <p id="gameDescription" class="game-description">
+                            ${game.description}
+                        </p>
+                    </div>
+                </div>
+                <div class="game-extra-info">
+                    <section class="achievements-section">
+                        <h2>Conquistas</h2>
+                        <div class="progress-bar">
+                            <div class="progress" id="achievementsProgress"></div>
+                        </div>
+                        <div class="achievements-grid" id="achievementsGrid">
+                            <p>Carregando conquistas...</p>
+                        </div>
+                        <button class="btn-view-all">Ver todas as conquistas</button>
+                    </section>
+                    <section class="collectibles-section">
+                        <h2>Colecionáveis</h2>
+                        <div class="progress-bar">
+                            <div class="progress" id="collectiblesProgress"></div>
+                        </div>
+                        <div class="collectibles-grid" id="collectiblesGrid">
+                            <p>Carregando colecionáveis...</p>
+                        </div>
+                        <button class="btn-view-all">Ver todos os colecionáveis</button>
+                    </section>
+                    <section class="requeriments-section">
+                        <h2>Requisitos Mínimos</h2>                        
+                        <div class="requeriments-grid" id="requerimentsGrid">
+                            <ul>
+                                <li><strong>Requer:</strong> Processador e sistema operacional de 64 bits</li>
+                                <li><strong>Sistema Operacional:</strong> Windows 10/11 (versões 64-bit)</li>
+                                <li><strong>Processador:</strong> Intel Core i3</li>
+                                <li><strong>Memória:</strong> 8 GB de RAM</li>
+                                <li><strong>Placa de Vídeo:</strong> Nvidia GTX 1060 3GB, AMD RX 470 4GB, Intel UHD Graphics 630</li>
+                                <li><strong>Armazenamento:</strong> 15 GB de espaço disponível</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        `;
 
-    // Adiciona event listener para o botão jogar
-    const playButton = gameContent.querySelector('.play-button');
-    playButton.addEventListener('click', () => {
-        if (game.url) {
-            window.open(game.url, '_blank');
+        // Inicializa a galeria de mídia
+        const mediaItems = [
+            ...(game.images || []).map(src => ({ type: 'image', src })),
+            ...(game.videos || []).map(src => ({ type: 'video', src }))
+        ];
+
+        if (mediaItems.length === 0) {
+            mediaItems.push({ type: 'image', src: game.cover });
+        }
+
+        const container = gameContent.querySelector('.carousel-container');
+        mediaItems.forEach((item, index) => {
+            const mediaItem = document.createElement('div');
+            mediaItem.className = `media-item ${item.type}`;
+            const element = item.type === 'video' 
+                ? createVideoElement(item.src) 
+                : createImageElement(item.src);
+            mediaItem.appendChild(element);
+            container.appendChild(mediaItem);
+        });
+
+        // Configura a navegação do carrossel
+        setupCarouselNavigation(gameContent, mediaItems);
+
+        // Configura o botão voltar
+        const backButton = gameDetailsSection.querySelector('.back-button');
+        backButton.addEventListener('click', () => {
+            gameDetailsSection.classList.remove('active');
+            document.getElementById('home').classList.add('active');
+        });
+
+        // Configura o botão jogar
+        const playButton = gameContent.querySelector('.btn-play');
+        playButton.addEventListener('click', () => {
+            if (game.url) {
+                window.open(game.url, '_blank');
+            }
+        });
+
+    } catch (error) {
+        console.error('Erro ao carregar detalhes do jogo:', error);
+        showError('Erro ao carregar detalhes do jogo. Por favor, tente novamente mais tarde.');
+    }
+}
+
+// Função auxiliar para criar elemento de vídeo
+function createVideoElement(src) {
+    const video = document.createElement('video');
+    video.src = src;
+    video.controls = true;
+    return video;
+}
+
+// Função auxiliar para criar elemento de imagem
+function createImageElement(src) {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'Game media';
+    return img;
+}
+
+// Função para configurar navegação do carrossel
+function setupCarouselNavigation(gameContent, mediaItems) {
+    let currentIndex = 0;
+    const container = gameContent.querySelector('.carousel-container');
+    const prevButton = gameContent.querySelector('.carousel-arrow.prev');
+    const nextButton = gameContent.querySelector('.carousel-arrow.next');
+
+    function updateCarousel(index) {
+        currentIndex = index;
+        container.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            updateCarousel(currentIndex - 1);
         }
     });
 
-    // Mostra a seção de detalhes
-    gameDetailsSection.classList.add('active');
-} 
+    nextButton.addEventListener('click', () => {
+        if (currentIndex < mediaItems.length - 1) {
+            updateCarousel(currentIndex + 1);
+        }
+    });
+
+    // Inicializa o carrossel
+    updateCarousel(0);
+}

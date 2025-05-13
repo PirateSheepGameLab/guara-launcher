@@ -61,7 +61,7 @@ function displaySearchResults(games) {
         `;
 
         gameItem.addEventListener('click', () => {
-            window.location.href = `game-details.html?id=${game.id}`;
+            showGameDetails(game.id);
         });
 
         list.appendChild(gameItem);
