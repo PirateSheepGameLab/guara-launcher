@@ -171,25 +171,47 @@ header {
     gap: 20px;
 }
 
+.search-container {
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
 .search {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    width: 100%;
     border-radius: 8px;
-    padding: 8px 15px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .search input {
-    background: none;
+    width: 100%;
+    padding: 12px 40px 12px 15px;
     border: none;
+    background: transparent;
     color: var(--text-color);
-    width: 300px;
-    padding: 0 10px;
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .search input::placeholder {
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.search input:focus {
+    outline: none;
+}
+
+.search i:hover {
+    color: var(--accent-color);
 }
 
 .user-controls {
