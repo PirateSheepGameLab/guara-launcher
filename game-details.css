@@ -162,14 +162,14 @@
 }
 
 .game-media {
-    width: 100%;
+    width: 80%;
     position: relative;
     aspect-ratio: 16/9;
-    max-height: 70vh; /* Reduced from 80vh to accommodate title/description */
-    margin-bottom: 2rem;
-    background: rgba(0, 0, 0, 0.2);
+    max-height: 60vh;
+    margin: 0 auto 2rem auto;
     border-radius: 12px;
     overflow: hidden;
+    background: none;
 }
 
 .media-gallery {
@@ -192,6 +192,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: none !important; /* Impede qualquer transformação */
 }
 
 .media-item img,
@@ -199,16 +200,17 @@
     width: 100%;
     height: 100%;
     object-fit: contain; /* Mantém a proporção sem cortar */
-    background: rgba(0, 0, 0, 0.2);
+    transition: none; /* Remove a transição de escala */
 }
 
 /* Botões de navegação */
 .carousel-arrow {
     position: absolute;
-    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 50px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+    height: 50px;
+    background: none;
     border: none;
     color: white;
     cursor: pointer;
@@ -217,25 +219,20 @@
     justify-content: center;
     z-index: 2;
     opacity: 0;
-    transition: opacity 0.3s ease, background 0.3s ease;
+    transition: opacity 0.3s ease;
+    font-size: 24px;
 }
 
 .carousel-arrow:hover {
-    background: linear-gradient(to right, rgba(0,0,0,0.9), transparent);
+    color: var(--accent-color);
 }
 
 .carousel-arrow.prev {
-    left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+    left: 20px;
 }
 
 .carousel-arrow.next {
-    right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
-}
-
-.carousel-arrow.next:hover {
-    background: linear-gradient(to left, rgba(0,0,0,0.9), transparent);
+    right: 20px;
 }
 
 .media-gallery:hover .carousel-arrow {
