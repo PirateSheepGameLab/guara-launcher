@@ -304,24 +304,41 @@
 
 .game-info-sections {
     display: grid;
-    grid-template-columns: minmax(300px, 2fr) minmax(300px, 3fr);
-    gap: 30px;
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
     width: 100%;
+    margin-top: 15px;
+}
+
+.game-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.game-info-right {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 @media (max-width: 1200px) {
     .game-info-sections {
         grid-template-columns: 1fr;
     }
-
-    .game-header h1 {
-        font-size: 3rem;
+    
+    .achievements-grid, .collectibles-grid {
+        grid-template-columns: repeat(6, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .game-header h1 {
-        font-size: 2.5rem;
+    .game-info-right {
+        grid-template-columns: 1fr;
+    }
+    
+    .achievements-grid, .collectibles-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -353,7 +370,7 @@
     background: rgba(0, 0, 0, 0.5);
     padding: 15px;
     border-radius: 10px;
-    margin: 0; /* Remove qualquer margem */
+    margin-bottom: 15px;
 }
 
 .achievements-section h2, .collectibles-section h2, .requeriments-section h2 {
@@ -396,16 +413,15 @@
     line-height: 1.6; /* Reduzindo um pouco o espaçamento entre linhas */
 }
 
-.achievements-grid, .collectibles-grid{
+.achievements-grid, .collectibles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    gap: 15px;
-    margin: 10px 0; /* Reduzindo de 20px para 10px */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 10px 0;
 }
 
 .achievement-item, .collectible-item {
-    width: 70px;
-    height: 70px;
+    aspect-ratio: 1/1;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     overflow: hidden;
@@ -709,7 +725,7 @@ header {
     background: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .description-section h2 {
@@ -720,6 +736,7 @@ header {
 
 .description-content {
     color: #ccc;
+    line-height: 1.6;
 }
 
 .game-description {

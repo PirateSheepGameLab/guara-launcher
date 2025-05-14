@@ -747,8 +747,8 @@ async function showGameDetails(gameId) {
                 </div>
                 <div class="right-content">
                 </div>      
-            </div>                <div class="game-info-sections">
-                <div class="game-info-sidebar">
+            </div>            <div class="game-info-sections">
+                <div class="game-info-left">
                     <section class="description-section">
                         <h2>Sobre o Jogo</h2>
                         <div class="description-content">
@@ -786,23 +786,26 @@ async function showGameDetails(gameId) {
                                 <span class="metadata-label">Plataformas</span>
                                 <div class="metadata-content">
                                     <div class="platforms">
-                                        <i class="fab fa-windows platform-icon" title="Windows"></i>
-                                        <i class="fab fa-linux platform-icon" title="Linux"></i>
-                                        <i class="fab fa-apple platform-icon" title="MacOS"></i>
+                                        ${game.platforms.includes('windows') ? '<i class="fab fa-windows platform-icon" title="Windows"></i>' : ''}
+                                        ${game.platforms.includes('linux') ? '<i class="fab fa-linux platform-icon" title="Linux"></i>' : ''}
+                                        ${game.platforms.includes('mac') ? '<i class="fab fa-apple platform-icon" title="MacOS"></i>' : ''}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
                 </div>
-                <div class="game-extra-info">
+                <div class="game-info-right">
                     <section class="achievements-section">
                         <h2>Conquistas</h2>
                         <div class="progress-bar">
                             <div class="progress" id="achievementsProgress"></div>
                         </div>
                         <div class="achievements-grid" id="achievementsGrid">
-                            <p>Carregando conquistas...</p>
+                            <!-- Sample achievements for demonstration -->
+                            <div class="achievement-item"><img src="assets/achievement-placeholder.png" alt="Achievement"></div>
+                            <div class="achievement-item locked"><img src="assets/achievement-placeholder.png" alt="Achievement"></div>
+                            <div class="achievement-item"><img src="assets/achievement-placeholder.png" alt="Achievement"></div>
                         </div>
                         <button class="btn-view-all">Ver todas as conquistas</button>
                     </section>
@@ -812,7 +815,10 @@ async function showGameDetails(gameId) {
                             <div class="progress" id="collectiblesProgress"></div>
                         </div>
                         <div class="collectibles-grid" id="collectiblesGrid">
-                            <p>Carregando colecionáveis...</p>
+                            <!-- Sample collectibles for demonstration -->
+                            <div class="collectible-item"><img src="assets/collectible-placeholder.png" alt="Collectible"></div>
+                            <div class="collectible-item locked"><img src="assets/collectible-placeholder.png" alt="Collectible"></div>
+                            <div class="collectible-item"><img src="assets/collectible-placeholder.png" alt="Collectible"></div>
                         </div>
                         <button class="btn-view-all">Ver todos os colecionáveis</button>
                     </section>
@@ -820,12 +826,11 @@ async function showGameDetails(gameId) {
                         <h2>Requisitos Mínimos</h2>                        
                         <div class="requeriments-grid" id="requerimentsGrid">
                             <ul>
-                                <li><strong>Requer:</strong> Processador e sistema operacional de 64 bits</li>
-                                <li><strong>Sistema Operacional:</strong> Windows 10/11 (versões 64-bit)</li>
                                 <li><strong>Processador:</strong> Intel Core i3</li>
                                 <li><strong>Memória:</strong> 8 GB de RAM</li>
-                                <li><strong>Placa de Vídeo:</strong> Nvidia GTX 1060 3GB, AMD RX 470 4GB, Intel UHD Graphics 630</li>
-                                <li><strong>Armazenamento:</strong> 15 GB de espaço disponível</li>
+                                <li><strong>Placa de Vídeo:</strong> GTX 1060 3GB / RX 470 4GB</li>
+                                <li><strong>Armazenamento:</strong> 15 GB</li>
+                                <li><strong>Sistema:</strong> Windows 10/11 (64-bit)</li>
                             </ul>
                         </div>
                     </section>
