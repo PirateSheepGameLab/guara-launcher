@@ -747,7 +747,7 @@ async function showGameDetails(gameId) {
                 </div>
                 <div class="right-content">
                 </div>      
-            </div>            <div class="game-info-sections">
+            </div>                <div class="game-info-sections">
                 <div class="game-info-sidebar">
                     <section class="description-section">
                         <h2>Sobre o Jogo</h2>
@@ -755,6 +755,43 @@ async function showGameDetails(gameId) {
                             <p id="gameDescription" class="game-description">
                                 ${game.description}
                             </p>
+                        </div>
+                    </section>
+                    <section class="studio-section">
+                        <h2>Informações do Jogo</h2>
+                        <div class="studio-info">
+                            <div class="studio-logo">
+                                <img src="${game.studio?.logo || 'assets/default-studio.png'}" alt="${game.studio?.name || 'Studio'} logo">
+                            </div>
+                            <div class="studio-details">
+                                <h3 class="studio-name">${game.studio?.name || 'Desenvolvedor'}</h3>
+                            </div>
+                        </div>
+                        <div class="game-metadata">
+                            <div class="metadata-item">
+                                <span class="metadata-label">Gêneros</span>
+                                <div class="metadata-content">
+                                    <div class="genre-tags">
+                                        ${game.genre.split(', ').map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Data de Lançamento</span>
+                                <div class="metadata-content">
+                                    ${new Date(game.releaseDate || Date.now()).toLocaleDateString()}
+                                </div>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Plataformas</span>
+                                <div class="metadata-content">
+                                    <div class="platforms">
+                                        <i class="fab fa-windows platform-icon" title="Windows"></i>
+                                        <i class="fab fa-linux platform-icon" title="Linux"></i>
+                                        <i class="fab fa-apple platform-icon" title="MacOS"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>

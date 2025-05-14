@@ -170,18 +170,25 @@
     border-radius: 12px;
     overflow: hidden;
     background: none;
+    padding: 20px;
 }
 
 .media-gallery {
     width: 100%;
     height: 100%;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .carousel-container {
     display: flex;
     width: 100%;
     height: 100%;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.3s ease;
 }
 
@@ -277,23 +284,23 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 20px;
-    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
 
 .left-content {
     display: flex;
     align-items: center;
-    gap: clamp(10px, 2vw, 30px); /* Gap responsivo */
-    flex-wrap: wrap;
+    gap: 15px;
 }
   
 .right-content {
     display: flex;
     align-items: center;
     justify-content: center;
-}  
+}
 
 .game-info-sections {
     display: grid;
@@ -320,22 +327,25 @@
 
 .stat-box {
     display: flex;
-    flex-direction: column; /* Exibe o rótulo e o valor em uma coluna */
-    align-items: flex-start; /* Alinha os itens à esquerda */
-    padding: 5px 0;
-    text-align: left; /* Alinha o texto à esquerda */
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    text-align: left;
     color: white;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .stat-box .label {
     font-size: 1em;
     color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2px; /* Espaçamento entre o rótulo e o valor */
+    margin-bottom: 5px;
 }
 
 .stat-box .value {
-    font-size: 1.1em;
-    font-weight: bold;
+    font-size: 1.2em;
+    font-weight: 600;
     color: white;
 }
 
@@ -719,6 +729,85 @@ header {
     margin: 0;
 }
 
+.studio-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.studio-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.studio-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.studio-details {
+    flex: 1;
+}
+
+.studio-name {
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.studio-section h2 {
+    color: white;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+}
+
+.game-metadata {
+    color: #ccc;
+}
+
+.metadata-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.metadata-label {
+    color: rgba(255, 255, 255, 0.7);
+    min-width: 120px;
+}
+
+.metadata-content {
+    flex: 1;
+}
+
+.genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.genre-tag {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+.platforms {
+    display: flex;
+    gap: 15px;
+}
+
+.platform-icon {
+    color: #ccc;
+    font-size: 1.2em;
+}
+
 @media (max-width: 768px) {
     .description-section {
         padding: 15px;
@@ -726,5 +815,20 @@ header {
     
     .game-description {
         font-size: 1rem;
+    }
+
+    .studio-info {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .metadata-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .metadata-label {
+        min-width: auto;
     }
 }
