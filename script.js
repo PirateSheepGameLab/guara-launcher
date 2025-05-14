@@ -717,8 +717,16 @@ async function showGameDetails(gameId) {
         }
 
         // Atualiza o conteúdo
-        const gameContent = gameDetailsSection.querySelector('.game-content');
-        gameContent.innerHTML = `
+        const gameContent = gameDetailsSection.querySelector('.game-content');        gameContent.innerHTML = `            <div class="game-header">
+                <div class="title-play-container">                    <h1 id="gameTitle">${game.title}</h1>
+                    <div class="header-actions">
+                        <button class="btn-play">Jogar</button>
+                        <button class="btn-favorite"><i class="fas fa-heart"></i></button>
+                        <button class="btn-settings"><i class="fas fa-cog"></i></button>
+                    </div>
+                </div>
+            </div>
+
             <div class="game-media">
                 <div class="media-gallery">
                     <button class="carousel-arrow prev">❮</button>
@@ -729,30 +737,26 @@ async function showGameDetails(gameId) {
 
             <div class="game-info-btns"> 
                 <div class="left-content">
-                    <button class="btn-play">Jogar</button>
-                    <button class="btn-favorite"><i class="fas fa-heart"></i></button>
                     <div class="stat-box">
                         <span class="label">Tempo de Jogo</span>
                         <span class="value" id="statPlayTime">1h 45min</span>
                     </div>
                     <div class="stat-box">
                         <span class="label">Última Sessão</span>
-                        <span class="value" id="statLastSession">${new Date(game.lastPlayed).toLocaleDateString()}</span>
-                    </div>  
+                        <span class="value" id="statLastSession">${new Date(game.lastPlayed).toLocaleDateString()}</span>                    </div>  
                 </div>
                 <div class="right-content">
-                    <button class="btn-settings"><i class="fas fa-cog"></i></button>
                 </div>      
-            </div>
-
-            <div class="game-info-sections">
+            </div>            <div class="game-info-sections">
                 <div class="game-info-sidebar">
-                    <div class="game-header">
-                        <h1 id="gameTitle">${game.title}</h1>
-                        <p id="gameDescription" class="game-description">
-                            ${game.description}
-                        </p>
-                    </div>
+                    <section class="description-section">
+                        <h2>Sobre o Jogo</h2>
+                        <div class="description-content">
+                            <p id="gameDescription" class="game-description">
+                                ${game.description}
+                            </p>
+                        </div>
+                    </section>
                 </div>
                 <div class="game-extra-info">
                     <section class="achievements-section">

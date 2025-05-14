@@ -31,22 +31,35 @@
 .game-details-content {
     padding: 20px;
     overflow-y: auto;
-    background: transparent;
-    grid-column: 2 / 3;
-    margin-left: 0;
-    margin-right: 0;
-    width: auto;
+    height: 100vh;
+    width: 100%;
+}
+
+.game-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 1800px; /* Limita a largura máxima para telas muito grandes */
+    margin: 0 auto; /* Centraliza o conteúdo */
+    width: 100%;
+    padding: 0 20px;
 }
 
 .game-header {
-    background: rgba(0, 0, 0, 0.5);
+    padding: 20px 0;
+    margin-bottom: 20px;
     width: 100%;
-    padding: 25px;
-    border-radius: 10px;
-    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.game-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 .game-header p {
@@ -78,9 +91,11 @@
 }
 
 .game-description {
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.7;
-    font-size: 1.2em;
+    max-width: 800px;
+    margin-bottom: 2rem;
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 1.1rem;
     text-align: justify;
     margin: 0;
     padding: 0;
@@ -98,32 +113,35 @@
 }
 
 .btn-play {
-    background: white;
-    color: var(--primary-color);
+    background: var(--secondary-color);
+    color: white;
     border: none;
-    padding: 12px 35px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 1.1em;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s, color 0.3s;
+    transition: all 0.3s ease;
     min-width: 150px;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-play:hover {
-    background: #eee;
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(242, 120, 10, 0.3);
 }
 
 .btn-settings, .btn-favorite {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    width: 45px;
-    height: 45px;
+    background: transparent;
+    border: 2px solid #666;
+    color: #666;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    color: white;
-    font-size: 1.2em;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,49 +151,54 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
+.btn-favorite:hover {
+    border-color: #F2780A;
+    color: #F2780A;
+}
+
+.btn-settings:hover {
+    border-color:#F2780A;
+    color: #F2780A;
+}
+
 .game-media {
-    margin: 15px 0 30px 0;  /* Reduzindo a margem superior de 30px para 15px */
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    width: 100%;
     position: relative;
-    padding: 20px;
+    aspect-ratio: 16/9;
+    max-height: 70vh; /* Reduced from 80vh to accommodate title/description */
+    margin-bottom: 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
     overflow: hidden;
-    width: 100%; /* Ocupa toda a largura disponível */
 }
 
 .media-gallery {
-    position: relative;
     width: 100%;
-    display: flex;
-    justify-content: center; /* Centraliza o conteúdo horizontalmente */
-    overflow: hidden;
+    height: 100%;
+    position: relative;
 }
 
 .carousel-container {
     display: flex;
-    gap: 20px;
+    width: 100%;
+    height: 100%;
     transition: transform 0.3s ease;
-    position: relative;
-    width: 1280px; /* Largura fixa para o container do carrossel */
-    max-width: 90%; /* Limita a largura em telas menores */
 }
 
 .media-item {
     flex: 0 0 100%;
-    position: relative;
-    padding-top: 56.25%; /* Mantém a proporção 16:9 */
-    border-radius: 8px;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .media-item img,
 .media-item video {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Mantém a proporção da imagem sem cortar */
+    object-fit: contain; /* Mantém a proporção sem cortar */
     background: rgba(0, 0, 0, 0.2);
 }
 
@@ -234,6 +257,15 @@
     .carousel-container {
         gap: 10px;
     }
+
+    .game-header h1 {
+        font-size: 2rem;
+    }
+
+    .game-description {
+        font-size: 1rem;
+        padding: 0 15px;
+    }
 }
 
 .game-info-sidebar {
@@ -245,19 +277,19 @@
 
 .game-info-btns {
     display: flex;
-    gap: 100px;
     justify-content: space-between;
-    background-color: rgba(0, 0, 0, 0.5); /* ou seu blueviolet */
-    border-radius: 10px;
-    padding: 10px 20px;
-    margin-top: -15px;
-    margin-bottom: 15px;
-} 
-  
+    align-items: center;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+}
+
 .left-content {
     display: flex;
     align-items: center;
-    gap: 30px; /* ajuste o espaçamento entre os itens da esquerda */
+    gap: clamp(10px, 2vw, 30px); /* Gap responsivo */
+    flex-wrap: wrap;
 }
   
 .right-content {
@@ -268,14 +300,25 @@
 
 .game-info-sections {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    position: relative;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.5); /* Adiciona um overlay escuro para melhorar a legibilidade */
-    border-radius: 10px;
-    padding: 20px;
-    align-items: start; /* Alinha os items ao topo do grid */
+    grid-template-columns: minmax(300px, 2fr) minmax(300px, 3fr);
+    gap: 30px;
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .game-info-sections {
+        grid-template-columns: 1fr;
+    }
+
+    .game-header h1 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-header h1 {
+        font-size: 2.5rem;
+    }
 }
 
 .stat-box {
@@ -554,4 +597,137 @@ header {
     display: flex;
     flex-direction: column;
     gap: 10px; /* Ajustando o espaço entre as seções */
+}
+
+/* Ultrawide screen support */
+@media (min-width: 2560px) {
+    .game-description {
+        max-width: 1200px;
+    }
+    
+    .game-media {
+        max-width: 2000px;
+        margin: 0 auto;
+    }
+}
+
+.title-play-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.title-play-container h1 {
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-play {
+    margin-right: 0.5rem;
+}
+
+.btn-play {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-play:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(242, 120, 10, 0.3);
+}
+
+.btn-favorite {
+    background: transparent;
+    border: 2px solid #666;
+    color: #666;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-favorite:hover {
+    border-color: #F2780A;
+    color: #F2780A;
+}
+
+.game-info-sections {
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .title-play-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .btn-play {
+        padding: 10px 24px;
+        font-size: 1rem;
+    }
+
+    .btn-favorite,
+    .btn-settings {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.description-section {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.description-section h2 {
+    color: white;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+}
+
+.description-content {
+    color: #ccc;
+}
+
+.game-description {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    text-align: justify;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .description-section {
+        padding: 15px;
+    }
+    
+    .game-description {
+        font-size: 1rem;
+    }
 }
