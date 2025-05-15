@@ -901,28 +901,46 @@ function createImageElement(src) {
 // Função para configurar navegação do carrossel
 function setupCarouselNavigation(gameContent, mediaItems) {
     let currentIndex = 0;
+    let isTransitioning = false;
     const container = gameContent.querySelector('.carousel-container');
     const prevButton = gameContent.querySelector('.carousel-arrow.prev');
     const nextButton = gameContent.querySelector('.carousel-arrow.next');
 
     function updateCarousel(index) {
+        if (isTransitioning) return;
+
+        // Handle circular navigation
+        if (index < 0) {
+            index = mediaItems.length - 1;
+        } else if (index >= mediaItems.length) {
+            index = 0;
+        }
+
+        isTransitioning = true;
         currentIndex = index;
         container.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Reset transition flag
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 300);
     }
 
-    prevButton.addEventListener('click', () => {
-        if (currentIndex > 0) {
+    function handleKeyNavigation(e) {
+        if (e.key === 'ArrowLeft') {
             updateCarousel(currentIndex - 1);
-        }
-    });
-
-    nextButton.addEventListener('click', () => {
-        if (currentIndex < mediaItems.length - 1) {
+        } else if (e.key === 'ArrowRight') {
             updateCarousel(currentIndex + 1);
         }
-    });
+    }
 
-    // Inicializa o carrossel
+    prevButton.addEventListener('click', () => updateCarousel(currentIndex - 1));
+    nextButton.addEventListener('click', () => updateCarousel(currentIndex + 1));
+    
+    // Add keyboard navigation
+    document.addEventListener('keydown', handleKeyNavigation);
+
+    // Initialize carousel
     updateCarousel(0);
 }
 

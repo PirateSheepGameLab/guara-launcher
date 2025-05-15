@@ -162,15 +162,15 @@
 }
 
 .game-media {
-    width: 80%;
+    width: 100%;
+    max-width: 1200px;
     position: relative;
     aspect-ratio: 16/9;
     max-height: 60vh;
     margin: 0 auto 2rem auto;
     border-radius: 12px;
     overflow: hidden;
-    background: none;
-    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .media-gallery {
@@ -179,46 +179,39 @@
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
 .carousel-container {
     display: flex;
     width: 100%;
     height: 100%;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-in-out;
 }
 
 .media-item {
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: none !important; /* Impede qualquer transformação */
+    position: relative;
 }
 
 .media-item img,
 .media-item video {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Mantém a proporção sem cortar */
-    transition: none; /* Remove a transição de escala */
+    object-fit: contain;
 }
 
-/* Botões de navegação */
+/* Carousel navigation arrows */
 .carousel-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    background: none;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6);
     border: none;
+    border-radius: 50%;
     color: white;
     cursor: pointer;
     display: flex;
@@ -226,11 +219,12 @@
     justify-content: center;
     z-index: 2;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     font-size: 24px;
 }
 
 .carousel-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
     color: var(--accent-color);
 }
 
@@ -248,27 +242,21 @@
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
-    .media-item {
-        flex: 0 0 calc(50% - 10px);
+    .game-media {
+        width: 90%;
     }
 }
 
 @media (max-width: 768px) {
-    .media-item {
-        flex: 0 0 100%;
+    .game-media {
+        width: 100%;
+        margin: 0 auto 1.5rem auto;
     }
     
-    .carousel-container {
-        gap: 10px;
-    }
-
-    .game-header h1 {
-        font-size: 2rem;
-    }
-
-    .game-description {
-        font-size: 1rem;
-        padding: 0 15px;
+    .carousel-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
     }
 }
 
