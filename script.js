@@ -715,7 +715,8 @@ async function showGameDetails(gameId) {
         }
 
         // Atualiza o conteúdo
-        const gameContent = gameDetailsSection.querySelector('.game-content');        gameContent.innerHTML = `            <div class="game-header">
+        const gameContent = gameDetailsSection.querySelector('.game-content');        gameContent.innerHTML = `            
+            <div class="game-header">
                 <div class="title-play-container">                    <h1 id="gameTitle">${game.title}</h1>
                     <div class="header-actions">
                         <button class="btn-play">Jogar</button>

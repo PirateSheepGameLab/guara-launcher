@@ -721,29 +721,25 @@ header {
     }
 }
 
-.description-section {
+.description-section,
+.studio-section {
     background: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 15px;
 }
 
-.description-section h2 {
+.description-section h2,
+.studio-section h2 {
     color: white;
     font-size: 1.4em;
     margin-bottom: 15px;
 }
 
-.description-content {
+.description-content,
+.studio-info {
     color: #ccc;
     line-height: 1.6;
-}
-
-.game-description {
-    line-height: 1.6;
-    font-size: 1.1rem;
-    text-align: justify;
-    margin: 0;
 }
 
 .studio-info {
@@ -758,6 +754,7 @@ header {
     height: 80px;
     border-radius: 8px;
     overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .studio-logo img {
@@ -776,12 +773,6 @@ header {
     margin-bottom: 5px;
 }
 
-.studio-section h2 {
-    color: white;
-    font-size: 1.4em;
-    margin-bottom: 15px;
-}
-
 .game-metadata {
     color: #ccc;
 }
@@ -791,11 +782,15 @@ header {
     align-items: flex-start;
     gap: 10px;
     margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
 }
 
 .metadata-label {
     color: rgba(255, 255, 255, 0.7);
     min-width: 120px;
+    font-weight: 500;
 }
 
 .metadata-content {
@@ -813,6 +808,11 @@ header {
     padding: 4px 12px;
     border-radius: 15px;
     font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.genre-tag:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .platforms {
@@ -823,17 +823,19 @@ header {
 .platform-icon {
     color: #ccc;
     font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+.platform-icon:hover {
+    color: white;
 }
 
 @media (max-width: 768px) {
-    .description-section {
+    .description-section,
+    .studio-section {
         padding: 15px;
     }
     
-    .game-description {
-        font-size: 1rem;
-    }
-
     .studio-info {
         flex-direction: column;
         align-items: flex-start;
@@ -847,5 +849,10 @@ header {
 
     .metadata-label {
         min-width: auto;
+    }
+
+    .studio-logo {
+        width: 60px;
+        height: 60px;
     }
 }
