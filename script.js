@@ -716,7 +716,7 @@ async function showGameDetails(gameId) {
 
         // Atualiza o conteúdo
         const gameContent = gameDetailsSection.querySelector('.game-content');        gameContent.innerHTML = `            
-            <div class="game-header">
+        <div class="game-header">
                 <div class="title-play-container">                    <h1 id="gameTitle">${game.title}</h1>
                     <div class="header-actions">
                         <button class="btn-play">Jogar</button>
@@ -768,7 +768,7 @@ async function showGameDetails(gameId) {
                         </div>
                         <div class="game-metadata">
                             <div class="metadata-item">
-                                <span class="metadata-label">Gêneros</span>
+                                <span class="metadata-label">Gêneros:</span>
                                 <div class="metadata-content">
                                     <div class="genre-tags">
                                         ${game.genre.split(', ').map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
@@ -776,19 +776,31 @@ async function showGameDetails(gameId) {
                                 </div>
                             </div>
                             <div class="metadata-item">
-                                <span class="metadata-label">Data de Lançamento</span>
+                                <span class="metadata-label">Data de Lançamento:</span>
                                 <div class="metadata-content">
                                     ${new Date(game.releaseDate || Date.now()).toLocaleDateString()}
                                 </div>
                             </div>
                             <div class="metadata-item">
-                                <span class="metadata-label">Plataformas</span>
+                                <span class="metadata-label">Plataformas:</span>
                                 <div class="metadata-content">
                                     <div class="platforms">
                                         ${game.platforms.includes('windows') ? '<i class="fab fa-windows platform-icon" title="Windows"></i>' : ''}
                                         ${game.platforms.includes('linux') ? '<i class="fab fa-linux platform-icon" title="Linux"></i>' : ''}
                                         ${game.platforms.includes('mac') ? '<i class="fab fa-apple platform-icon" title="MacOS"></i>' : ''}
                                     </div>
+                                </div>
+                            </div>
+                            <div class="metadata-specifications">
+                                <span class="metadata-label">Requisitos Mínimos:</span>
+                                <div class="requeriments-grid" id="requerimentsGrid">
+                                  <ul>
+                                        <li><strong>Processador:</strong> Intel Core i3</li>
+                                        <li><strong>Memória:</strong> 8 GB de RAM</li>
+                                        <li><strong>Placa de Vídeo:</strong> GTX 1060 3GB / RX 470 4GB</li>
+                                        <li><strong>Armazenamento:</strong> 15 GB</li>
+                                        <li><strong>Sistema:</strong> Windows 10/11 (64-bit)</li>
+                                    </ul>      
                                 </div>
                             </div>
                         </div>
@@ -821,18 +833,7 @@ async function showGameDetails(gameId) {
                         </div>
                         <button class="btn-view-all">Ver todos os colecionáveis</button>
                     </section>
-                    <section class="requeriments-section">
-                        <h2>Requisitos Mínimos</h2>                        
-                        <div class="requeriments-grid" id="requerimentsGrid">
-                            <ul>
-                                <li><strong>Processador:</strong> Intel Core i3</li>
-                                <li><strong>Memória:</strong> 8 GB de RAM</li>
-                                <li><strong>Placa de Vídeo:</strong> GTX 1060 3GB / RX 470 4GB</li>
-                                <li><strong>Armazenamento:</strong> 15 GB</li>
-                                <li><strong>Sistema:</strong> Windows 10/11 (64-bit)</li>
-                            </ul>
-                        </div>
-                    </section>
+                    
                 </div>
             </div>
         `;
@@ -901,46 +902,28 @@ function createImageElement(src) {
 // Função para configurar navegação do carrossel
 function setupCarouselNavigation(gameContent, mediaItems) {
     let currentIndex = 0;
-    let isTransitioning = false;
     const container = gameContent.querySelector('.carousel-container');
     const prevButton = gameContent.querySelector('.carousel-arrow.prev');
     const nextButton = gameContent.querySelector('.carousel-arrow.next');
 
     function updateCarousel(index) {
-        if (isTransitioning) return;
-
-        // Handle circular navigation
-        if (index < 0) {
-            index = mediaItems.length - 1;
-        } else if (index >= mediaItems.length) {
-            index = 0;
-        }
-
-        isTransitioning = true;
         currentIndex = index;
         container.style.transform = `translateX(-${currentIndex * 100}%)`;
-        
-        // Reset transition flag
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 300);
     }
 
-    function handleKeyNavigation(e) {
-        if (e.key === 'ArrowLeft') {
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
             updateCarousel(currentIndex - 1);
-        } else if (e.key === 'ArrowRight') {
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (currentIndex < mediaItems.length - 1) {
             updateCarousel(currentIndex + 1);
         }
-    }
+    });
 
-    prevButton.addEventListener('click', () => updateCarousel(currentIndex - 1));
-    nextButton.addEventListener('click', () => updateCarousel(currentIndex + 1));
-    
-    // Add keyboard navigation
-    document.addEventListener('keydown', handleKeyNavigation);
-
-    // Initialize carousel
+    // Inicializa o carrossel
     updateCarousel(0);
 }
 
