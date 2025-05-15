@@ -5,7 +5,8 @@
         "genre": "Action, RogueLike",
         "description": "Super Brock Lee é um jogo indie roguelike desenvolvido por Luan Santos, Mateus Prates e equipe, criado originalmente para a CTRL ALT JAM #2, uma game jam com o tema Adaptação. O jogo combina ação rápida, humor nonsense e estilo retrô com clara inspiração em títulos como The Binding of Isaac.",
         "cover": "https://img.itch.zone/aW1nLzEyMzA4MDAzLnBuZw==/315x250%23c/5kjl3J.png",
-        "background": "https://img.itch.zone/aW1nLzEyMzA4MDAzLnBuZw==/315x250%23c/5kjl3J.png",        "lastPlayed": "2024-03-15T14:30:00Z",
+        "background": "https://img.itch.zone/aW1nLzEyMzA4MDAzLnBuZw==/315x250%23c/5kjl3J.png",
+        "lastPlayed": "2024-03-15T14:30:00Z",
         "images": [
             "https://img.itch.zone/aW1hZ2UvMjA2ODQzOC8xMjMwODM1NC5wbmc=/250x600/q7U3%2F3.png",
             "https://img.itch.zone/aW1hZ2UvMjA2ODQzOC8xMjMwODM1MC5wbmc=/250x600/iI744W.png",
@@ -18,11 +19,19 @@
         ],
         "url": "https://pub-02bd365eb9c44a3bb9fb547ca76d658d.r2.dev/parking-puzzle.zip",
         "studio": {
-            "name": "Amacaco Games",
-            "logo": "https://img.itch.zone/aW1nLzEyMzA4MDAzLnBuZw==/315x250%23c/5kjl3J.png"
+            "name": "Pirate Sheep Studio",
+            "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG-k4Shcw1xog/company-logo_100_100/B4DZWAf2RMHAAU-/0/1741617587907/pirate_sheep_game_lab_logo?e=1752710400&v=beta&t=GwNUXFaGrP3tnIYj38576ENNbSZsUNA28CHUm2ObknQ"
         },
+        "publisher": "Pirate Sheep Studio",
         "releaseDate": "2024-03-15T00:00:00Z",
-        "platforms": ["windows", "linux", "mac"]
+        "platforms": ["windows", "linux", "mac"],
+        "requirements": {
+            "os": "Windows 7 ou superior",
+            "processor": "Intel Core i3-3210 ou AMD FX-4350",
+            "memory": "4 GB RAM",
+            "graphics": "Intel HD Graphics 4000",
+            "storage": "500 MB"
+        }
     },
     {
         "id": "hades",
@@ -35,13 +44,20 @@
             "https://tse3.mm.bing.net/th?id=OIP.WU2r89-5DHGzixXEzyoKygHaEK&pid=Api"
         ],
         "videos": [],
-        "url": "https://store.steampowered.com/app/1145360/Hades/",
-        "studio": {
+        "url": "https://store.steampowered.com/app/1145360/Hades/",        "studio": {
             "name": "Supergiant Games",
             "logo": "https://tse3.mm.bing.net/th?id=OIP.WU2r89-5DHGzixXEzyoKygHaEK&pid=Api"
         },
+        "publisher": "Supergiant Games",
         "releaseDate": "2020-09-17T00:00:00Z",
-        "platforms": ["windows", "mac"]
+        "platforms": ["windows", "mac"],
+        "requirements": {
+            "os": "Windows 7 SP1 ou superior",
+            "processor": "Dual Core 2.4 GHz",
+            "memory": "4 GB RAM",
+            "graphics": "1GB VRAM / DirectX 10+ support",
+            "storage": "15 GB"
+        }
     },
     {
         "id": "dead-cells",
@@ -54,13 +70,20 @@
             "https://tse1.mm.bing.net/th?id=OIP.mi72F_Mz3ul-2_fvpc_XjQHaHa&pid=Api"
         ],
         "videos": [],
-        "url": "https://store.steampowered.com/app/588650/Dead_Cells/",
-        "studio": {
+        "url": "https://store.steampowered.com/app/588650/Dead_Cells/",        "studio": {
             "name": "Motion Twin",
             "logo": "https://tse1.mm.bing.net/th?id=OIP.mi72F_Mz3ul-2_fvpc_XjQHaHa&pid=Api"
         },
+        "publisher": "Motion Twin",
         "releaseDate": "2018-08-07T00:00:00Z",
-        "platforms": ["windows", "linux", "mac"]
+        "platforms": ["windows", "linux", "mac"],
+        "requirements": {
+            "os": "Windows 7 ou superior",
+            "processor": "Intel i5 ou superior",
+            "memory": "2 GB RAM",
+            "graphics": "Nvidia GTX 460 ou superior",
+            "storage": "500 MB"
+        }
     },
     {
         "id": "binding-of-isaac-rebirth",
@@ -73,13 +96,20 @@
             "https://tse1.mm.bing.net/th?id=OIP.3OCUCM2kdbaxId1BfhWxRAHaHa&pid=Api"
         ],
         "videos": [],
-        "url": "https://store.steampowered.com/app/250900/The_Binding_of_Isaac_Rebirth/",
-        "studio": {
+        "url": "https://store.steampowered.com/app/250900/The_Binding_of_Isaac_Rebirth/",        "studio": {
             "name": "Nicalis",
             "logo": "https://tse1.mm.bing.net/th?id=OIP.3OCUCM2kdbaxId1BfhWxRAHaHa&pid=Api"
         },
+        "publisher": "Nicalis",
         "releaseDate": "2014-11-04T00:00:00Z",
-        "platforms": ["windows", "mac"]
+        "platforms": ["windows", "mac"],
+        "requirements": {
+            "os": "Windows XP ou superior",
+            "processor": "2.4 GHz ou superior",
+            "memory": "2 GB RAM",
+            "graphics": "DirectX 9.0c Compatible Card",
+            "storage": "449 MB"
+        }
     },  
     {
         "id": "spelunky-2",
@@ -92,13 +122,20 @@
             "https://tse4.mm.bing.net/th?id=OIP.eIJ1_rGhT8To1oRSbg5oowHaEK&pid=Api"
         ],
         "videos": [],
-        "url": "https://store.steampowered.com/app/418530/Spelunky_2/",
-        "studio": {
+        "url": "https://store.steampowered.com/app/418530/Spelunky_2/",        "studio": {
             "name": "Mossmouth",
             "logo": "https://tse4.mm.bing.net/th?id=OIP.eIJ1_rGhT8To1oRSbg5oowHaEK&pid=Api"
         },
+        "publisher": "Mossmouth",
         "releaseDate": "2020-09-29T00:00:00Z",
-        "platforms": ["windows"]
+        "platforms": ["windows"],
+        "requirements": {
+            "os": "Windows 7 SP1 ou superior",
+            "processor": "Intel Core i3-2100 ou AMD equivalente",
+            "memory": "4 GB RAM",
+            "graphics": "DirectX 11 compatible GPU com 1GB VRAM",
+            "storage": "600 MB"
+        }
     },
     {
         "id": "risk-of-rain-2",
@@ -111,12 +148,19 @@
             "https://tse3.mm.bing.net/th?id=OIP.tTXiq4rRpCkr2nIns8Aj1wHaDt&pid=Api"
         ],
         "videos": [],
-        "url": "https://store.steampowered.com/app/632360/Risk_of_Rain_2/",
-        "studio": {
+        "url": "https://store.steampowered.com/app/632360/Risk_of_Rain_2/",        "studio": {
             "name": "Hopoo Games",
             "logo": "https://tse3.mm.bing.net/th?id=OIP.tTXiq4rRpCkr2nIns8Aj1wHaDt&pid=Api"
         },
+        "publisher": "Gearbox Publishing",
         "releaseDate": "2020-08-11T00:00:00Z",
-        "platforms": ["windows", "linux"]
+        "platforms": ["windows", "linux"],
+        "requirements": {
+            "os": "Windows 7 ou superior",
+            "processor": "Intel Core i3-6100 / AMD FX-8350",
+            "memory": "4 GB RAM",
+            "graphics": "GTX 580 / AMD HD 7870",
+            "storage": "10 GB"
+        }
     }    
 ] 

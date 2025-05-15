@@ -755,20 +755,27 @@ async function showGameDetails(gameId) {
                                 ${game.description}
                             </p>
                         </div>
-                    </section>
-                    <section class="studio-section">
+                    </section>                    <section class="studio-section">
                         <h2>Informações do Jogo</h2>
                         <div class="studio-info">
                             <div class="studio-logo">
                                 <img src="${game.studio?.logo || 'assets/default-studio.png'}" alt="${game.studio?.name || 'Studio'} logo">
                             </div>
                             <div class="studio-details">
-                                <h3 class="studio-name">${game.studio?.name || 'Desenvolvedor'}</h3>
+                                <h3 class="studio-name">
+                                    <span class="metadata-label">Desenvolvedora:</span>
+                                    ${game.studio?.name || 'Desenvolvedor'}
+                                </h3>
+                                ${game.publisher ? `
+                                <div class="studio-publisher">
+                                    <span class="metadata-label">Publisher:</span>
+                                    ${game.publisher}
+                                </div>` : ''}
                             </div>
                         </div>
                         <div class="game-metadata">
                             <div class="metadata-item">
-                                <span class="metadata-label">Gêneros:</span>
+                                <span class="metadata-label">Gêneros</span>
                                 <div class="metadata-content">
                                     <div class="genre-tags">
                                         ${game.genre.split(', ').map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
@@ -776,13 +783,17 @@ async function showGameDetails(gameId) {
                                 </div>
                             </div>
                             <div class="metadata-item">
-                                <span class="metadata-label">Data de Lançamento:</span>
+                                <span class="metadata-label">Data de Lançamento</span>
                                 <div class="metadata-content">
-                                    ${new Date(game.releaseDate || Date.now()).toLocaleDateString()}
+                                    ${new Date(game.releaseDate || Date.now()).toLocaleDateString('pt-BR', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    })}
                                 </div>
                             </div>
                             <div class="metadata-item">
-                                <span class="metadata-label">Plataformas:</span>
+                                <span class="metadata-label">Plataformas</span>
                                 <div class="metadata-content">
                                     <div class="platforms">
                                         ${game.platforms.includes('windows') ? '<i class="fab fa-windows platform-icon" title="Windows"></i>' : ''}
@@ -791,16 +802,28 @@ async function showGameDetails(gameId) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="metadata-specifications">
-                                <span class="metadata-label">Requisitos Mínimos:</span>
-                                <div class="requeriments-grid" id="requerimentsGrid">
-                                  <ul>
-                                        <li><strong>Processador:</strong> Intel Core i3</li>
-                                        <li><strong>Memória:</strong> 8 GB de RAM</li>
-                                        <li><strong>Placa de Vídeo:</strong> GTX 1060 3GB / RX 470 4GB</li>
-                                        <li><strong>Armazenamento:</strong> 15 GB</li>
-                                        <li><strong>Sistema:</strong> Windows 10/11 (64-bit)</li>
-                                    </ul>      
+                            <div class="metadata-item">
+                                <span class="metadata-label">Requisitos Mínimos</span>
+                                <div class="metadata-content">
+                                    <div class="requeriments-grid" id="requerimentsGrid">
+                                        ${game.requirements ? `
+                                        <ul>
+                                            ${game.requirements.processor ? `<li><strong>Processador:</strong> ${game.requirements.processor}</li>` : ''}
+                                            ${game.requirements.memory ? `<li><strong>Memória:</strong> ${game.requirements.memory}</li>` : ''}
+                                            ${game.requirements.graphics ? `<li><strong>Placa de Vídeo:</strong> ${game.requirements.graphics}</li>` : ''}
+                                            ${game.requirements.storage ? `<li><strong>Armazenamento:</strong> ${game.requirements.storage}</li>` : ''}
+                                            ${game.requirements.os ? `<li><strong>Sistema:</strong> ${game.requirements.os}</li>` : ''}
+                                        </ul>
+                                        ` : `
+                                        <ul>
+                                            <li><strong>Processador:</strong> Intel Core i3 ou equivalente</li>
+                                            <li><strong>Memória:</strong> 8 GB de RAM</li>
+                                            <li><strong>Placa de Vídeo:</strong> Integrada</li>
+                                            <li><strong>Armazenamento:</strong> 2 GB</li>
+                                            <li><strong>Sistema:</strong> Windows 10/11 (64-bit)</li>
+                                        </ul>
+                                        `}
+                                    </div>
                                 </div>
                             </div>
                         </div>
