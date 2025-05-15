@@ -297,10 +297,8 @@ function renderSection(section, gamesMap) {
 
                 grid.classList.toggle('has-more-left', hasScrollLeft);
                 grid.classList.toggle('has-more-right', hasScrollRight);
-            };
-
-            // Calcula o tamanho do scroll baseado no tamanho dos cards
-            const scrollAmount = 300 + 20; // largura do card + gap
+            };            // Calcula o tamanho do scroll baseado no tamanho dos cards
+            const scrollAmount = 175 + 20; // largura do card + gap
 
             // Adiciona event listeners para navegação
             prevButton.addEventListener('click', () => {
@@ -926,3 +924,38 @@ function setupCarouselNavigation(gameContent, mediaItems) {
     // Inicializa o carrossel
     updateCarousel(0);
 }
+
+// Ajustando o tamanho da fonte e espaçamento do título e descrição para melhor proporção nos game cards
+const style = document.createElement('style');
+style.textContent = `
+.game-card-info h3 {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.game-card-info p {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.game-card-info .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.game-card-info .tags span {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+}
+`;
+document.head.appendChild(style);
