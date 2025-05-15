@@ -756,20 +756,19 @@ async function showGameDetails(gameId) {
                             </p>
                         </div>
                     </section>                    <section class="studio-section">
-                        <h2>Informações do Jogo</h2>
-                        <div class="studio-info">
+                        <h2>Informações do Jogo</h2>                        <div class="studio-info">
                             <div class="studio-logo">
-                                <img src="${game.studio?.logo || 'assets/default-studio.png'}" alt="${game.studio?.name || 'Studio'} logo">
+                                <img src="${game.studio?.logo || 'assets/default-studio.png'}" alt="${game.studio?.name} logo">
                             </div>
                             <div class="studio-details">
-                                <h3 class="studio-name">
+                                <div class="studio-name">
                                     <span class="metadata-label">Desenvolvedora:</span>
-                                    ${game.studio?.name || 'Desenvolvedor'}
-                                </h3>
+                                    <span>${game.studio?.name || 'Desenvolvedor'}</span>
+                                </div>
                                 ${game.publisher ? `
                                 <div class="studio-publisher">
                                     <span class="metadata-label">Publisher:</span>
-                                    ${game.publisher}
+                                    <span>${game.publisher}</span>
                                 </div>` : ''}
                             </div>
                         </div>
