@@ -41,30 +41,24 @@
                 }
                 
             ]
-        },
-        {
-            "id": "recent",
-            "title": "Jogados Recentemente",
-            "type": "grid",
-            "gameIds": ["hades", "hades", "hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","hades","dead-cells", "binding-of-isaac-rebirth", "spelunky-2"]
-        },
+        },       
         {
             "id": "popular",
             "title": "Populares",
             "type": "grid",
-            "gameIds": ["risk-of-rain-2", "hades", "dead-cells", "binding-of-isaac-rebirth"]
+            "gameIds": ["super-brock-lee", "super-brock-lee","super-brock-lee","super-brock-lee","super-brock-lee","super-brock-lee","super-brock-lee","super-brock-lee","super-brock-lee","super-brock-lee","super-brock-lee"]
         },
         {
             "id": "recommended",
             "title": "Recomendados para Você",
             "type": "grid",
-            "gameIds": ["spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells"]
+            "gameIds": ["spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells", "spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells"]
         },
         {
             "id": "prateco",
             "title": "caneco",
             "type": "grid",
-            "gameIds": ["spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells"]
+            "gameIds": ["spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells", "spelunky-2", "risk-of-rain-2", "super-brock-lee", "dead-cells"]
         }
     ]
 }
