@@ -162,15 +162,13 @@
 }
 
 .game-media {
-    width: 70%; /* Reduced from 100% to 70% */
-    max-width: 840px; /* Reduced from 1200px to 840px (70%) */
+    width: 95%; /* Aumentado de 90% para 95% */
+    max-width: 1280px; /* Aumentado de 1080px para 1280px */
     position: relative;
     aspect-ratio: 16/9;
-    max-height: 42vh; /* Reduced from 60vh to 42vh (70%) */
+    max-height: 54vh;
     margin: 0 auto 2rem auto;
     border-radius: 12px;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.3);
 }
 
 .media-gallery {
@@ -185,7 +183,8 @@
     display: flex;
     width: 100%;
     height: 100%;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.2s ease-in-out;
+    gap: 0;
 }
 
 .media-item {
@@ -194,6 +193,8 @@
     height: 100%;
     position: relative;
     pointer-events: none; /* Prevents hover effects */
+    margin: 0;
+    padding: 0;
 }
 
 .media-item img,
@@ -201,8 +202,11 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+    object-position: left;
     transition: none; /* Removes any transition effects */
     transform: none !important; /* Prevents any transform effects */
+    margin: 0;
+    padding: 0;
 }
 
 /* Carousel navigation arrows */
@@ -238,10 +242,26 @@
     right: 20px;
 }
 
+/* Additional responsive adjustments */
+@media (max-width: 768px) {
+    .carousel-container {
+        grid-auto-columns: 250px;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .media-item {
+        width: 250px;
+    }
+}
+
 /* Responsive adjustments */
 @media (max-width: 1440px) {
     .game-media {
         width: 80%;
+    }
+    .media-item {
+        width: 500px;
     }
 }
 
@@ -249,19 +269,35 @@
     .game-media {
         width: 85%;
     }
+    .media-item {
+        width: 400px;
+    }
 }
 
 @media (max-width: 768px) {
     .game-media {
         width: 95%;
-        margin: 0 auto 1.5rem auto;
+    }
+    .media-item {
+        width: 300px;
+    }
+    .carousel-container {
+        gap: 15px;
     }
 }
 
 @media (max-width: 480px) {
     .game-media {
         width: 100%;
-        max-height: 35vh;
+    }
+    .media-item {
+        width: 250px;
+    }
+    .carousel-container {
+        gap: 10px;
+    }
+    .media-gallery {
+        padding: 10px;
     }
 }
 
