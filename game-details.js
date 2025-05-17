@@ -11,10 +11,6 @@ setBackgroundCoverImage();
 
 // Carregar detalhes do jogo quando a página carregar
 document.addEventListener('DOMContentLoaded', () => {
-    let currentMediaIndex = 0;
-    let mediaItems = [];
-    let isTransitioning = false;
-
     // Carregar dados do jogo
     async function loadGameDetails() {
         try {
@@ -38,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadMediaFromGame(game) {
-        mediaItems = [
+        const mediaItems = [
             ...(game.images || []).map(src => ({ type: 'image', src })),
             ...(game.videos || []).map(src => ({ type: 'video', src }))
         ];
@@ -50,13 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.querySelector('.carousel-container');
         container.innerHTML = '';
 
-        mediaItems.forEach((item, index) => {
+        mediaItems.forEach(item => {
             const mediaElement = createMediaItem(item);
             container.appendChild(mediaElement);
         });
 
-        updateCarouselPosition(0);
-        createNavigationButtons();
+        setupCarouselNavigation();
     }
 
     function createMediaItem(item) {
@@ -85,77 +80,68 @@ document.addEventListener('DOMContentLoaded', () => {
         return img;
     }
 
-    function updateCarouselPosition(index) {
-        if (isTransitioning) return;
-        
+    function setupCarouselNavigation() {
         const container = document.querySelector('.carousel-container');
-        const items = container.querySelectorAll('.media-item');
-        const totalItems = items.length;
-        
-        // Garantir que o índice esteja dentro dos limites
-        if (index < 0) {
-            index = totalItems - 1;
-        } else if (index >= totalItems) {
-            index = 0;
-        }
+        const prevButton = document.querySelector('.carousel-arrow.prev');
+        const nextButton = document.querySelector('.carousel-arrow.next');
 
-        const itemWidth = items[0].offsetWidth;
-        const gap = 20;
-        
-        isTransitioning = true;
-        container.style.transform = `translateX(-${(itemWidth + gap) * index}px)`;
-        
-        currentMediaIndex = index;
-        
-        // Remover a flag de transição após a animação
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 300);
-    }
+        // Function to update navigation visibility
+        const updateNavigation = () => {
+            const hasScrollLeft = container.scrollLeft > 0;
+            const hasScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth);
 
-    function moveNext() {
-        if (!isTransitioning) {
-            updateCarouselPosition(currentMediaIndex + 1);
-        }
-    }
+            container.classList.toggle('has-more-left', hasScrollLeft);
+            container.classList.toggle('has-more-right', hasScrollRight);
+        };        // Function to handle scrolling
+        const scroll = (direction) => {
+            const items = Array.from(container.querySelectorAll('.media-item'));
+            const currentScroll = container.scrollLeft;
+            
+            // Find the current visible item
+            const itemWidth = items[0].offsetWidth + 20; // width + gap
+            const currentIndex = Math.round(currentScroll / itemWidth);
+            
+            // Calculate target index
+            let targetIndex = currentIndex + direction;
+            
+            // Handle bounds
+            if (targetIndex < 0) {
+                targetIndex = items.length - 1;
+            } else if (targetIndex >= items.length) {
+                targetIndex = 0;
+            }
+            
+            // Calculate target scroll position
+            const targetScroll = targetIndex * itemWidth;
 
-    function movePrev() {
-        if (!isTransitioning) {
-            updateCarouselPosition(currentMediaIndex - 1);
-        }
-    }
+            container.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+        };
 
-    function createNavigationButtons() {
-        const gallery = document.querySelector('.media-gallery');
-        
-        gallery.querySelectorAll('.carousel-arrow').forEach(btn => btn.remove());
-        
-        const prevButton = document.createElement('button');
-        const nextButton = document.createElement('button');
-        
-        prevButton.className = 'carousel-arrow prev';
-        nextButton.className = 'carousel-arrow next';
-        
-        prevButton.innerHTML = '❮';
-        nextButton.innerHTML = '❯';
-        
-        prevButton.addEventListener('click', movePrev);
-        nextButton.addEventListener('click', moveNext);
-        
-        gallery.appendChild(prevButton);
-        gallery.appendChild(nextButton);
+        // Add click handlers for navigation buttons
+        prevButton.addEventListener('click', () => scroll(-1));
+        nextButton.addEventListener('click', () => scroll(1));
+
+        // Update navigation on scroll and resize
+        container.addEventListener('scroll', updateNavigation);
+        window.addEventListener('resize', updateNavigation);
+
+        // Initialize navigation state
+        requestAnimationFrame(updateNavigation);
     }
 
     function handleKeyNavigation(e) {
         if (e.key === 'ArrowLeft') {
-            movePrev();
+            document.querySelector('.carousel-arrow.prev').click();
         } else if (e.key === 'ArrowRight') {
-            moveNext();
+            document.querySelector('.carousel-arrow.next').click();
         }
     }
 
     document.addEventListener('keydown', handleKeyNavigation);
 
-    // Inicializar
+    // Initialize
     loadGameDetails();
 });

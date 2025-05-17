@@ -173,43 +173,52 @@
 
 .media-gallery {
     width: 100%;
-    height: 100%;
     position: relative;
-    display: flex;
-    align-items: center;
+    margin: 0 auto;
+    height: 450px;
 }
 
 .carousel-container {
     display: flex;
-    width: 100%;
+    gap: 10px;
+    padding: 10px 40px;
+    position: relative;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    align-items: center;
     height: 100%;
-    transition: transform 0.2s ease-in-out;
-    gap: 0;
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
 }
 
 .media-item {
-    flex: 0 0 100%;
-    width: 100%;
+    flex: 0 0 auto;
+    width: auto;
     height: 100%;
     position: relative;
-    pointer-events: none; /* Prevents hover effects */
+    border-radius: 8px;
+    overflow: hidden;
+    scroll-snap-align: start;
     margin: 0;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .media-item img,
 .media-item video {
-    width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: left;
-    transition: none; /* Removes any transition effects */
-    transform: none !important; /* Prevents any transform effects */
-    margin: 0;
-    padding: 0;
+    width: auto;
+    object-fit: cover;
 }
 
-/* Carousel navigation arrows */
+/* Navigation arrows */
 .carousel-arrow {
     position: absolute;
     top: 50%;
@@ -226,20 +235,48 @@
     justify-content: center;
     z-index: 2;
     font-size: 24px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.media-gallery:hover .carousel-arrow {
+    opacity: 1;
 }
 
 .carousel-arrow:hover {
     background: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.1);
     color: var(--accent-color);
 }
 
 .carousel-arrow.prev {
-    left: 20px;
+    left: 10px;
 }
 
 .carousel-arrow.next {
-    right: 20px;
+    right: 10px;
+}
+
+/* Edge gradients */
+.carousel-container.has-more-left::before,
+.carousel-container.has-more-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.carousel-container.has-more-left::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.3), transparent);
+}
+
+.carousel-container.has-more-right::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.3), transparent);
 }
 
 /* Additional responsive adjustments */
