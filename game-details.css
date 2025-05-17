@@ -81,13 +81,14 @@
 
 
 .btn-play {
+    /* Using styles from styles.css */
     background: var(--secondary-color);
     color: white;
     border: none;
     padding: 12px 30px;
     border-radius: 6px;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
     min-width: 150px;
@@ -97,6 +98,7 @@
 .btn-play:hover {
     background: var(--accent-color);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(242, 120, 10, 0.3);
     box-shadow: 0 4px 15px rgba(242, 120, 10, 0.3);
 }
 
