@@ -407,15 +407,9 @@ function createRankedGame(game, rank) {
     return rankedGame;
 }
 
-// Função para mostrar erro
+// Função para mostrar erro - apenas loga no console
 function showError(message) {
-    const mainContent = document.querySelector('.main-content');
-    if (mainContent) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        mainContent.appendChild(errorDiv);
-    }
+    console.error('[Debug]:', message);
 }
 
 // Carregar as seções quando a página carregar
@@ -723,7 +717,10 @@ async function showGameDetails(gameId) {
                         <button class="btn-favorite"><i class="fas fa-heart"></i></button>
                         <button class="btn-settings"><i class="fas fa-cog"></i></button>
                     </div>
-                </div>
+                </div>            </div>
+
+            <div class="status-bar">
+                Online
             </div>
 
             <div class="game-info-btns"> 

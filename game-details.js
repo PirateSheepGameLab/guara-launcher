@@ -34,3 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize
     loadGameDetails();
 });
+
+// Função para lidar com erros - apenas loga no console, sem exibir para o usuário
+function showError(message) {
+    console.error('[Debug]:', message);
+}

@@ -770,3 +770,31 @@ header {
         height: 60px;
     }
 }
+
+.media-thumbnail img,
+.media-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.error-message {
+    display: none;
+}
+
+/* Ensure no error overlays are shown */
+.error-overlay {
+    display: none;
+}
+
+.status-bar {
+    background-color: #2ecc71;
+    width: 100%;
+    padding: 200px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
