@@ -726,14 +726,6 @@ async function showGameDetails(gameId) {
                 </div>
             </div>
 
-            <div class="game-media">
-                <div class="media-gallery">
-                    <button class="carousel-arrow prev">❮</button>
-                    <div class="carousel-container"></div>
-                    <button class="carousel-arrow next">❯</button>
-                </div>
-            </div>
-
             <div class="game-info-btns"> 
                 <div class="left-content">
                     <div class="stat-box">

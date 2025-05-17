@@ -845,6 +845,7 @@ input:checked + .toggle-slider:before {
 
 .game-media {
     margin-top: 30px;
+    display: none;
 }
 
 .media-tabs {
@@ -885,6 +886,7 @@ input:checked + .toggle-slider:before {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s;
+    display: none;
 }
 
 .media-item:hover {
