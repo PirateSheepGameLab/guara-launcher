@@ -706,22 +706,36 @@ async function showGameDetails(gameId) {
 
         if (!game) {
             throw new Error('Jogo não encontrado');
-        }
-
+        }        // Prepara os dados do carrossel
+        const mediaContent = [...(game.images || []), ...(game.videos || [])];
+        
         // Atualiza o conteúdo
-        const gameContent = gameDetailsSection.querySelector('.game-content');        gameContent.innerHTML = `            
+        const gameContent = gameDetailsSection.querySelector('.game-content');        
+        gameContent.innerHTML = `            
         <div class="game-header">
-                <div class="title-play-container">                    <h1 id="gameTitle">${game.title}</h1>
+                <div class="title-play-container">                    
+                    <h1 id="gameTitle">${game.title}</h1>
                     <div class="header-actions">
                         <button class="btn-play">Jogar</button>
                         <button class="btn-favorite"><i class="fas fa-heart"></i></button>
                         <button class="btn-settings"><i class="fas fa-cog"></i></button>
                     </div>
-                </div>            </div>
-
-            <div class="status-bar">
-                Online
+                </div>            
+        </div>            
+        <div class="status-bar">
+            <button class="carousel-nav prev"><i class="fas fa-chevron-left"></i></button>
+            <div class="images-container">
+                ${mediaContent.map((media, index) => `
+                    <div class="image-item${index === 0 ? ' active' : ''}">
+                        ${media.endsWith('.mp4') 
+                            ? `<video src="${media}" controls></video>`
+                            : `<img src="${media}" alt="${game.title} - Image ${index + 1}">`
+                        }
+                    </div>
+                `).join('')}
             </div>
+            <button class="carousel-nav next"><i class="fas fa-chevron-right"></i></button>
+        </div>
 
             <div class="game-info-btns"> 
                 <div class="left-content">
@@ -847,121 +861,75 @@ async function showGameDetails(gameId) {
                     
                 </div>
             </div>
-        `;
-
-        // Cria e anexa o carrossel
-        const mediaContent = [...(game.images || []), ...(game.videos || [])];
+        `;        // Configura o carrossel depois de renderizar o conteúdo
         if (mediaContent.length > 0) {
-            const statusBar = document.createElement('div');
-            statusBar.className = 'status-bar';
+            const imagesContainer = gameContent.querySelector('.images-container');
+            const images = imagesContainer.querySelectorAll('.image-item');
+            const prevButton = gameContent.querySelector('.carousel-nav.prev');
+            const nextButton = gameContent.querySelector('.carousel-nav.next');
             
-            const carouselContainer = document.createElement('div');
-            carouselContainer.className = 'carousel-container';
-            
-            const carouselContent = document.createElement('div');
-            carouselContent.className = 'carousel-content';
-            
-            // Adiciona itens de mídia
-            mediaContent.forEach((media, index) => {
-                const item = document.createElement('div');
-                item.className = 'carousel-item';
+            let currentIndex = 0;
+
+            function showImage(index) {
+                images.forEach(img => img.classList.remove('active'));
+                images[index].classList.add('active');
                 
-                if (media.endsWith('.mp4')) {
-                    const video = document.createElement('video');
-                    video.src = media;
-                    video.controls = true;
-                    item.appendChild(video);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = media;
-                    img.alt = `${game.title} - Image ${index + 1}`;
-                    item.appendChild(img);
+                // Atualiza visibilidade dos botões
+                prevButton.style.opacity = index === 0 ? '0.5' : '1';
+                nextButton.style.opacity = index === images.length - 1 ? '0.5' : '1';
+            }
+
+            function showNext() {
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    showImage(currentIndex);
                 }
-                
-                carouselContent.appendChild(item);
-            });
-            
-            // Adiciona controles
-            const controls = document.createElement('div');
-            controls.className = 'carousel-controls';
-            
-            const prevButton = document.createElement('button');
-            prevButton.className = 'carousel-button';
-            prevButton.innerHTML = '❮';
-            prevButton.onclick = () => moveCarousel(-1);
-            
-            const nextButton = document.createElement('button');
-            nextButton.className = 'carousel-button';
-            nextButton.innerHTML = '❯';
-            nextButton.onclick = () => moveCarousel(1);
-            
-            controls.appendChild(prevButton);
-            controls.appendChild(nextButton);
-            
-            // Adiciona pontos
-            const dots = document.createElement('div');
-            dots.className = 'carousel-dots';
-            mediaContent.forEach((_, index) => {
-                const dot = document.createElement('span');
-                dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-                dot.onclick = () => goToSlide(index);
-                dots.appendChild(dot);
-            });
-            
-            carouselContainer.appendChild(carouselContent);
-            carouselContainer.appendChild(controls);
-            carouselContainer.appendChild(dots);
-            statusBar.appendChild(carouselContainer);
-            
-            // Insere a barra de status entre o título e o tempo de jogo
-            const gameTitle = document.querySelector('.game-details-header');
-            gameTitle.parentNode.insertBefore(statusBar, gameTitle.nextSibling);
-            
-            // Inicializa o carrossel
-            let currentSlide = 0;
-            
-            function moveCarousel(direction) {
-                const totalSlides = mediaContent.length;
-                currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-                updateCarousel();
             }
-            
-            function goToSlide(index) {
-                currentSlide = index;
-                updateCarousel();
+
+            function showPrev() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    showImage(currentIndex);
+                }
             }
+
+            // Configura os event listeners dos botões
+            prevButton.addEventListener('click', showPrev);
+            nextButton.addEventListener('click', showNext);
+
+            // Mostra a primeira imagem
+            showImage(0);
+
+            // Auto-play a cada 5 segundos
+            let autoplayInterval;
             
-            function updateCarousel() {
-                carouselContent.style.transform = `translateX(-${currentSlide * 100}%)`;
-                
-                // Atualiza os pontos
-                const dots = document.querySelectorAll('.carousel-dot');
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentSlide);
-                });
-                
-                // Pausa todos os vídeos, exceto o atual
-                const videos = carouselContent.querySelectorAll('video');
-                videos.forEach((video, index) => {
-                    if (index === currentSlide) {
-                        video.play();
+            function startAutoplay() {
+                autoplayInterval = setInterval(() => {
+                    if (currentIndex < images.length - 1) {
+                        showNext();
                     } else {
-                        video.pause();
+                        currentIndex = 0;
+                        showImage(currentIndex);
                     }
-                });
+                }, 5000);
             }
+
+            function stopAutoplay() {
+                clearInterval(autoplayInterval);
+            }
+
+            // Inicia o autoplay
+            startAutoplay();
+
+            // Pausa o autoplay quando o mouse está sobre o carrossel
+            imagesContainer.addEventListener('mouseenter', stopAutoplay);
+            imagesContainer.addEventListener('mouseleave', startAutoplay);
             
-            // Avança o carrossel automaticamente a cada 5 segundos
-            const autoAdvanceInterval = setInterval(() => {
-                if (!document.querySelector('.carousel-content:hover')) {
-                    moveCarousel(1);
-                }
-            }, 5000);
-            
-            // Limpa o intervalo ao sair da página
-            window.addEventListener('beforeunload', () => {
-                clearInterval(autoAdvanceInterval);
-            });
+            // Pausa o autoplay quando os botões são usados
+            prevButton.addEventListener('mouseenter', stopAutoplay);
+            nextButton.addEventListener('mouseenter', stopAutoplay);
+            prevButton.addEventListener('mouseleave', startAutoplay);
+            nextButton.addEventListener('mouseleave', startAutoplay);
         }
 
         // Configura o botão voltar
