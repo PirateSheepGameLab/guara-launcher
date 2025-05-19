@@ -1307,3 +1307,117 @@ input:checked + .toggle-slider:before {
     height: 150px;
     object-fit: cover;
 }
+
+.game-info-sections {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.game-info-left {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 66%;
+}
+
+.game-info-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 33%;
+    min-width: 300px;
+}
+
+/* Mantém a responsividade em telas menores */
+@media (max-width: 1024px) {
+    .game-info-sections {
+        flex-direction: column;
+    }
+
+    .game-info-left,
+    .game-info-right {
+        width: 100%;
+    }
+}
+
+.achievements-section,
+.collectibles-section {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.achievements-section h2,
+.collectibles-section h2 {
+    color: white;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+}
+
+.achievements-grid,
+.collectibles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.achievement-item,
+.collectible-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.achievement-item img,
+.collectible-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.achievement-item.locked,
+.collectible-item.locked {
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress {
+    height: 100%;
+    background: var(--accent-color);
+    width: 30%; /* Ajuste conforme necessário */
+    transition: width 0.3s ease;
+}
+
+.btn-view-all {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-view-all:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
