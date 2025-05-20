@@ -711,8 +711,7 @@ async function showGameDetails(gameId) {
         
         // Atualiza o conteúdo
         const gameContent = gameDetailsSection.querySelector('.game-content');        
-        gameContent.innerHTML = `            
-        <div class="game-header">
+        gameContent.innerHTML = `              <div class="game-header">
                 <div class="title-play-container">                    
                     <h1 id="gameTitle">${game.title}</h1>
                     <div class="header-actions">
@@ -726,7 +725,7 @@ async function showGameDetails(gameId) {
             <button class="carousel-nav prev"><i class="fas fa-chevron-left"></i></button>
             <div class="images-container">
                 ${mediaContent.map((media, index) => `
-                    <div class="image-item${index === 0 ? ' active' : ''}">
+                    <div class="image-item">
                         ${media.endsWith('.mp4') 
                             ? `<video src="${media}" controls></video>`
                             : `<img src="${media}" alt="${game.title} - Image ${index + 1}">`
@@ -868,11 +867,14 @@ async function showGameDetails(gameId) {
             const prevButton = gameContent.querySelector('.carousel-nav.prev');
             const nextButton = gameContent.querySelector('.carousel-nav.next');
             
-            let currentIndex = 0;
+            let currentIndex = 1; // Começar da segunda imagem
 
             function showImage(index) {
-                images.forEach(img => img.classList.remove('active'));
-                images[index].classList.add('active');
+                const scrollTo = images[index].offsetLeft - imagesContainer.offsetLeft;
+                imagesContainer.scrollTo({
+                    left: scrollTo,
+                    behavior: 'smooth'
+                });
                 
                 // Atualiza visibilidade dos botões
                 prevButton.style.opacity = index === 0 ? '0.5' : '1';
@@ -895,10 +897,8 @@ async function showGameDetails(gameId) {
 
             // Configura os event listeners dos botões
             prevButton.addEventListener('click', showPrev);
-            nextButton.addEventListener('click', showNext);
-
-            // Mostra a primeira imagem
-            showImage(0);
+            nextButton.addEventListener('click', showNext);            // Mostra a segunda imagem
+            showImage(1);
 
             // Auto-play a cada 5 segundos
             let autoplayInterval;
@@ -908,7 +908,7 @@ async function showGameDetails(gameId) {
                     if (currentIndex < images.length - 1) {
                         showNext();
                     } else {
-                        currentIndex = 0;
+                        currentIndex = 1; // Volta para a segunda imagem
                         showImage(currentIndex);
                     }
                 }, 5000);
