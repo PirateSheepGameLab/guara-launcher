@@ -1,0 +1,29 @@
+{
+  "name": "guara-launcher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PirateSheepGameLab/guara-launcher.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PirateSheepGameLab/guara-launcher/issues"
+  },
+  "homepage": "https://github.com/PirateSheepGameLab/guara-launcher#readme",
+  "devDependencies": {
+    "electron": "^28.1.0"
+  },
+  "dependencies": {
+    "electron-dl": "^4.0.0",
+    "electron-store": "^10.0.1"
+  }
+}
