@@ -970,6 +970,34 @@ async function showGameDetails(gameId) {
 
         // Configura o botão jogar
         const playButton = gameContent.querySelector('.btn-play');
+        // Cria container para botões de controle de download
+        let controlsContainer = gameContent.querySelector('.download-controls');
+        if (controlsContainer) controlsContainer.remove();
+        controlsContainer = document.createElement('div');
+        controlsContainer.className = 'download-controls';
+        controlsContainer.style.display = 'none';
+        controlsContainer.style.gap = '8px';
+        controlsContainer.style.marginTop = '10px';
+        controlsContainer.style.justifyContent = 'flex-end';
+        controlsContainer.style.alignItems = 'center';
+        controlsContainer.style.flexDirection = 'row';
+        // Botão Pausar
+        const pauseBtn = document.createElement('button');
+        pauseBtn.className = 'btn-download-pause';
+        pauseBtn.textContent = 'Pausar';
+        // Botão Retomar
+        const resumeBtn = document.createElement('button');
+        resumeBtn.className = 'btn-download-resume';
+        resumeBtn.textContent = 'Recomeçar';
+        resumeBtn.style.display = 'none';
+        // Botão Cancelar
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn-download-cancel';
+        cancelBtn.textContent = 'Cancelar';
+        controlsContainer.appendChild(pauseBtn);
+        controlsContainer.appendChild(resumeBtn);
+        controlsContainer.appendChild(cancelBtn);
+        playButton.parentNode.insertBefore(controlsContainer, playButton.nextSibling);
         // Cria uma barra de progresso animada dentro do botão
         playButton.style.position = 'relative';
         playButton.style.overflow = 'hidden';
@@ -1010,6 +1038,10 @@ async function showGameDetails(gameId) {
             if (window.electronAPI && window.electronAPI.downloadAndExtractGame) {
                 try {
                     playButton.disabled = true;
+                    controlsContainer.style.display = 'flex';
+                    pauseBtn.style.display = 'inline-block';
+                    resumeBtn.style.display = 'none';
+                    cancelBtn.style.display = 'inline-block';
                     playButton.textContent = 'Baixando... 0%';
                     progressBar.style.width = '0%';
                     progressBar.style.background = 'linear-gradient(90deg, #2196f3, #0d47a1)';
@@ -1019,6 +1051,28 @@ async function showGameDetails(gameId) {
                         progressBar.style.width = percent + '%';
                         playButton.textContent = `Baixando... ${percent}%`;
                     });
+                    // Controle dos botões
+                    let isPaused = false;
+                    pauseBtn.onclick = () => {
+                        if (window.electronAPI.pauseDownload) window.electronAPI.pauseDownload();
+                        isPaused = true;
+                        pauseBtn.style.display = 'none';
+                        resumeBtn.style.display = 'inline-block';
+                    };
+                    resumeBtn.onclick = () => {
+                        if (window.electronAPI.resumeDownload) window.electronAPI.resumeDownload();
+                        isPaused = false;
+                        pauseBtn.style.display = 'inline-block';
+                        resumeBtn.style.display = 'none';
+                    };
+                    cancelBtn.onclick = () => {
+                        if (window.electronAPI.cancelDownload) window.electronAPI.cancelDownload();
+                        playButton.textContent = 'Jogar';
+                        progressBar.style.width = '0%';
+                        progressBar.style.opacity = 0;
+                        controlsContainer.style.display = 'none';
+                        playButton.disabled = false;
+                    };
                     await window.electronAPI.downloadAndExtractGame(game.url, pastaDestino, game.title);
                     progressBar.style.width = '100%';
                     playButton.textContent = 'Jogar';
@@ -1028,10 +1082,12 @@ async function showGameDetails(gameId) {
                         progressBar.style.width = '0%';
                     }, 800);
                     alert('Download e extração concluídos!');
+                    controlsContainer.style.display = 'none';
                 } catch (err) {
                     playButton.textContent = 'Jogar';
                     progressBar.style.width = '0%';
                     progressBar.style.opacity = 0;
+                    controlsContainer.style.display = 'none';
                     alert('Erro ao baixar ou extrair o jogo: ' + err.message);
                 } finally {
                     playButton.disabled = false;
@@ -1141,7 +1197,23 @@ document.head.appendChild(style);
             pointer-events: none;
         }
         .btn-play[disabled] { cursor: not-allowed; }
-        .btn-play span, .btn-play i { position: relative; z-index: 1; }
+        .btn-play span, .btn-play i { position: relative, z-index: 1; }
+        `;
+        document.head.appendChild(style);
+    }
+})();
+// Adiciona CSS global para os botões de controle de download
+(function(){
+    if (!document.getElementById('btn-download-controls-style')) {
+        const style = document.createElement('style');
+        style.id = 'btn-download-controls-style';
+        style.textContent = `
+        .download-controls { display: flex; gap: 8px; margin-top: 10px; }
+        .download-controls button {
+            background: #222; color: #fff; border: none; border-radius: 6px; padding: 6px 16px;
+            cursor: pointer; font-weight: 500; transition: background 0.2s;
+        }
+        .download-controls button:hover { background: #1976d2; }
         `;
         document.head.appendChild(style);
     }

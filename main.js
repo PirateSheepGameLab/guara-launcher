@@ -87,46 +87,134 @@ app.whenReady().then(() => {
     });
 
     // Manipulador para download, extração e remoção do zip
+    let currentDownload = null;
+    let isPaused = false;
+    let cancelRequested = false;
+
     ipcMain.handle('download-and-extract-game', async (event, url, destFolder, gameName) => {
         try {
-            // Cria a pasta do jogo
-            const gameFolder = path.join(destFolder, gameName);
-            if (!fs.existsSync(gameFolder)) fs.mkdirSync(gameFolder, { recursive: true });
-
-            // Caminho do zip temporário
-            const zipPath = path.join(gameFolder, 'game.zip');
-
-            // Baixa o arquivo com progresso
-            const res = await fetch(url);
-            if (!res.ok) throw new Error('Erro ao baixar o arquivo');
-            const total = Number(res.headers.get('content-length'));
-            let received = 0;
-            const fileStream = fs.createWriteStream(zipPath);
-            await new Promise((resolve, reject) => {
-                res.body.on('data', chunk => {
-                    received += chunk.length;
-                    if (total) {
-                        const percent = Math.floor((received / total) * 100);
-                        event.sender.send('download-progress', percent);
+            try {
+                // Cria a pasta do jogo
+                const gameFolder = path.join(destFolder, gameName);
+                if (!fs.existsSync(gameFolder)) fs.mkdirSync(gameFolder, { recursive: true });
+                const zipPath = path.join(gameFolder, 'game.zip');
+                cancelRequested = false;
+                const res = await fetch(url); // sem AbortController
+                if (!res.ok) throw new Error('Erro ao baixar o arquivo');
+                const total = Number(res.headers.get('content-length'));
+                let received = 0;
+                const fileStream = fs.createWriteStream(zipPath);
+                currentDownload = { fileStream, event, res };
+                isPaused = false;
+                let downloadResult;
+                try {
+                    downloadResult = await new Promise((resolve, reject) => {
+                        function cleanup() {
+                            res.body.removeAllListeners();
+                            fileStream.removeAllListeners();
+                        }
+                        res.body.on('data', chunk => {
+                            if (cancelRequested) {
+                                cleanup();
+                                try { fileStream.close(); } catch {}
+                                fs.unlink(zipPath, () => {});
+                                resolve('cancelled');
+                                return;
+                            }
+                            if (isPaused) {
+                                res.body.pause();
+                                return;
+                            }
+                            received += chunk.length;
+                            if (total) {
+                                const percent = Math.floor((received / total) * 100);
+                                event.sender.send('download-progress', percent);
+                            }
+                        });
+                        res.body.on('end', () => {
+                            if (!cancelRequested) {
+                                event.sender.send('download-progress', 100);
+                                cleanup();
+                                resolve();
+                            }
+                        });
+                        res.body.on('error', err => {
+                            cleanup();
+                            if (cancelRequested) return resolve('cancelled');
+                            reject(err);
+                        });
+                        fileStream.on('error', err => {
+                            cleanup();
+                            if (cancelRequested) return resolve('cancelled');
+                            reject(err);
+                        });
+                        res.body.pipe(fileStream);
+                    });
+                } catch (err) {
+                    currentDownload = null;
+                    if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
+                    if (cancelRequested) return false;
+                    throw err;
+                }
+                if (
+                    downloadResult === 'cancelled' ||
+                    !fs.existsSync(zipPath) ||
+                    fs.statSync(zipPath).size === 0
+                ) {
+                    currentDownload = null;
+                    if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
+                    return false;
+                }
+                try {
+                    const zip = new AdmZip(zipPath);
+                    zip.extractAllTo(gameFolder, true);
+                    fs.unlinkSync(zipPath);
+                } catch (err) {
+                    if (downloadResult === 'cancelled' || !fs.existsSync(zipPath)) {
+                        if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
+                        currentDownload = null;
+                        return false;
                     }
-                });
-                res.body.pipe(fileStream);
-                res.body.on('error', reject);
-                fileStream.on('finish', resolve);
-            });
-            event.sender.send('download-progress', 100);
-
-            // Extrai o zip
-            const zip = new AdmZip(zipPath);
-            zip.extractAllTo(gameFolder, true);
-
-            // Remove o zip
-            fs.unlinkSync(zipPath);
-
-            return true;
+                    throw err;
+                }
+                currentDownload = null;
+                return true;
+            } catch (err) {
+                currentDownload = null;
+                if (cancelRequested) return false;
+                throw new Error('Erro no download ou extração: ' + err.message);
+            }
         } catch (err) {
-            throw new Error('Erro no download ou extração: ' + err.message);
+            // Captura qualquer erro AbortError que escapou do bloco interno
+            if (
+                (err && err.message && (err.message.includes('cancelado') || err.message.includes('aborted'))) ||
+                (err && err.name === 'AbortError') ||
+                (err && err.stack && err.stack.includes('AbortError'))
+            ) {
+                return false;
+            }
+            throw err;
         }
+    });
+
+    ipcMain.on('pause-download', () => {
+        if (currentDownload && !isPaused) {
+            isPaused = true;
+            if (currentDownload.res.body) currentDownload.res.body.pause();
+        }
+    });
+    ipcMain.on('resume-download', () => {
+        if (currentDownload && isPaused) {
+            isPaused = false;
+            if (currentDownload.res.body) currentDownload.res.body.resume();
+        }
+    });
+    ipcMain.on('cancel-download', () => {
+        cancelRequested = true;
+        if (currentDownload && currentDownload.fileStream) {
+            try { currentDownload.fileStream.close(); } catch {}
+        }
+        currentDownload = null;
     });
 });
 

@@ -9,5 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('download-progress', (event, percent) => {
       callback(percent);
     });
-  }
+  },
+  pauseDownload: () => ipcRenderer.send('pause-download'),
+  resumeDownload: () => ipcRenderer.send('resume-download'),
+  cancelDownload: () => ipcRenderer.send('cancel-download')
 });
