@@ -611,6 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const folderPath = await window.electronAPI.selectFolder();
                 if (folderPath && folderInput) {
                     folderInput.value = folderPath;
+                    localStorage.setItem('gameInstallFolder', folderPath);
                 }
             } else if (window.require) {
                 // Fallback para contextIsolation: false
@@ -618,11 +619,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 ipcRenderer.invoke('select-folder').then(folderPath => {
                     if (folderPath && folderInput) {
                         folderInput.value = folderPath;
+                        localStorage.setItem('gameInstallFolder', folderPath);
                     }
                 });
             } else {
                 alert('Seleção de pasta não suportada neste ambiente.');
             }
+        });
+    }
+
+    // Preencher o input da pasta com o valor salvo ao abrir a tela
+    if (folderInput) {
+        const savedFolder = localStorage.getItem('gameInstallFolder');
+        if (savedFolder) {
+            folderInput.value = savedFolder;
+        }
+        // Sempre que o usuário digitar/colar manualmente, salva no localStorage
+        folderInput.addEventListener('input', (e) => {
+            localStorage.setItem('gameInstallFolder', e.target.value);
         });
     }
 
@@ -956,9 +970,33 @@ async function showGameDetails(gameId) {
 
         // Configura o botão jogar
         const playButton = gameContent.querySelector('.btn-play');
-        playButton.addEventListener('click', () => {
-            if (game.url) {
-                window.open(game.url, '_blank');
+        playButton.addEventListener('click', async () => {
+            // Obtém a pasta de destino das configurações (ajuste conforme seu app)
+            let pastaDestino = localStorage.getItem('gameInstallFolder');
+            if (!pastaDestino) {
+                alert('Defina a pasta de instalação nas configurações antes de baixar o jogo.');
+                return;
+            }
+            if (!game.url) {
+                alert('Este jogo não possui um link de download configurado.');
+                return;
+            }
+            // Chama a API do Electron para baixar e extrair
+            if (window.electronAPI && window.electronAPI.downloadAndExtractGame) {
+                try {
+                    playButton.disabled = true;
+                    playButton.textContent = 'Baixando...';
+                    await window.electronAPI.downloadAndExtractGame(game.url, pastaDestino, game.title);
+                    playButton.textContent = 'Jogar';
+                    alert('Download e extração concluídos!');
+                } catch (err) {
+                    playButton.textContent = 'Jogar';
+                    alert('Erro ao baixar ou extrair o jogo: ' + err.message);
+                } finally {
+                    playButton.disabled = false;
+                }
+            } else {
+                alert('Função de download não disponível neste ambiente.');
             }
         });
 

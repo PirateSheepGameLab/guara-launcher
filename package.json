@@ -25,6 +25,7 @@
   "dependencies": {
     "adm-zip": "^0.5.16",
     "electron-dl": "^4.0.0",
-    "electron-store": "^10.0.1"
+    "electron-store": "^10.0.1",
+    "node-fetch": "^3.3.2"
   }
 }
