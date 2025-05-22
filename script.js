@@ -970,8 +970,34 @@ async function showGameDetails(gameId) {
 
         // Configura o botão jogar
         const playButton = gameContent.querySelector('.btn-play');
+        // Cria uma barra de progresso animada dentro do botão
+        playButton.style.position = 'relative';
+        playButton.style.overflow = 'hidden';
+        // Remove barra antiga se houver
+        let progressBar = playButton.querySelector('.download-progress-bar');
+        if (progressBar) progressBar.remove();
+        progressBar = document.createElement('div');
+        progressBar.className = 'download-progress-bar';
+        progressBar.style.position = 'absolute';
+        progressBar.style.left = 0;
+        progressBar.style.top = 0;
+        progressBar.style.height = '100%';
+        progressBar.style.width = '0%';
+        progressBar.style.background = 'linear-gradient(90deg, #2196f3, #0d47a1)';
+        progressBar.style.zIndex = 0;
+        progressBar.style.transition = 'width 0.2s linear';
+        playButton.appendChild(progressBar);
+        // Garante que o texto do botão fique acima da barra
+        playButton.style.zIndex = 1;
+        playButton.style.color = '#fff';
+        playButton.style.background = '';
+        playButton.style.pointerEvents = '';
+        playButton.style.userSelect = '';
+        playButton.style.fontWeight = 'bold';
+        playButton.style.border = '';
+        playButton.style.boxShadow = '';
+        playButton.style.cursor = 'pointer';
         playButton.addEventListener('click', async () => {
-            // Obtém a pasta de destino das configurações (ajuste conforme seu app)
             let pastaDestino = localStorage.getItem('gameInstallFolder');
             if (!pastaDestino) {
                 alert('Defina a pasta de instalação nas configurações antes de baixar o jogo.');
@@ -981,16 +1007,31 @@ async function showGameDetails(gameId) {
                 alert('Este jogo não possui um link de download configurado.');
                 return;
             }
-            // Chama a API do Electron para baixar e extrair
             if (window.electronAPI && window.electronAPI.downloadAndExtractGame) {
                 try {
                     playButton.disabled = true;
-                    playButton.textContent = 'Baixando...';
+                    playButton.textContent = 'Baixando... 0%';
+                    progressBar.style.width = '0%';
+                    progressBar.style.background = 'linear-gradient(90deg, #2196f3, #0d47a1)';
+                    progressBar.style.opacity = 1;
+                    // Adiciona um canal de progresso via IPC
+                    window.electronAPI.onDownloadProgress && window.electronAPI.onDownloadProgress((percent) => {
+                        progressBar.style.width = percent + '%';
+                        playButton.textContent = `Baixando... ${percent}%`;
+                    });
                     await window.electronAPI.downloadAndExtractGame(game.url, pastaDestino, game.title);
+                    progressBar.style.width = '100%';
                     playButton.textContent = 'Jogar';
+                    setTimeout(() => {
+                        progressBar.style.transition = 'opacity 0.5s';
+                        progressBar.style.opacity = 0;
+                        progressBar.style.width = '0%';
+                    }, 800);
                     alert('Download e extração concluídos!');
                 } catch (err) {
                     playButton.textContent = 'Jogar';
+                    progressBar.style.width = '0%';
+                    progressBar.style.opacity = 0;
                     alert('Erro ao baixar ou extrair o jogo: ' + err.message);
                 } finally {
                     playButton.disabled = false;
@@ -1084,3 +1125,24 @@ style.textContent = `
 }
 `;
 document.head.appendChild(style);
+// Adiciona CSS global para a barra de progresso do botão
+(function(){
+    if (!document.getElementById('btn-download-progress-style')) {
+        const style = document.createElement('style');
+        style.id = 'btn-download-progress-style';
+        style.textContent = `
+        .btn-play { position: relative; overflow: hidden; }
+        .btn-play .download-progress-bar {
+            position: absolute;
+            left: 0; top: 0; height: 100%; width: 0%;
+            background: linear-gradient(90deg, #2196f3, #0d47a1);
+            z-index: 0;
+            transition: width 0.2s linear, opacity 0.5s;
+            pointer-events: none;
+        }
+        .btn-play[disabled] { cursor: not-allowed; }
+        .btn-play span, .btn-play i { position: relative; z-index: 1; }
+        `;
+        document.head.appendChild(style);
+    }
+})();

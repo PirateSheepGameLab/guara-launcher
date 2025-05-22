@@ -96,15 +96,25 @@ app.whenReady().then(() => {
             // Caminho do zip temporário
             const zipPath = path.join(gameFolder, 'game.zip');
 
-            // Baixa o arquivo
+            // Baixa o arquivo com progresso
             const res = await fetch(url);
             if (!res.ok) throw new Error('Erro ao baixar o arquivo');
+            const total = Number(res.headers.get('content-length'));
+            let received = 0;
             const fileStream = fs.createWriteStream(zipPath);
             await new Promise((resolve, reject) => {
+                res.body.on('data', chunk => {
+                    received += chunk.length;
+                    if (total) {
+                        const percent = Math.floor((received / total) * 100);
+                        event.sender.send('download-progress', percent);
+                    }
+                });
                 res.body.pipe(fileStream);
                 res.body.on('error', reject);
                 fileStream.on('finish', resolve);
             });
+            event.sender.send('download-progress', 100);
 
             // Extrai o zip
             const zip = new AdmZip(zipPath);
