@@ -604,10 +604,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Seletor de pasta
     const folderSelect = document.querySelector('.btn-select-folder');
+    const folderInput = document.querySelector('.folder-select input');
     if (folderSelect) {
-        folderSelect.addEventListener('click', () => {
-            // Aqui você implementaria a lógica de seleção de pasta
-            console.log('Seleção de pasta acionada');
+        folderSelect.addEventListener('click', async () => {
+            if (window.electronAPI && window.electronAPI.selectFolder) {
+                const folderPath = await window.electronAPI.selectFolder();
+                if (folderPath && folderInput) {
+                    folderInput.value = folderPath;
+                }
+            } else if (window.require) {
+                // Fallback para contextIsolation: false
+                const { ipcRenderer } = window.require('electron');
+                ipcRenderer.invoke('select-folder').then(folderPath => {
+                    if (folderPath && folderInput) {
+                        folderInput.value = folderPath;
+                    }
+                });
+            } else {
+                alert('Seleção de pasta não suportada neste ambiente.');
+            }
         });
     }
 

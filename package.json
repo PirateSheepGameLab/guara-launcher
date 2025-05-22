@@ -20,9 +20,10 @@
   },
   "homepage": "https://github.com/PirateSheepGameLab/guara-launcher#readme",
   "devDependencies": {
-    "electron": "^28.1.0"
+    "electron": "^28.3.3"
   },
   "dependencies": {
+    "adm-zip": "^0.5.16",
     "electron-dl": "^4.0.0",
     "electron-store": "^10.0.1"
   }

@@ -178,5 +178,19 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+// Preencher o input com o valor salvo, se existir
+window.addEventListener('DOMContentLoaded', () => {
+    if (window.require) {
+        const { ipcRenderer } = window.require('electron');
+        ipcRenderer.invoke('get-download-path').then(folderPath => {
+            const folderInput = document.querySelector('.folder-select input');
+            if (folderPath && folderInput) {
+                folderInput.value = folderPath;
+            }
+        });
+    }
+});
+</script>
 </body>
-</html> 
+</html>

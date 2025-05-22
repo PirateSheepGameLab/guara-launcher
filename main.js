@@ -52,6 +52,11 @@ app.whenReady().then(() => {
         return null;
     });
 
+    // Handler para obter o caminho salvo
+    ipcMain.handle('get-download-path', async () => {
+        return store.get('downloadPath') || '';
+    });
+
     // Manipulador para download de jogos
     ipcMain.handle('download-game', async (event, { url, filename }) => {
         const downloadPath = store.get('downloadPath');
