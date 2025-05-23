@@ -1025,6 +1025,52 @@ async function showGameDetails(gameId) {
         playButton.style.border = '';
         playButton.style.boxShadow = '';
         playButton.style.cursor = 'pointer';
+
+        // --- PERSISTÊNCIA DO DOWNLOAD ---
+        if (window.electronAPI && window.electronAPI.getDownloadStatus) {
+            const status = await window.electronAPI.getDownloadStatus();
+            if (status.active && status.gameName === game.title) {
+                // Download em andamento para este jogo
+                playButton.disabled = true;
+                controlsContainer.style.display = 'flex';
+                pauseBtn.style.display = status.isPaused ? 'none' : 'inline-block';
+                resumeBtn.style.display = status.isPaused ? 'inline-block' : 'none';
+                cancelBtn.style.display = 'inline-block';
+                playButton.textContent = `Baixando... ${status.percent || 0}%`;
+                progressBar.style.width = (status.percent || 0) + '%';
+                progressBar.style.background = 'linear-gradient(90deg, #2196f3, #0d47a1)';
+                progressBar.style.opacity = 1;
+                // Reinscreve listener de progresso
+                window.electronAPI.onDownloadProgress && window.electronAPI.onDownloadProgress((percent) => {
+                    progressBar.style.width = percent + '%';
+                    playButton.textContent = `Baixando... ${percent}%`;
+                });
+                // Reativa controles
+                let isPaused = !!status.isPaused;
+                pauseBtn.onclick = () => {
+                    if (window.electronAPI.pauseDownload) window.electronAPI.pauseDownload();
+                    isPaused = true;
+                    pauseBtn.style.display = 'none';
+                    resumeBtn.style.display = 'inline-block';
+                };
+                resumeBtn.onclick = () => {
+                    if (window.electronAPI.resumeDownload) window.electronAPI.resumeDownload();
+                    isPaused = false;
+                    pauseBtn.style.display = 'inline-block';
+                    resumeBtn.style.display = 'none';
+                };
+                cancelBtn.onclick = () => {
+                    if (window.electronAPI.cancelDownload) window.electronAPI.cancelDownload();
+                    playButton.textContent = 'Jogar';
+                    progressBar.style.width = '0%';
+                    progressBar.style.opacity = 0;
+                    controlsContainer.style.display = 'none';
+                    playButton.disabled = false;
+                };
+                // Não adiciona o click do botão jogar enquanto estiver baixando
+                return;
+            }
+        }
         playButton.addEventListener('click', async () => {
             let pastaDestino = localStorage.getItem('gameInstallFolder');
             if (!pastaDestino) {

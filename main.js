@@ -90,110 +90,126 @@ app.whenReady().then(() => {
     let currentDownload = null;
     let isPaused = false;
     let cancelRequested = false;
+    let currentDownloadGame = null;
+    let currentDownloadPercent = 0;
+
+    ipcMain.handle('get-download-status', async () => {
+        if (currentDownload && currentDownloadGame) {
+            return {
+                active: true,
+                gameName: currentDownloadGame,
+                percent: currentDownloadPercent,
+                isPaused
+            };
+        }
+        return { active: false };
+    });
 
     ipcMain.handle('download-and-extract-game', async (event, url, destFolder, gameName) => {
         try {
+            // Cria a pasta do jogo
+            const gameFolder = path.join(destFolder, gameName);
+            if (!fs.existsSync(gameFolder)) fs.mkdirSync(gameFolder, { recursive: true });
+            const zipPath = path.join(gameFolder, 'game.zip');
+            cancelRequested = false;
+            currentDownloadGame = gameName;
+            currentDownloadPercent = 0;
+            const res = await fetch(url); // sem AbortController
+            if (!res.ok) throw new Error('Erro ao baixar o arquivo');
+            const total = Number(res.headers.get('content-length'));
+            let received = 0;
+            const fileStream = fs.createWriteStream(zipPath);
+            currentDownload = { fileStream, event, res };
+            isPaused = false;
+            let downloadResult;
             try {
-                // Cria a pasta do jogo
-                const gameFolder = path.join(destFolder, gameName);
-                if (!fs.existsSync(gameFolder)) fs.mkdirSync(gameFolder, { recursive: true });
-                const zipPath = path.join(gameFolder, 'game.zip');
-                cancelRequested = false;
-                const res = await fetch(url); // sem AbortController
-                if (!res.ok) throw new Error('Erro ao baixar o arquivo');
-                const total = Number(res.headers.get('content-length'));
-                let received = 0;
-                const fileStream = fs.createWriteStream(zipPath);
-                currentDownload = { fileStream, event, res };
-                isPaused = false;
-                let downloadResult;
-                try {
-                    downloadResult = await new Promise((resolve, reject) => {
-                        function cleanup() {
-                            res.body.removeAllListeners();
-                            fileStream.removeAllListeners();
-                        }
-                        res.body.on('data', chunk => {
-                            if (cancelRequested) {
-                                cleanup();
-                                try { fileStream.close(); } catch {}
-                                fs.unlink(zipPath, () => {});
-                                resolve('cancelled');
-                                return;
-                            }
-                            if (isPaused) {
-                                res.body.pause();
-                                return;
-                            }
-                            received += chunk.length;
-                            if (total) {
-                                const percent = Math.floor((received / total) * 100);
-                                event.sender.send('download-progress', percent);
-                            }
-                        });
-                        res.body.on('end', () => {
-                            if (!cancelRequested) {
-                                event.sender.send('download-progress', 100);
-                                cleanup();
-                                resolve();
-                            }
-                        });
-                        res.body.on('error', err => {
-                            cleanup();
-                            if (cancelRequested) return resolve('cancelled');
-                            reject(err);
-                        });
-                        fileStream.on('error', err => {
-                            cleanup();
-                            if (cancelRequested) return resolve('cancelled');
-                            reject(err);
-                        });
-                        res.body.pipe(fileStream);
-                    });
-                } catch (err) {
-                    currentDownload = null;
-                    if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-                    if (cancelRequested) return false;
-                    throw err;
-                }
-                if (
-                    downloadResult === 'cancelled' ||
-                    !fs.existsSync(zipPath) ||
-                    fs.statSync(zipPath).size === 0
-                ) {
-                    currentDownload = null;
-                    if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-                    return false;
-                }
-                try {
-                    const zip = new AdmZip(zipPath);
-                    zip.extractAllTo(gameFolder, true);
-                    fs.unlinkSync(zipPath);
-                } catch (err) {
-                    if (downloadResult === 'cancelled' || !fs.existsSync(zipPath)) {
-                        if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-                        currentDownload = null;
-                        return false;
+                downloadResult = await new Promise((resolve, reject) => {
+                    function cleanup() {
+                        res.body.removeAllListeners();
+                        fileStream.removeAllListeners();
                     }
-                    throw err;
-                }
-                currentDownload = null;
-                return true;
+                    res.body.on('data', chunk => {
+                        if (cancelRequested) {
+                            cleanup();
+                            try { fileStream.close(); } catch {}
+                            fs.unlink(zipPath, () => {});
+                            resolve('cancelled');
+                            return;
+                        }
+                        if (isPaused) {
+                            res.body.pause();
+                            return;
+                        }
+                        received += chunk.length;
+                        if (total) {
+                            const percent = Math.floor((received / total) * 100);
+                            currentDownloadPercent = percent;
+                            event.sender.send('download-progress', percent);
+                        }
+                    });
+                    res.body.on('end', () => {
+                        if (!cancelRequested) {
+                            event.sender.send('download-progress', 100);
+                            currentDownloadPercent = 100;
+                            cleanup();
+                            resolve();
+                        }
+                    });
+                    res.body.on('error', err => {
+                        cleanup();
+                        if (cancelRequested) return resolve('cancelled');
+                        reject(err);
+                    });
+                    fileStream.on('error', err => {
+                        cleanup();
+                        if (cancelRequested) return resolve('cancelled');
+                        reject(err);
+                    });
+                    res.body.pipe(fileStream);
+                });
             } catch (err) {
                 currentDownload = null;
+                currentDownloadGame = null;
+                currentDownloadPercent = 0;
+                if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
                 if (cancelRequested) return false;
-                throw new Error('Erro no download ou extração: ' + err.message);
+                throw err;
             }
-        } catch (err) {
-            // Captura qualquer erro AbortError que escapou do bloco interno
             if (
-                (err && err.message && (err.message.includes('cancelado') || err.message.includes('aborted'))) ||
-                (err && err.name === 'AbortError') ||
-                (err && err.stack && err.stack.includes('AbortError'))
+                downloadResult === 'cancelled' ||
+                !fs.existsSync(zipPath) ||
+                fs.statSync(zipPath).size === 0
             ) {
+                currentDownload = null;
+                currentDownloadGame = null;
+                currentDownloadPercent = 0;
+                if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
                 return false;
             }
-            throw err;
+            try {
+                const zip = new AdmZip(zipPath);
+                zip.extractAllTo(gameFolder, true);
+                fs.unlinkSync(zipPath);
+            } catch (err) {
+                if (downloadResult === 'cancelled' || !fs.existsSync(zipPath)) {
+                    if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
+                    currentDownload = null;
+                    currentDownloadGame = null;
+                    currentDownloadPercent = 0;
+                    return false;
+                }
+                throw err;
+            }
+            currentDownload = null;
+            currentDownloadGame = null;
+            currentDownloadPercent = 0;
+            return true;
+        } catch (err) {
+            currentDownload = null;
+            currentDownloadGame = null;
+            currentDownloadPercent = 0;
+            if (cancelRequested) return false;
+            throw new Error('Erro no download ou extração: ' + err.message);
         }
     });
 
