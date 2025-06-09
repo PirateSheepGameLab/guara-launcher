@@ -13,5 +13,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   pauseDownload: () => ipcRenderer.send('pause-download'),
   resumeDownload: () => ipcRenderer.send('resume-download'),
   cancelDownload: () => ipcRenderer.send('cancel-download'),
-  getDownloadStatus: () => ipcRenderer.invoke('get-download-status')
+  getDownloadStatus: () => ipcRenderer.invoke('get-download-status'),
+  checkExecutableExists: (installFolder, gameName) => ipcRenderer.invoke('check-executable-exists', installFolder, gameName)
 });

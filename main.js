@@ -232,6 +232,29 @@ app.whenReady().then(() => {
         }
         currentDownload = null;
     });
+
+    ipcMain.handle('check-executable-exists', async (event, installFolder, gameName) => {
+        const gameFolder = path.join(installFolder, gameName);
+        if (!fs.existsSync(gameFolder)) return false;
+        let files = fs.readdirSync(gameFolder);
+        // Normalize game name for matching
+        const normalize = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normGame = normalize(gameName);
+        let found = false;
+        if (process.platform === 'win32') {
+            found = files.some(f => f.toLowerCase().endsWith('.exe') && normalize(path.parse(f).name).includes(normGame));
+        } else {
+            // On Linux/Mac, check for executable files
+            found = files.some(f => {
+                const filePath = path.join(gameFolder, f);
+                try {
+                    const stat = fs.statSync(filePath);
+                    return stat.isFile() && (stat.mode & 0o111) && normalize(path.parse(f).name).includes(normGame);
+                } catch { return false; }
+            });
+        }
+        return found;
+    });
 });
 
 app.on('window-all-closed', () => {

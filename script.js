@@ -773,7 +773,8 @@ async function showGameDetails(gameId) {
                     </div>
                     <div class="stat-box">
                         <span class="label">Última Sessão</span>
-                        <span class="value" id="statLastSession">${new Date(game.lastPlayed).toLocaleDateString()}</span>                    </div>  
+                        <span class="value" id="statLastSession">${new Date(game.lastPlayed).toLocaleDateString()}</span>                    
+                    </div>  
                 </div>
                 <div class="right-content">
                 </div>      
@@ -820,6 +821,7 @@ async function showGameDetails(gameId) {
                                         month: 'long',
                                         year: 'numeric'
                                     })}
+                                    ${game.version ? `<br><span class='metadata-label'>Versão:</span> <span>${game.version}</span>` : ''}
                                 </div>
                             </div>
                             <div class="metadata-item">
@@ -1026,6 +1028,14 @@ async function showGameDetails(gameId) {
         playButton.style.boxShadow = '';
         playButton.style.cursor = 'pointer';
 
+        // --- CHECAGEM DE EXECUTÁVEL ---
+        const pastaDestino = localStorage.getItem('gameInstallFolder');
+        let hasExecutable = false;
+        if (window.electronAPI && window.electronAPI.checkExecutableExists && pastaDestino) {
+            hasExecutable = await window.electronAPI.checkExecutableExists(pastaDestino, game.title);
+        }
+        playButton.textContent = hasExecutable ? 'Jogar' : 'Download';
+
         // --- PERSISTÊNCIA DO DOWNLOAD ---
         if (window.electronAPI && window.electronAPI.getDownloadStatus) {
             const status = await window.electronAPI.getDownloadStatus();
@@ -1072,75 +1082,71 @@ async function showGameDetails(gameId) {
             }
         }
         playButton.addEventListener('click', async () => {
-            let pastaDestino = localStorage.getItem('gameInstallFolder');
+            const pastaDestino = localStorage.getItem('gameInstallFolder');
             if (!pastaDestino) {
                 alert('Defina a pasta de instalação nas configurações antes de baixar o jogo.');
                 return;
             }
-            if (!game.url) {
-                alert('Este jogo não possui um link de download configurado.');
-                return;
+            let hasExecutable = false;
+            if (window.electronAPI && window.electronAPI.checkExecutableExists) {
+                hasExecutable = await window.electronAPI.checkExecutableExists(pastaDestino, game.title);
             }
-            if (window.electronAPI && window.electronAPI.downloadAndExtractGame) {
-                try {
-                    playButton.disabled = true;
-                    controlsContainer.style.display = 'flex';
+            if (!hasExecutable) {
+                playButton.disabled = true;
+                controlsContainer.style.display = 'flex';
+                pauseBtn.style.display = 'inline-block';
+                resumeBtn.style.display = 'none';
+                cancelBtn.style.display = 'inline-block';
+                playButton.textContent = 'Baixando... 0%';
+                progressBar.style.width = '0%';
+                progressBar.style.background = 'linear-gradient(90deg, #2196f3, #0d47a1)';
+                progressBar.style.opacity = 1;
+                // Adiciona um canal de progresso via IPC
+                window.electronAPI.onDownloadProgress && window.electronAPI.onDownloadProgress((percent) => {
+                    progressBar.style.width = percent + '%';
+                    playButton.textContent = `Baixando... ${percent}%`;
+                });
+                // Controle dos botões
+                let isPaused = false;
+                pauseBtn.onclick = () => {
+                    if (window.electronAPI.pauseDownload) window.electronAPI.pauseDownload();
+                    isPaused = true;
+                    pauseBtn.style.display = 'none';
+                    resumeBtn.style.display = 'inline-block';
+                };
+                resumeBtn.onclick = () => {
+                    if (window.electronAPI.resumeDownload) window.electronAPI.resumeDownload();
+                    isPaused = false;
                     pauseBtn.style.display = 'inline-block';
                     resumeBtn.style.display = 'none';
-                    cancelBtn.style.display = 'inline-block';
-                    playButton.textContent = 'Baixando... 0%';
-                    progressBar.style.width = '0%';
-                    progressBar.style.background = 'linear-gradient(90deg, #2196f3, #0d47a1)';
-                    progressBar.style.opacity = 1;
-                    // Adiciona um canal de progresso via IPC
-                    window.electronAPI.onDownloadProgress && window.electronAPI.onDownloadProgress((percent) => {
-                        progressBar.style.width = percent + '%';
-                        playButton.textContent = `Baixando... ${percent}%`;
-                    });
-                    // Controle dos botões
-                    let isPaused = false;
-                    pauseBtn.onclick = () => {
-                        if (window.electronAPI.pauseDownload) window.electronAPI.pauseDownload();
-                        isPaused = true;
-                        pauseBtn.style.display = 'none';
-                        resumeBtn.style.display = 'inline-block';
-                    };
-                    resumeBtn.onclick = () => {
-                        if (window.electronAPI.resumeDownload) window.electronAPI.resumeDownload();
-                        isPaused = false;
-                        pauseBtn.style.display = 'inline-block';
-                        resumeBtn.style.display = 'none';
-                    };
-                    cancelBtn.onclick = () => {
-                        if (window.electronAPI.cancelDownload) window.electronAPI.cancelDownload();
-                        playButton.textContent = 'Jogar';
-                        progressBar.style.width = '0%';
-                        progressBar.style.opacity = 0;
-                        controlsContainer.style.display = 'none';
-                        playButton.disabled = false;
-                    };
-                    await window.electronAPI.downloadAndExtractGame(game.url, pastaDestino, game.title);
-                    progressBar.style.width = '100%';
-                    playButton.textContent = 'Jogar';
-                    setTimeout(() => {
-                        progressBar.style.transition = 'opacity 0.5s';
-                        progressBar.style.opacity = 0;
-                        progressBar.style.width = '0%';
-                    }, 800);
-                    alert('Download e extração concluídos!');
-                    controlsContainer.style.display = 'none';
-                } catch (err) {
+                };
+                cancelBtn.onclick = () => {
+                    if (window.electronAPI.cancelDownload) window.electronAPI.cancelDownload();
                     playButton.textContent = 'Jogar';
                     progressBar.style.width = '0%';
                     progressBar.style.opacity = 0;
                     controlsContainer.style.display = 'none';
-                    alert('Erro ao baixar ou extrair o jogo: ' + err.message);
-                } finally {
                     playButton.disabled = false;
+                };
+                await window.electronAPI.downloadAndExtractGame(game.url, pastaDestino, game.title);
+                progressBar.style.width = '100%';
+                playButton.textContent = 'Jogar';
+                setTimeout(() => {
+                    progressBar.style.transition = 'opacity 0.5s';
+                    progressBar.style.opacity = 0;
+                    progressBar.style.width = '0%';
+                }, 800);
+                alert('Download e extração concluídos!');
+                controlsContainer.style.display = 'none';
+                // Após download e extração, checa novamente e atualiza o botão
+                let found = false;
+                if (window.electronAPI && window.electronAPI.checkExecutableExists) {
+                    found = await window.electronAPI.checkExecutableExists(pastaDestino, game.title);
                 }
-            } else {
-                alert('Função de download não disponível neste ambiente.');
+                playButton.textContent = found ? 'Jogar' : 'Download';
+                return;
             }
+            // ...existing launch logic if any...
         });
 
     } catch (error) {

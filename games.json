@@ -31,7 +31,8 @@
             "memory": "4 GB RAM",
             "graphics": "Intel HD Graphics 4000",
             "storage": "500 MB"
-        }
+        },
+        "version": "1.0.0"
     },
     {
         "id": "hades",
@@ -57,7 +58,8 @@
             "memory": "4 GB RAM",
             "graphics": "1GB VRAM / DirectX 10+ support",
             "storage": "15 GB"
-        }
+        },
+        "version": "1.0.0"
     },
     {
         "id": "dead-cells",
@@ -83,7 +85,8 @@
             "memory": "2 GB RAM",
             "graphics": "Nvidia GTX 460 ou superior",
             "storage": "500 MB"
-        }
+        },
+        "version": "1.0.0"
     },
     {
         "id": "binding-of-isaac-rebirth",
@@ -109,7 +112,8 @@
             "memory": "2 GB RAM",
             "graphics": "DirectX 9.0c Compatible Card",
             "storage": "449 MB"
-        }
+        },
+        "version": "1.0.0"
     },  
     {
         "id": "spelunky-2",
@@ -135,7 +139,8 @@
             "memory": "4 GB RAM",
             "graphics": "DirectX 11 compatible GPU com 1GB VRAM",
             "storage": "600 MB"
-        }
+        },
+        "version": "1.0.0"
     },
     {
         "id": "risk-of-rain-2",
@@ -161,6 +166,7 @@
             "memory": "4 GB RAM",
             "graphics": "GTX 580 / AMD HD 7870",
             "storage": "10 GB"
-        }
+        },
+        "version": "1.0.0"
     }    
-] 
+]
