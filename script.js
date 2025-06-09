@@ -864,31 +864,12 @@ async function showGameDetails(gameId) {
                 <div class="game-info-right">
                     <section class="achievements-section">
                         <h2>Conquistas</h2>
-                        <div class="progress-bar">
-                            <div class="progress" id="achievementsProgress"></div>
-                        </div>
-                        <div class="achievements-grid" id="achievementsGrid">
-                            <!-- Sample achievements for demonstration -->
-                            <div class="achievement-item"><img src="assets/achievement-placeholder.png" alt="Achievement"></div>
-                            <div class="achievement-item locked"><img src="assets/achievement-placeholder.png" alt="Achievement"></div>
-                            <div class="achievement-item"><img src="assets/achievement-placeholder.png" alt="Achievement"></div>
-                        </div>
-                        <button class="btn-view-all">Ver todas as conquistas</button>
+                        <div class="coming-soon-text">EM BREVE</div>
                     </section>
                     <section class="collectibles-section">
                         <h2>Colecionáveis</h2>
-                        <div class="progress-bar">
-                            <div class="progress" id="collectiblesProgress"></div>
-                        </div>
-                        <div class="collectibles-grid" id="collectiblesGrid">
-                            <!-- Sample collectibles for demonstration -->
-                            <div class="collectible-item"><img src="assets/collectible-placeholder.png" alt="Collectible"></div>
-                            <div class="collectible-item locked"><img src="assets/collectible-placeholder.png" alt="Collectible"></div>
-                            <div class="collectible-item"><img src="assets/collectible-placeholder.png" alt="Collectible"></div>
-                        </div>
-                        <button class="btn-view-all">Ver todos os colecionáveis</button>
+                        <div class="coming-soon-text">EM BREVE</div>
                     </section>
-                    
                 </div>
             </div>
         `;        // Configura o carrossel depois de renderizar o conteúdo
