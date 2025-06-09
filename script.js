@@ -767,14 +767,6 @@ async function showGameDetails(gameId) {
 
             <div class="game-info-btns"> 
                 <div class="left-content">
-                    <div class="stat-box">
-                        <span class="label">Tempo de Jogo</span>
-                        <span class="value" id="statPlayTime">1h 45min</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="label">Última Sessão</span>
-                        <span class="value" id="statLastSession">${new Date(game.lastPlayed).toLocaleDateString()}</span>                    
-                    </div>  
                 </div>
                 <div class="right-content">
                 </div>      
@@ -1251,3 +1243,4 @@ document.head.appendChild(style);
         document.head.appendChild(style);
     }
 })();
+// Removido temporariamente a exibição de Tempo de Jogo e Última Sessão
